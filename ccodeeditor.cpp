@@ -11,6 +11,7 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	updateLineNumberAreaWidth(0);
 	highlightCurrentLine();
 
+	setFont( QFont( "Courier New" , 30 ) );
 }
 
 
@@ -24,7 +25,7 @@ int CCodeEditor::lineNumberAreaWidth() {
 		++digits;
 	}
 
-	int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+	int space = 3 + fontMetrics().maxWidth() * digits;
 
 	return space + 10;
 }
