@@ -11,7 +11,9 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	updateLineNumberAreaWidth(0);
 	highlightCurrentLine();
 
-	setFont( QFont( "Courier New" , 30 ) );
+	setFont( QFont( "Courier New" , 16 ) );
+
+	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
 }
 
 

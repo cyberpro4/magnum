@@ -2,11 +2,12 @@
 #define CCODEEDITOR_H
 
 #include <QtGui>
+#include "cfilesyntaxhighlighter.h"
 
 class LineNumberArea;
 
-class CCodeEditor : public QPlainTextEdit
-{
+class CCodeEditor : public QPlainTextEdit {
+
 	Q_OBJECT
 
 public:
@@ -29,8 +30,8 @@ private:
 	QWidget *lineNumberArea;
 };
 
-class LineNumberArea : public QWidget
-{
+class LineNumberArea : public QWidget {
+
 public:
 	LineNumberArea(QWidget *editor) : QWidget(editor) {
 		codeEditor = (CCodeEditor*)editor;
