@@ -3,6 +3,7 @@
 # -------------------------------------------------
 TARGET = magnum
 TEMPLATE = app
+QT += xml
 SOURCES += main.cpp \
     ccodeeditor.cpp \
     cfilesyntaxhighlighter.cpp

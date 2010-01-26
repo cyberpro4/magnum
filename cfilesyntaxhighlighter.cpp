@@ -7,17 +7,59 @@ CFileSyntaxHighlighter::~CFileSyntaxHighlighter(){
 
 }
 
-void CFileSyntaxHighlighter::highlightBlock(const QString &text){
-	QTextCharFormat myClassFormat;
-	 myClassFormat.setFontWeight(QFont::Bold);
-	 myClassFormat.setForeground(Qt::darkMagenta);
-	 QString pattern = "\\bMy[A-Za-z]+\\b";
+bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
+    QFile f(file);
 
-	 QRegExp expression(pattern);
-	 int index = text.indexOf(expression);
-	 while (index >= 0) {
-		 int length = expression.matchedLength();
-		 setFormat(index, length, myClassFormat);
-		 index = text.indexOf(expression, index + length);
-	 }
+    if( !f.open( QIODevice::ReadOnly ) ) return false;
+
+    QDomDocument doc;
+    doc.setContent( &f );
+    f.close();
+
+    QDomElement formats( doc.firstChildElement("FORMATS") );
+    QDomElement cur;
+
+    cur = formats.firstChildElement();
+
+    do {
+
+	CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
+
+	qDebug() << "format: " << cur.attribute("NAME" , "NONE");
+
+	if( cur.elementsByTagName( "REGEXP" ).size() > 0 )
+	    toSave->m_regExp.setPattern( cur.elementsByTagName( "REGEXP" ).at(0).toElement().attribute("PATTERN","") );
+
+	if( cur.elementsByTagName( "COLOR").size() > 0 ){
+	    QDomElement color = cur.elementsByTagName("COLOR").at(0).toElement();
+	    toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#FFFFFF") ) ) );
+	}
+
+	m_formats.append( toSave );
+
+    } while( !( cur = formats.nextSiblingElement() ).isNull() );
+
+    return true;
+}
+
+void CFileSyntaxHighlighter::highlightBlock(const QString &text){
+
+    CFileSyntaxHighlighter_Format* form;
+
+    foreach( form , m_formats ){
+
+	int index = text.indexOf( form->m_regExp );
+
+	while (index >= 0) {
+
+	    int length = form->m_regExp.matchedLength();
+
+	    if( length == 0 )
+		break;
+
+	    setFormat(index, length, form->m_format );
+	    index = text.indexOf(form->m_regExp, length > 0 ? index+length : index + 1);
+
+	}
+    }
 }

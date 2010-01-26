@@ -11,12 +11,11 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	updateLineNumberAreaWidth(0);
 	highlightCurrentLine();
 
-	setFont( QFont( "Courier New" , 16 ) );
+	setFont( QFont( "Courier New" , 14 ) );
 
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
+	qDebug() << s->loadFromFile( "test.xml" );
 }
-
-
 
 int CCodeEditor::lineNumberAreaWidth() {
 	int digits = 1;
@@ -34,6 +33,7 @@ int CCodeEditor::lineNumberAreaWidth() {
 
 void CCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */){
 	setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+	qDebug() << this->firstVisibleBlock().lineCount();
 }
 
 
@@ -66,7 +66,7 @@ void CCodeEditor::highlightCurrentLine(){
 	if (!isReadOnly()) {
 		QTextEdit::ExtraSelection selection;
 
-		QColor lineColor = QColor(Qt::blue).lighter(200);
+		QColor lineColor = QColor(Qt::blue).lighter(190);
 
 		selection.format.setBackground(lineColor);
 		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
