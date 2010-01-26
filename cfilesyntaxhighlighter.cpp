@@ -32,7 +32,8 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
 	if( cur.elementsByTagName( "COLOR").size() > 0 ){
 	    QDomElement color = cur.elementsByTagName("COLOR").at(0).toElement();
-	    toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#FFFFFF") ) ) );
+	    toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#000000") ) ) );
+	    toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "#FFFFFF") ) ) );
 	}
 
 	m_formats.append( toSave );
