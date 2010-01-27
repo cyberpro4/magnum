@@ -5,6 +5,16 @@ CFileSyntaxHighlighter::CFileSyntaxHighlighter(QTextDocument* parent) : QSyntaxH
 
 CFileSyntaxHighlighter::~CFileSyntaxHighlighter(){
 
+    CFileSyntaxHighlighter_Format* form;
+    QRegExp* exp;
+
+    foreach( form , m_formats ){
+        foreach( exp , form->m_regsExp ){
+            delete exp;
+        }
+
+        delete form;
+    }
 }
 
 bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
@@ -23,20 +33,22 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
     do {
 
-	CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
+        CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
 
-	qDebug() << "format: " << cur.attribute("NAME" , "NONE");
+        qDebug() << "format: " << cur.attribute("NAME" , "NONE");
 
-	if( cur.elementsByTagName( "REGEXP" ).size() > 0 )
-	    toSave->m_regExp.setPattern( cur.elementsByTagName( "REGEXP" ).at(0).toElement().attribute("PATTERN","") );
+        QDomNodeList list = cur.elementsByTagName( "REGEXP" );
+        for(int node=0;node < list.size();node++){
+            toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );
+        }
 
-	if( cur.elementsByTagName( "COLOR").size() > 0 ){
-	    QDomElement color = cur.elementsByTagName("COLOR").at(0).toElement();
-	    toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#000000") ) ) );
-	    toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "#FFFFFF") ) ) );
-	}
+        if( cur.elementsByTagName( "COLOR").size() > 0 ){
+            QDomElement color = cur.elementsByTagName("COLOR").at(0).toElement();
+            toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#000000") ) ) );
+            toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "#FFFFFF") ) ) );
+        }
 
-	m_formats.append( toSave );
+        m_formats.append( toSave );
 
     } while( !( cur = formats.nextSiblingElement() ).isNull() );
 
@@ -46,21 +58,24 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 void CFileSyntaxHighlighter::highlightBlock(const QString &text){
 
     CFileSyntaxHighlighter_Format* form;
+    QRegExp* exp;
 
     foreach( form , m_formats ){
+        foreach( exp , form->m_regsExp ){
 
-	int index = text.indexOf( form->m_regExp );
+            int index = text.indexOf( *exp );
 
-	while (index >= 0) {
+            while (index >= 0) {
 
-	    int length = form->m_regExp.matchedLength();
+                int length = exp->matchedLength();
 
-	    if( length == 0 )
-		break;
+                if( length == 0 )
+                    break;
 
-	    setFormat(index, length, form->m_format );
-	    index = text.indexOf(form->m_regExp, length > 0 ? index+length : index + 1);
+                setFormat(index, length, form->m_format );
+                index = text.indexOf( *exp , length > 0 ? index+length : index + 1);
 
-	}
+            }
+        }
     }
 }

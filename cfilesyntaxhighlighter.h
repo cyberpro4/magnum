@@ -7,7 +7,7 @@
 class CFileSyntaxHighlighter_Format {
 public:
     QTextCharFormat	m_format;
-    QRegExp		m_regExp;
+    QList<QRegExp*>	m_regsExp;
 };
 
 class CFileSyntaxHighlighter : public QSyntaxHighlighter {
