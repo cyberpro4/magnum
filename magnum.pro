@@ -6,6 +6,8 @@ TEMPLATE = app
 QT += xml
 SOURCES += main.cpp \
     ccodeeditor.cpp \
-    cfilesyntaxhighlighter.cpp
+    cfilesyntaxhighlighter.cpp \
+    cmagnumwin.cpp
 HEADERS += ccodeeditor.h \
-    cfilesyntaxhighlighter.h
+    cfilesyntaxhighlighter.h \
+    cmagnumwin.h

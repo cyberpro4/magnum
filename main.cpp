@@ -1,10 +1,10 @@
 #include <QtGui/QApplication>
-#include "ccodeeditor.h"
+#include "cmagnumwin.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    CCodeEditor w;
+    CMagnumWin w;
     w.show();
     return a.exec();
 }
