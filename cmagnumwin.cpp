@@ -32,4 +32,14 @@ void CMagnumWin::loadDocument(bool checked ){
 }
 
 void CMagnumWin::saveCurrentDocument(bool ){
+
+    CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+
+    if( ed != NULL){
+	if( ed->documentOwner() != NULL ){
+
+	    ed->documentOwner()->saveToFile();
+	}
+    }
+
 }

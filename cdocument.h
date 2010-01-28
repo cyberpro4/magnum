@@ -19,6 +19,7 @@ public:
     CCodeEditor*    editor();
 
     bool    loadFromFile(const QString& );
+    bool    saveToFile(const QString& file = "" );
 
     const QFileInfo& fileInfo();
 
