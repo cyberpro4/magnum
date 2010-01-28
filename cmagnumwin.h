@@ -12,12 +12,16 @@ private:
 
     QMenuBar		    m_mainMenu;
 
-    QTabBar		    m_documentTabs;
-    QVBoxLayout		    m_documentLayout;
+    QTabWidget		    m_documentTabs;
     QList<CCodeEditor*>	    m_editors;
 
 public:
     CMagnumWin();
+
+public slots:
+
+    void    newDocument( bool );
+
 };
 
 #endif // CMAGNUMWIN_H

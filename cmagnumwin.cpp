@@ -2,18 +2,18 @@
 
 CMagnumWin::CMagnumWin(){
 
-    m_documentTabs.addTab("ASD");
-
-    m_editors.append( new CCodeEditor() );
-
-    m_documentLayout.addWidget( &m_documentTabs );
-    m_documentLayout.addWidget( m_editors.at(0) );
-
-    setCentralWidget( m_editors.at(0) );
+    setCentralWidget( &m_documentTabs );
 
     QMenu* file = m_mainMenu.addMenu( "File" );
-    file->addAction( "New" );
+    connect( file->addAction( "New" ) , SIGNAL(triggered( bool )) , this , SLOT(newDocument(bool)) );
     file->addAction( "Exit" );
 
     setMenuBar( &m_mainMenu );
+}
+
+void CMagnumWin::newDocument(bool checked){
+    CCodeEditor* codeed = new CCodeEditor();
+
+    m_editors.append( codeed );
+    m_documentTabs.addTab( codeed , "NEW" );
 }
