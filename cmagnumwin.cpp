@@ -25,7 +25,7 @@ void CMagnumWin::loadDocument(bool checked ){
     if( !filename.isNull() ){
 	CDocument* doc = new CDocument( filename );
 
-	m_documentTabs.addTab( doc->editor() , filename );
+	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
 	m_documents.append( doc );
     }
 }

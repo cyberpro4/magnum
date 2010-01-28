@@ -15,6 +15,10 @@ CCodeEditor* CDocument::editor(){
     return m_editor;
 }
 
+const QFileInfo& CDocument::fileInfo(){
+    return m_fileInfo;
+}
+
 bool CDocument::loadFromFile(const QString & filename ){
     QFile file(filename);
 
@@ -26,6 +30,8 @@ bool CDocument::loadFromFile(const QString & filename ){
     m_editor->setPlainText( file.readAll() );
 
     file.close();
+
+    m_fileInfo.setFile( filename );
 
     return true;
 }

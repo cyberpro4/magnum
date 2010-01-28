@@ -10,7 +10,7 @@ class CDocument : public QObject {
 private:
 
     CCodeEditor*    m_editor;
-    QString	    m_fullFilename;
+    QFileInfo	    m_fileInfo;
 
 public:
     CDocument(const QString& file = "" );
@@ -19,6 +19,8 @@ public:
     CCodeEditor*    editor();
 
     bool    loadFromFile(const QString& );
+
+    const QFileInfo& fileInfo();
 
 };
 
