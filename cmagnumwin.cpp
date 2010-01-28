@@ -12,10 +12,10 @@ CMagnumWin::CMagnumWin(){
 }
 
 void CMagnumWin::newDocument(bool checked){
-    CCodeEditor* codeed = new CCodeEditor();
+    CDocument* doc = new CDocument();
 
-    m_editors.append( codeed );
-    m_documentTabs.addTab( codeed , "NEW" );
+    m_documents.append( doc );
+    m_documentTabs.addTab( doc->editor() , "NEW" );
 }
 
 void CMagnumWin::loadDocument(bool checked ){
@@ -23,22 +23,9 @@ void CMagnumWin::loadDocument(bool checked ){
     QString filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
     if( !filename.isNull() ){
+	CDocument* doc = new CDocument( filename );
 
-
-        QFile file(filename);
-        if( !file.open( QIODevice::ReadOnly ) ){
-            QMessageBox::warning( this , "Error" , "Unable to open file!" );
-            return;
-        }
-
-        CCodeEditor* codeed = new CCodeEditor();
-
-        codeed->setPlainText( file.readAll() );
-
-        file.close();
-
-        m_editors.append( codeed );
-
-        m_documentTabs.addTab( codeed , filename );
+	m_documentTabs.addTab( doc->editor() , filename );
+	m_documents.append( doc );
     }
 }
