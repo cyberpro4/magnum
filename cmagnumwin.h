@@ -21,6 +21,7 @@ public:
 public slots:
 
     void    newDocument( bool );
+    void    loadDocument( bool );
 
 };
 

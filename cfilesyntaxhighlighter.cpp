@@ -35,8 +35,6 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
         CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
 
-        qDebug() << "format: " << cur.attribute("NAME" , "NONE");
-
         QDomNodeList list = cur.elementsByTagName( "REGEXP" );
         for(int node=0;node < list.size();node++){
             toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );

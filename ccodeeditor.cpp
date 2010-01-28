@@ -1,110 +1,109 @@
 #include "ccodeeditor.h"
 
 CCodeEditor::CCodeEditor(QWidget *parent)
-	: QPlainTextEdit(parent) {
-	lineNumberArea = new LineNumberArea(this);
+        : QPlainTextEdit(parent) {
+        lineNumberArea = new LineNumberArea(this);
 
-	connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-	connect(this, SIGNAL(updateRequest(const QRect &, int)), this, SLOT(updateLineNumberArea(const QRect &, int)));
-	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+        connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+        connect(this, SIGNAL(updateRequest(const QRect &, int)), this, SLOT(updateLineNumberArea(const QRect &, int)));
+        connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-	updateLineNumberAreaWidth(0);
-	highlightCurrentLine();
+        updateLineNumberAreaWidth(0);
+        highlightCurrentLine();
 
-	setFont( QFont( "Courier New" , 14 ) );
+        setFont( QFont( "Courier New" , 11 ) );
 
-	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
-	qDebug() << s->loadFromFile( "test.xml" );
+        CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
+        s->loadFromFile( "test.xml" );
 }
 
 int CCodeEditor::lineNumberAreaWidth() {
-	int digits = 1;
-	int max = qMax(1, blockCount());
+        int digits = 1;
+        int max = qMax(1, blockCount());
 
-	while (max >= 10) {
-		max /= 10;
-		++digits;
-	}
+        while (max >= 10) {
+                max /= 10;
+                ++digits;
+        }
 
-	int space = 3 + fontMetrics().maxWidth() * digits;
+        int space = 3 + fontMetrics().maxWidth() * digits;
 
-	return space + 10;
+        return space + 10;
 }
 
 void CCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */){
-	setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
-	qDebug() << this->firstVisibleBlock().lineCount();
+        setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 
 
 void CCodeEditor::updateLineNumberArea(const QRect &rect, int dy) {
-	if (dy)
-		lineNumberArea->scroll(0, dy);
-	else
-		lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        if (dy)
+                lineNumberArea->scroll(0, dy);
+        else
+                lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
 
-	if (rect.contains(viewport()->rect()))
-		updateLineNumberAreaWidth(0);
+        if (rect.contains(viewport()->rect()))
+                updateLineNumberAreaWidth(0);
 }
 
 
 
 void CCodeEditor::resizeEvent(QResizeEvent *e) {
-	QPlainTextEdit::resizeEvent(e);
+        QPlainTextEdit::resizeEvent(e);
 
-	QRect cr = contentsRect();
-	lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+        QRect cr = contentsRect();
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
 
 
 void CCodeEditor::highlightCurrentLine(){
 
-	QList<QTextEdit::ExtraSelection> extraSelections;
+        QList<QTextEdit::ExtraSelection> extraSelections;
 
-	if (!isReadOnly()) {
-		QTextEdit::ExtraSelection selection;
+        if (!isReadOnly()) {
+                QTextEdit::ExtraSelection selection;
 
-		QColor lineColor = QColor(Qt::blue).lighter(190);
+                QColor lineColor = QColor(Qt::blue).lighter(190);
 
-		selection.format.setBackground(lineColor);
-		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-		selection.cursor = textCursor();
-		selection.cursor.clearSelection();
-		extraSelections.append(selection);
-	}
+                selection.format.setBackground(lineColor);
+                selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+                selection.cursor = textCursor();
+                selection.cursor.clearSelection();
+                extraSelections.append(selection);
+        }
 
-	setExtraSelections(extraSelections);
+        setExtraSelections(extraSelections);
 }
 
 
 
 void CCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-	QPainter painter(lineNumberArea);
-	painter.fillRect(event->rect(), QColor(Qt::lightGray).lighter( 120 ) );
+        QPainter painter(lineNumberArea);
+        painter.fillRect(event->rect(), QColor(Qt::lightGray).lighter( 120 ) );
 
 
-	QTextBlock block = firstVisibleBlock();
-	int blockNumber = block.blockNumber();
-	int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
-	int bottom = top + (int) blockBoundingRect(block).height();
+        QTextBlock block = firstVisibleBlock();
+        int blockNumber = block.blockNumber();
+        int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
+        int bottom = top + (int) blockBoundingRect(block).height();
 
-	while (block.isValid() && top <= event->rect().bottom()) {
-		if (block.isVisible() && bottom >= event->rect().top()) {
-			QString number = QString::number(blockNumber + 1);
+        while (block.isValid() && top <= event->rect().bottom()) {
+                if (block.isVisible() && bottom >= event->rect().top()) {
+                        QString number = QString::number(blockNumber + 1);
 
-			painter.setPen( QColor( Qt::lightGray ).lighter( 70 ) );
-			painter.drawText(0, top, lineNumberArea->width() - 2, fontMetrics().height(),
-					 Qt::AlignRight, number);
-		}
+                        painter.setPen( QColor( Qt::lightGray ).lighter( 70 ) );
+                        painter.drawText(0, top, lineNumberArea->width() - 2, fontMetrics().height(),
+                                         Qt::AlignRight, number);
+                }
 
-		block = block.next();
-		top = bottom;
-		bottom = top + (int) blockBoundingRect(block).height();
-		++blockNumber;
-	}
+                block = block.next();
+                top = bottom;
+                bottom = top + (int) blockBoundingRect(block).height();
+                ++blockNumber;
+        }
 }
 
 CCodeEditor::~CCodeEditor()
