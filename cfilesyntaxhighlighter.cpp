@@ -27,28 +27,30 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
     f.close();
 
     QDomElement formats( doc.firstChildElement("FORMATS") );
-    QDomElement cur;
+    QDomNodeList cur;
 
-    cur = formats.firstChildElement();
+    cur = formats.elementsByTagName("FORMAT");
 
-    do {
+    for(int curind = 0;curind < cur.size();curind++){
+
+        qDebug() << "loading" << cur.at(curind).toElement().attribute("NAME","INVALID");
 
         CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
 
-        QDomNodeList list = cur.elementsByTagName( "REGEXP" );
+        QDomNodeList list = cur.at(curind).toElement().elementsByTagName( "REGEXP" );
         for(int node=0;node < list.size();node++){
             toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );
         }
 
-        if( cur.elementsByTagName( "COLOR").size() > 0 ){
-            QDomElement color = cur.elementsByTagName("COLOR").at(0).toElement();
+        if( cur.at(curind).toElement().elementsByTagName( "COLOR").size() > 0 ){
+            QDomElement color = cur.at(curind).toElement().elementsByTagName("COLOR").at(0).toElement();
             toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "#000000") ) ) );
             toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "#FFFFFF") ) ) );
         }
 
         m_formats.append( toSave );
 
-    } while( !( cur = formats.nextSiblingElement() ).isNull() );
+    }
 
     return true;
 }
