@@ -7,6 +7,7 @@ CMagnumWin::CMagnumWin(){
     QMenu* file = m_mainMenu.addMenu( "File" );
     connect( file->addAction( "New" ) , SIGNAL(triggered( bool )) , this , SLOT(newDocument(bool)) );
     connect( file->addAction( "Open" ) , SIGNAL(triggered( bool )) , this , SLOT(loadDocument(bool)) );
+    connect( file->addAction( "Save" ) , SIGNAL(triggered( bool )) , this , SLOT(saveCurrentDocument(bool)) );
 
     setMenuBar( &m_mainMenu );
 }
@@ -28,4 +29,7 @@ void CMagnumWin::loadDocument(bool checked ){
 	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
 	m_documents.append( doc );
     }
+}
+
+void CMagnumWin::saveCurrentDocument(bool ){
 }

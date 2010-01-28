@@ -22,6 +22,7 @@ public slots:
 
     void    newDocument( bool );
     void    loadDocument( bool );
+    void    saveCurrentDocument(bool );
 
 };
 
