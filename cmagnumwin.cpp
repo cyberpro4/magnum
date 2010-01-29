@@ -5,23 +5,26 @@ CMagnumWin::CMagnumWin(){
     setCentralWidget( &m_documentTabs );
 
     QMenu* file = m_mainMenu.addMenu( "File" );
-    connect( file->addAction( "New" ) , SIGNAL(triggered( bool )) , this , SLOT(newDocument(bool)) );
-    connect( file->addAction( "Open" ) , SIGNAL(triggered( bool )) , this , SLOT(loadDocument(bool)) );
-    connect( file->addAction( "Save" ) , SIGNAL(triggered( bool )) , this , SLOT(saveCurrentDocument(bool)) );
+    connect( file->addAction( "New" ) , SIGNAL(triggered()) , this , SLOT(newDocument()) );
+    connect( file->addAction( "Open" ) , SIGNAL(triggered()) , this , SLOT(loadDocument()) );
+    connect( file->addAction( "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
 
     setMenuBar( &m_mainMenu );
 
-    newDocument(false);
+    connect( m_mainToolbar.addAction("New") , SIGNAL(triggered()) , this , SLOT(newDocument()) );
+    addToolBar( &m_mainToolbar );
+
+    newDocument();
 }
 
-void CMagnumWin::newDocument(bool checked){
+void CMagnumWin::newDocument(){
     CDocument* doc = new CDocument();
 
     m_documents.append( doc );
     m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
 }
 
-void CMagnumWin::loadDocument(bool checked ){
+void CMagnumWin::loadDocument(){
 
     QString filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
@@ -33,7 +36,7 @@ void CMagnumWin::loadDocument(bool checked ){
     }
 }
 
-void CMagnumWin::saveCurrentDocument(bool ){
+void CMagnumWin::saveCurrentDocument(){
 
     CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
 
