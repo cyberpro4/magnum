@@ -1,8 +1,6 @@
 #include "cprojecttype.h"
 
-CProjectType::CProjectType( CPROJECTITEM_PARAMS , QList<CProjectType*> subTypes )
+CProjectType::CProjectType( CPROJECTITEM_PARAMS )
     :CProjectItem(CPROJECTITEM_VARS){
-
-    m_subTypes.append( subTypes );
 
 }

@@ -5,10 +5,7 @@
 
 class CProjectType:public CProjectItem{
 public:
-    CProjectType( CPROJECTITEM_PARAMS, QList<CProjectType*> subTypes );
-
-private:
-    QList<CProjectType*>    m_subTypes;
+    CProjectType( CPROJECTITEM_PARAMS );
 
 };
 
