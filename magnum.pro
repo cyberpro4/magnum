@@ -3,6 +3,7 @@
 # -------------------------------------------------
 TARGET = magnum
 TEMPLATE = app
+QT += xml
 SOURCES += main.cpp \
     ccodeeditor.cpp \
     cfilesyntaxhighlighter.cpp \
@@ -13,6 +14,8 @@ SOURCES += main.cpp \
     cprojectvariable.cpp \
     cprojectinstruction.cpp \
     cprojectitem.cpp \
+    cmagnumwin.cpp \
+    cdocument.cpp \
     cprojecttype.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
@@ -23,4 +26,6 @@ HEADERS += ccodeeditor.h \
     cprojectvariable.h \
     cprojectinstruction.h \
     cprojectitem.h \
-    cprojecttype.h
+    cprojecttype.h \
+    cmagnumwin.h \
+    cdocument.h

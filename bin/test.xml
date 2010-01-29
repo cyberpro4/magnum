@@ -1,0 +1,23 @@
+<FORMATS>
+
+    <FORMAT NAME="tipo1">
+        <REGEXP PATTERN="E6POS" ></REGEXP>
+        <REGEXP PATTERN="E6AXIS" ></REGEXP>
+        <REGEXP PATTERN="INT" ></REGEXP>
+        <COLOR FOREGROUND="#0000EF" BACKGROUND="#DDDDDD" ></COLOR>
+     </FORMAT>
+     
+     <FORMAT NAME="statement">
+     		<REGEXP PATTERN="[pP][tT][pP]" ></REGEXP>
+     		<REGEXP PATTERN="[lL][iI][nN]" ></REGEXP>
+     		<REGEXP PATTERN="[lL][iI][nN]_[rR][eE][lL]" ></REGEXP>
+     		<REGEXP PATTERN="[cC][iI][rR][cC]" ></REGEXP>
+     		<REGEXP PATTERN="[cC]_[dD][iI][sS]" ></REGEXP>
+     		<REGEXP PATTERN="[cC]_[pP][tT][pP]" ></REGEXP>
+     		<REGEXP PATTERN="[bB][rR][aA][kK][eE]" ></REGEXP>
+     		<REGEXP PATTERN="[fF]" ></REGEXP>
+		<REGEXP PATTERN="[hH][aA][lL][tT]" ></REGEXP>
+		<COLOR FOREGROUND="#000FEF" BACKGROUND="#DDDDDD" ></COLOR>
+	</FORMAT>
+
+ </FORMATS>
