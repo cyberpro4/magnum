@@ -58,8 +58,6 @@ void CMagnumWin::closeEvent(QCloseEvent *eve){
 	    if( QMessageBox::question( this , doc->fileInfo().fileName() , doc->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
 		doc->saveToFile();
 	    }
-
-	    break;
 	}
     }
 
