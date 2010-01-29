@@ -4,7 +4,7 @@
 #include "cprojecttype.h"
 
 class CProjectFunction:public CProjectItem{
-
+#warning INSERIRE I PARAMETRI DEI CPROJECTFUNCTION
 public:
     CProjectFunction( CPROJECTITEM_PARAMS, CProjectType* retType );
 

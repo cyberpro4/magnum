@@ -4,15 +4,20 @@
 #include <QtCore>
 #include "cdocument.h"
 
-class CProject{
-
+class CProject:public QObject{
+    Q_OBJECT
 public:
     CProject();
+
+    void documentPush( CDocument* document );
 
 private:
     QList<CDocument*>       m_documentList;
     QString                 m_name;
     QString                 m_location;
+
+public slots:
+    void documentChanged();
 
 };
 
