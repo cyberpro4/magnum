@@ -5,6 +5,22 @@ TARGET = magnum
 TEMPLATE = app
 SOURCES += main.cpp \
     ccodeeditor.cpp \
-    cfilesyntaxhighlighter.cpp
+    cfilesyntaxhighlighter.cpp \
+    cproject.cpp \
+    cprojectfile.cpp \
+    cprojectfunction.cpp \
+    cprojectprocedure.cpp \
+    cprojectvariable.cpp \
+    cprojectinstruction.cpp \
+    cprojectitem.cpp \
+    cprojecttype.cpp
 HEADERS += ccodeeditor.h \
-    cfilesyntaxhighlighter.h
+    cfilesyntaxhighlighter.h \
+    cproject.h \
+    cprojectfile.h \
+    cprojectfunction.h \
+    cprojectprocedure.h \
+    cprojectvariable.h \
+    cprojectinstruction.h \
+    cprojectitem.h \
+    cprojecttype.h
