@@ -8,7 +8,6 @@ SOURCES += main.cpp \
     ccodeeditor.cpp \
     cfilesyntaxhighlighter.cpp \
     cproject.cpp \
-    cprojectfile.cpp \
     cprojectfunction.cpp \
     cprojectprocedure.cpp \
     cprojectvariable.cpp \
@@ -20,7 +19,6 @@ SOURCES += main.cpp \
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
-    cprojectfile.h \
     cprojectfunction.h \
     cprojectprocedure.h \
     cprojectvariable.h \

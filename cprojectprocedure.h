@@ -1,10 +1,12 @@
 #ifndef CPROJECTPROCEDURE_H
 #define CPROJECTPROCEDURE_H
 
-class CProjectProcedure
-{
+#include "cprojectitem.h"
+
+class CProjectProcedure:public CProjectItem{
 public:
-    CProjectProcedure();
+    CProjectProcedure( CPROJECTITEM_PARAMS );
+
 };
 
 #endif // CPROJECTPROCEDURE_H

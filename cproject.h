@@ -2,6 +2,7 @@
 #define CPROJECT_H
 
 #include <QtCore>
+#include "cdocument.h"
 
 class CProject{
 
@@ -9,8 +10,9 @@ public:
     CProject();
 
 private:
-    QString     m_name;
-    QString     m_location;
+    QList<CDocument*>       m_documentList;
+    QString                 m_name;
+    QString                 m_location;
 
 };
 

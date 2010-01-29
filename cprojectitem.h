@@ -2,9 +2,10 @@
 #define CPROJECTITEM_H
 
 #include <QtGui>
+#include "cdocument.h"
 
-#define CPROJECTITEM_PARAMS QString label, QString file, int blockNumber, QTextBlock* block
-#define CPROJECTITEM_VARS label,file,blockNumber,block
+#define CPROJECTITEM_PARAMS QString label, CDocument* document, int blockNumber, QTextBlock* block
+#define CPROJECTITEM_VARS label,document,blockNumber,block
 
 class CProjectItem{
 
@@ -12,7 +13,7 @@ public:
     CProjectItem( CPROJECTITEM_PARAMS );
 
     QString     label(){        return m_label;}
-    QString     sourceFile(){   return m_sourceFile;}
+    CDocument*  document(){     return m_document;}
     QString     sourceLine(){   return m_sourceLine;}
     int         blockNumber(){  return m_blockNumber;}
 
@@ -20,7 +21,7 @@ public:
 
 private:
     QString         m_label;
-    QString         m_sourceFile;
+    CDocument*      m_document;
     QString         m_sourceLine;
 
     int             m_blockNumber;

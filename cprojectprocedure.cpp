@@ -1,5 +1,5 @@
 #include "cprojectprocedure.h"
 
-CProjectProcedure::CProjectProcedure()
-{
+CProjectProcedure::CProjectProcedure( CPROJECTITEM_PARAMS ):CProjectItem(CPROJECTITEM_VARS){
+
 }

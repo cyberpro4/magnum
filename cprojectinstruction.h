@@ -1,10 +1,12 @@
 #ifndef CPROJECTINSTRUCTION_H
 #define CPROJECTINSTRUCTION_H
 
-class CProjectInstruction{
+#include "cprojectitem.h"
+
+class CProjectInstruction:public CProjectItem{
 
 public:
-    CProjectInstruction();
+    CProjectInstruction( CPROJECTITEM_PARAMS );
 
 };
 

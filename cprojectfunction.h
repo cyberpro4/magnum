@@ -6,7 +6,10 @@
 class CProjectFunction:public CProjectItem{
 
 public:
-    CProjectFunction( CPROJECTITEM_PARAMS );
+    CProjectFunction( CPROJECTITEM_PARAMS, CProjectType* retType );
+
+private:
+    CProjectType*       m_returnType;
 
 };
 
