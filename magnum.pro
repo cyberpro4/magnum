@@ -7,7 +7,9 @@ QT += xml
 SOURCES += main.cpp \
     ccodeeditor.cpp \
     cfilesyntaxhighlighter.cpp \
-    cmagnumwin.cpp
+    cmagnumwin.cpp \
+    cdocument.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
-    cmagnumwin.h
+    cmagnumwin.h \
+    cdocument.h
