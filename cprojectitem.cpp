@@ -5,5 +5,16 @@ CProjectItem::CProjectItem( CPROJECTITEM_PARAMS ){
     m_document = document;
     m_blockNumber = blockNumber;
     m_blockPointer = block;
-    m_sourceLine = block->text();
+    m_parent = parent;
+}
+
+CProjectItem::~CProjectItem( ){
+    CProjectItem* item;
+    foreach( item, m_childList ){
+        delete item;
+    }
+}
+
+void CProjectItem::scan( CDocument* document, QTextBlock* block ){
+
 }
