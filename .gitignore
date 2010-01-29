@@ -2,3 +2,5 @@ debug/*
 release/*
 Make*
 *.user
+moc_*
+*.o
