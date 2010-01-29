@@ -4,8 +4,10 @@ CDocument::CDocument(const QString& file){
     m_editor = new CCodeEditor();
     m_editor->setDocumentOwner( this );
 
+    m_fileInfo.setFile( "Untitled.src" );
+
     if( !file.isNull() && file.length() > 0 )
-        loadFromFile(file);
+	loadFromFile(file);
 
 }
 
@@ -26,12 +28,15 @@ bool CDocument::saveToFile(const QString &file){
     QString savename( m_fileInfo.absoluteFilePath() );
 
     if( file.length() > 0 )
-        savename = file;
+	savename = file;
+    else if( !m_fileInfo.exists() ){
+	savename = QFileDialog::getSaveFileName( 0 , "Save to.." );
+    }
 
     QFile fileq( savename );
 
     if( !fileq.open( QIODevice::WriteOnly ) )
-        return false;
+	return false;
 
     fileq.write( m_editor->toPlainText().toLocal8Bit() );
 #warning CONTROLLARE LA QUANTITA DI DATI SCRITTI
@@ -45,8 +50,8 @@ bool CDocument::loadFromFile(const QString & filename ){
     QFile file(filename);
 
     if( !file.open( QIODevice::ReadOnly ) ){
-        QMessageBox::warning( 0 , "Error" , "Unable to open file!" );
-        return false;
+	QMessageBox::warning( 0 , "Error" , "Unable to open file!" );
+	return false;
     }
 
     m_editor->setPlainText( file.readAll() );
