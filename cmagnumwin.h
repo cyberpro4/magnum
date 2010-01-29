@@ -18,6 +18,8 @@ private:
 public:
     CMagnumWin();
 
+    void    closeEvent(QCloseEvent *eve);
+
 public slots:
 
     void    newDocument( bool );
