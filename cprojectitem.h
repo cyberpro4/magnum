@@ -4,8 +4,8 @@
 #include <QtGui>
 #include "cdocument.h"
 
-#define CPROJECTITEM_PARAMS QString label, CDocument* document, int blockNumber, QTextBlock* block, CProjectItem* parent
-#define CPROJECTITEM_VARS label,document,blockNumber,block,parent
+#define CPROJECTITEM_PARAMS QString label, CDocument* document, QTextBlock* block, CProjectItem* parent
+#define CPROJECTITEM_VARS label,document,block,parent
 
 class CProjectItem{
 
