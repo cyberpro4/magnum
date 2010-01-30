@@ -2,7 +2,7 @@
 
 CCodeEditor::CCodeEditor(QWidget *parent)
 	: QPlainTextEdit(parent) {
-	lineNumberArea = new LineNumberArea(this);
+	lineNumberArea = new CCodeEditor_LineNumberArea(this);
 
 	connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
 	connect(this, SIGNAL(updateRequest(const QRect &, int)), this, SLOT(updateLineNumberArea(const QRect &, int)));

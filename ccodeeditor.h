@@ -4,7 +4,7 @@
 #include <QtGui>
 #include "cfilesyntaxhighlighter.h"
 
-class LineNumberArea;
+class CCodeEditor_LineNumberArea;
 class CDocument;
 
 class CCodeEditor : public QPlainTextEdit {
@@ -36,26 +36,8 @@ private:
 	CDocument*  m_ownerDocument;
 };
 
-class LineNumberArea : public QWidget {
 
-public:
-	LineNumberArea(QWidget *editor) : QWidget(editor) {
-		codeEditor = (CCodeEditor*)editor;
-	}
-
-	QSize sizeHint() const {
-		return QSize(codeEditor->lineNumberAreaWidth(), 0);
-	}
-
-protected:
-	void paintEvent(QPaintEvent *event) {
-		codeEditor->lineNumberAreaPaintEvent(event);
-	}
-
-private:
-	CCodeEditor *codeEditor;
-};
-
+#include "ccodeeditor_linenumberarea.h"
 #include "cdocument.h"
 
 #endif // CCODEEDITOR_H

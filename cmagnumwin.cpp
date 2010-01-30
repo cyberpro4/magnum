@@ -12,9 +12,15 @@ CMagnumWin::CMagnumWin(){
     setMenuBar( &m_mainMenu );
 
     connect( m_mainToolbar.addAction("New") , SIGNAL(triggered()) , this , SLOT(newDocument()) );
+    connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
     addToolBar( &m_mainToolbar );
 
     newDocument();
+}
+
+
+void CMagnumWin::testEvent(){
+    ((CCodeEditor*)m_documentTabs.currentWidget())->document()->lastBlock().setVisible(false);
 }
 
 void CMagnumWin::newDocument(){

@@ -28,6 +28,8 @@ public slots:
     void    loadDocument();
     void    saveCurrentDocument();
 
+    void    testEvent();
+
 };
 
 #endif // CMAGNUMWIN_H

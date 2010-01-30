@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     cprojectitem.cpp \
     cmagnumwin.cpp \
     cdocument.cpp \
-    cprojecttype.cpp
+    cprojecttype.cpp \
+    ccodeeditor_linenumberarea.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -24,4 +25,5 @@ HEADERS += ccodeeditor.h \
     cprojectitem.h \
     cprojecttype.h \
     cmagnumwin.h \
-    cdocument.h
+    cdocument.h \
+    ccodeeditor_linenumberarea.h
