@@ -15,10 +15,12 @@ public:
 
     void scan( CDocument* document, QTextBlock* block );//scanna il documento a partire dalla linea identificata dal blocco identificato dal relativo parametro
 
-    QString     label(){        return m_label;}
-    CDocument*  document(){     return m_document;}
-    int         blockNumber(){  return m_blockNumber;}
-    QTextBlock* textBlock(){    return m_blockPointer;}
+    CProjectItem*           parent(){       return m_parent;}
+    QList<CProjectItem*>*   childList(){    return &m_childList;}
+    QString                 label(){        return m_label;}
+    CDocument*              document(){     return m_document;}
+    int                     blockNumber(){  return m_blockNumber;}
+    QTextBlock*             textBlock(){    return m_blockPointer;}
 
 private:
     CProjectItem*               m_parent;
