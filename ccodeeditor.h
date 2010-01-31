@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "cfilesyntaxhighlighter.h"
+#include "ccodeeditor_foldarea.h"
 
 class CCodeEditor_LineNumberArea;
 class CDocument;
@@ -10,6 +11,8 @@ class CDocument;
 class CCodeEditor : public QPlainTextEdit {
 
 	Q_OBJECT
+
+	friend class CCodeEditor_FoldArea;
 
 public:
 	CCodeEditor(QWidget *parent = 0);
@@ -33,6 +36,7 @@ private slots:
 private:
 
 	QWidget *lineNumberArea;
+	CCodeEditor_FoldArea* m_foldArea;
 	CDocument*  m_ownerDocument;
 };
 

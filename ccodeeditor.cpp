@@ -3,9 +3,12 @@
 CCodeEditor::CCodeEditor(QWidget *parent)
 	: QPlainTextEdit(parent) {
 	lineNumberArea = new CCodeEditor_LineNumberArea(this);
+	m_foldArea = new CCodeEditor_FoldArea( this );
 
 	connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+
 	connect(this, SIGNAL(updateRequest(const QRect &, int)), this, SLOT(updateLineNumberArea(const QRect &, int)));
+
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
 	updateLineNumberAreaWidth(0);
@@ -42,19 +45,22 @@ int CCodeEditor::lineNumberAreaWidth() {
 }
 
 void CCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */){
-	setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+	setViewportMargins(lineNumberAreaWidth()+m_foldArea->foldAreaWidth(), 0, 0, 0);
 }
 
 
 
 void CCodeEditor::updateLineNumberArea(const QRect &rect, int dy) {
-	if (dy)
-		lineNumberArea->scroll(0, dy);
-	else
-		lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    if (dy){
+	lineNumberArea->scroll(0, dy);
+	m_foldArea->scroll(0, dy);
+    } else {
+	lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+	m_foldArea->update(0, rect.y(), m_foldArea->width(), rect.height());
+    }
 
-	if (rect.contains(viewport()->rect()))
-		updateLineNumberAreaWidth(0);
+    if (rect.contains(viewport()->rect()))
+	updateLineNumberAreaWidth(0);
 }
 
 
@@ -63,7 +69,11 @@ void CCodeEditor::resizeEvent(QResizeEvent *e) {
 	QPlainTextEdit::resizeEvent(e);
 
 	QRect cr = contentsRect();
-	lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+	int lnaw = lineNumberAreaWidth();
+
+	lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lnaw , cr.height()));
+
+	m_foldArea->setGeometry(QRect(cr.left()+lnaw, cr.top(), m_foldArea->foldAreaWidth() , cr.height()));
 }
 
 
@@ -116,7 +126,8 @@ void CCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 	}
 }
 
-CCodeEditor::~CCodeEditor()
-{
+CCodeEditor::~CCodeEditor(){
 
+    delete m_foldArea;
+    delete lineNumberArea;
 }

@@ -20,7 +20,8 @@ CMagnumWin::CMagnumWin(){
 
 
 void CMagnumWin::testEvent(){
-    ((CCodeEditor*)m_documentTabs.currentWidget())->document()->lastBlock().setVisible(false);
+    ((CCodeEditor*)m_documentTabs.currentWidget())->document()->lastBlock().previous().previous().setVisible(false);
+    ((CCodeEditor*)m_documentTabs.currentWidget())->updateGeometry();
 }
 
 void CMagnumWin::newDocument(){
