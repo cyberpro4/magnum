@@ -9,11 +9,11 @@ CFileSyntaxHighlighter::~CFileSyntaxHighlighter(){
     QRegExp* exp;
 
     foreach( form , m_formats ){
-        foreach( exp , form->m_regsExp ){
-            delete exp;
-        }
+	foreach( exp , form->m_regsExp ){
+	    delete exp;
+	}
 
-        delete form;
+	delete form;
     }
 }
 
@@ -33,22 +33,25 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
     for(int curind = 0;curind < cur.size();curind++){
 
-        qDebug() << "loading" << cur.at(curind).toElement().attribute("NAME","INVALID");
+	qDebug() << "loading" << cur.at(curind).toElement().attribute("NAME","INVALID");
 
-        CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
+	CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
 
-        QDomNodeList list = cur.at(curind).toElement().elementsByTagName( "REGEXP" );
-        for(int node=0;node < list.size();node++){
-            toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );
-        }
+	QDomNodeList list = cur.at(curind).toElement().elementsByTagName( "REGEXP" );
+	for(int node=0;node < list.size();node++){
+	    toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );
+	}
 
-        if( cur.at(curind).toElement().elementsByTagName( "COLOR").size() > 0 ){
-            QDomElement color = cur.at(curind).toElement().elementsByTagName("COLOR").at(0).toElement();
-            toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "") ) ) );
-            toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "") ) ) );
-        }
+	if( cur.at(curind).toElement().elementsByTagName( "COLOR").size() > 0 ){
+	    QDomElement color = cur.at(curind).toElement().elementsByTagName("COLOR").at(0).toElement();
 
-        m_formats.append( toSave );
+	    if( color.attribute("FOREGROUND" , "").length() > 0 )
+		toSave->m_format.setForeground( QBrush( QColor( color.attribute("FOREGROUND" , "") ) ) );
+	    if( color.attribute("BACKGROUND" , "").length() > 0 )
+		toSave->m_format.setBackground( QBrush( QColor( color.attribute("BACKGROUND" , "") ) ) );
+	}
+
+	m_formats.append( toSave );
 
     }
 
@@ -61,21 +64,21 @@ void CFileSyntaxHighlighter::highlightBlock(const QString &text){
     QRegExp* exp;
 
     foreach( form , m_formats ){
-        foreach( exp , form->m_regsExp ){
+	foreach( exp , form->m_regsExp ){
 
-            int index = text.indexOf( *exp );
+	    int index = text.indexOf( *exp );
 
-            while (index >= 0) {
+	    while (index >= 0) {
 
-                int length = exp->matchedLength();
+		int length = exp->matchedLength();
 
-                if( length == 0 )
-                    break;
+		if( length == 0 )
+		    break;
 
-                setFormat(index, length, form->m_format );
-                index = text.indexOf( *exp , length > 0 ? index+length : index + 1);
+		setFormat(index, length, form->m_format );
+		index = text.indexOf( *exp , length > 0 ? index+length : index + 1);
 
-            }
-        }
+	    }
+	}
     }
 }

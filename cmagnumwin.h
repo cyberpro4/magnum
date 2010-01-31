@@ -10,6 +10,8 @@ class CMagnumWin : public QMainWindow {
 
 private:
 
+    QToolBar		    m_mainToolbar;
+
     QMenuBar		    m_mainMenu;
 
     QTabWidget		    m_documentTabs;
@@ -22,9 +24,11 @@ public:
 
 public slots:
 
-    void    newDocument( bool );
-    void    loadDocument( bool );
-    void    saveCurrentDocument(bool );
+    void    newDocument();
+    void    loadDocument();
+    void    saveCurrentDocument();
+
+    void    testEvent();
 
 };
 
