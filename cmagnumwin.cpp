@@ -20,8 +20,7 @@ CMagnumWin::CMagnumWin(){
 
 
 void CMagnumWin::testEvent(){
-    ((CCodeEditor*)m_documentTabs.currentWidget())->document()->lastBlock().previous().previous().setVisible(false);
-    ((CCodeEditor*)m_documentTabs.currentWidget())->updateGeometry();
+    ((CCodeEditor*)m_documentTabs.currentWidget())->foldBlocks( 2 , 5 );
 }
 
 void CMagnumWin::newDocument(){
@@ -29,6 +28,8 @@ void CMagnumWin::newDocument(){
 
     m_documents.append( doc );
     m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
+
+    doc->editor()->focusWidget();
 }
 
 void CMagnumWin::loadDocument(){
