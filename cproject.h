@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include "cdocument.h"
-#include "cprojectitem.h"
+#include "cprojectfile.h"
 
 class CProject:public QObject{
     Q_OBJECT
@@ -14,7 +14,7 @@ public:
 
 private:
     QList<CDocument*>       m_documentList;
-    QList<CProjectItem*>    m_childList;
+    QList<CProjectFile*>    m_childList;
     QString                 m_name;
     QString                 m_location;
 

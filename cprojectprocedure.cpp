@@ -1,15 +1,15 @@
-#include "cprojectfunction.h"
+#include "cprojectprocedure.h"
 
-CProjectFunction::CProjectFunction( CPROJECTITEM_PARAMS ):CProjectItem(CPROJECTITEM_VARS){
+CProjectProcedure::CProjectProcedure( CPROJECTITEM_PARAMS ):CProjectItem( CPROJECTITEM_VARS ){
     QString s = block->text();
     CPROJECTITEM_REMOVE_STR_COMMENT(s)
-    s.remove(QRegExp( "([ ]+[dD]{1,1}[eE]{1,1}[fF]{1,1}[fF]{1,1}[cC]{1,1}[tT]{1,1}[ ]+)" ));
+    s.remove(QRegExp( "([ ]+[dD]{1,1}[eE]{1,1}[fF]{1,1}[ ]+)" ));
     m_label = s;
     block = scan( block );
 }
 
-QTextBlock* CProjectFunction::scan( QTextBlock* b ){
-    QRegExp endExpr = QRegExp("[eE]{1,1}[nN]{1,1}[dD]{1,1}[fF]{1,1}[cC]{1,1}[tT]{1,1}[ ]+");
+QTextBlock* CProjectProcedure::scan( QTextBlock* b ){
+    QRegExp endExpr = QRegExp("[eE][nN][dD][ ]+");
 
     QTextBlock* block = b;
     while( block != (QTextBlock*)&block->end() ){
@@ -30,9 +30,9 @@ QTextBlock* CProjectFunction::scan( QTextBlock* b ){
     return block;
 }
 
-bool CProjectFunction::isIt( QTextBlock* block ){
-    QRegExp startExpr = QRegExp( "([dD]{1,1}[eE]{1,1}[fF]{1,1}[fF]{1,1}[cC]{1,1}[tT]{1,1}[ ]+[0-9a-zA-Z_\\[\\]]+[ ]+[0-9a-zA-Z_]+[ ]*[\\(]{1}[0-9a-zA-Z_,: ]*[\\)]{1})" );
+bool CProjectProcedure::isIt( QTextBlock* block ){
+    QRegExp startExpr = QRegExp( "([dD]{1,1}[eE]{1,1}[fF]{1,1}[ ]+[0-9a-zA-Z_]+[ ]*[\\(]{1}[0-9a-zA-Z_:, ]*[\\)]{1})" );
     QString s = block->text();
     CPROJECTITEM_REMOVE_STR_COMMENT(s)
-    return block->text().contains( startExpr );
+    return s.contains( startExpr );
 }

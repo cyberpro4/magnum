@@ -7,7 +7,7 @@ CProject::CProject(){
 void CProject::documentPush( CDocument* document ){
     m_documentList.append( document );
     m_childList.append(
-            new CProjectItem(
+            new CProjectFile(
                     document->fileInfo().absoluteFilePath(),
                     document,
                     &document->editor()->document()->firstBlock(),

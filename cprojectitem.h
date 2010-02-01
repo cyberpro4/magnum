@@ -4,8 +4,11 @@
 #include <QtGui>
 #include "cdocument.h"
 
-#define CPROJECTITEM_PARAMS QString label, CDocument* document, QTextBlock* block, CProjectItem* parent
-#define CPROJECTITEM_VARS label,document,block,parent
+
+#define CPROJECTITEM_REMOVE_STR_COMMENT(s)  if( s.contains(';') )s = s.mid( 0, s.indexOf(';') );
+
+#define CPROJECTITEM_PARAMS CDocument* document, QTextBlock* block, CProjectItem* parent
+#define CPROJECTITEM_VARS document,block,parent
 
 class CProjectItem{
 
@@ -13,7 +16,11 @@ public:
     CProjectItem( CPROJECTITEM_PARAMS );
     ~CProjectItem( );
 
-    void scan( CDocument* document, QTextBlock* block );//scanna il documento a partire dalla linea identificata dal blocco identificato dal relativo parametro
+    //ritorna il texblock del prossimo item
+    QTextBlock* scan( QTextBlock* b );//scanna il documento a partire dalla linea identificata dal blocco identificato dal relativo parametro
+
+    //verifica se il blocco passato come parametro è coerente con il blocco d'interesse
+    static bool isIt( QTextBlock* block );
 
     CProjectItem*           parent(){       return m_parent;}
     QList<CProjectItem*>*   childList(){    return &m_childList;}
@@ -22,7 +29,7 @@ public:
     int                     blockNumber(){  return m_blockNumber;}
     QTextBlock*             textBlock(){    return m_blockPointer;}
 
-private:
+protected:
     CProjectItem*               m_parent;
     QList<CProjectItem*>        m_childList;
 
@@ -31,7 +38,7 @@ private:
 
     int                         m_blockNumber;//numero di blocchi che compongono questo item
     QTextBlock*                 m_blockPointer;//puntatore al blocco di testo iniziale di questo item
-
+    QList<QTextBlock*>          m_blockList;//lista dei blocchi appartenenti all'item
 };
 
 #endif // CPROJECTITEM_H
