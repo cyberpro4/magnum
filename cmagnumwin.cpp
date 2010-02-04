@@ -20,7 +20,7 @@ CMagnumWin::CMagnumWin(){
     newDocument();
 
     m_findWidget = new CFindWindow( this );
-    m_findWidget->show();
+    addDockWidget( Qt::LeftDockWidgetArea , m_findWidget );
 }
 
 
@@ -71,7 +71,6 @@ void CMagnumWin::closeDocument( CDocument* target ){
     }
 
     m_documents.removeOne( target );
-    m_documentTabs.removeTab();
 }
 
 void CMagnumWin::closeCurrentDocument(){

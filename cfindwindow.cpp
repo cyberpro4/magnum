@@ -11,6 +11,9 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
     QWidget* temp = new QWidget( );
     temp->setLayout(vbox);
     setWidget(temp);
+
+    setWindowTitle( "Search" );
+    setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea );
 }
 
 void CFindWindow::whatChanged(const QString & text){
