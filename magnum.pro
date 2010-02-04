@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     cprojecttype.cpp \
     ccodeeditor_linenumberarea.cpp \
     ccodeeditor_foldarea.cpp \
-    cmagnum_textblock.cpp
+    cmagnum_textblock.cpp \
+    cfindwindow.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -30,4 +31,5 @@ HEADERS += ccodeeditor.h \
     cdocument.h \
     ccodeeditor_linenumberarea.h \
     ccodeeditor_foldarea.h \
-    cmagnum_textblock.h
+    cmagnum_textblock.h \
+    cfindwindow.h

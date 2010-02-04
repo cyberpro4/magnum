@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "cdocument.h"
+#include "cfindwindow.h"
 
 class CMagnumWin : public QMainWindow {
 
@@ -17,8 +18,11 @@ private:
     QTabWidget		    m_documentTabs;
     QList<CDocument*>	    m_documents;
 
+    CFindWindow*             m_findWidget;
+
 public:
     CMagnumWin();
+    ~CMagnumWin();
 
     void    closeEvent(QCloseEvent *eve);
 
