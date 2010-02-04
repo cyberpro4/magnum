@@ -8,6 +8,8 @@ CMagnumWin::CMagnumWin(){
     connect( file->addAction( "New" ) , SIGNAL(triggered()) , this , SLOT(newDocument()) );
     connect( file->addAction( "Open" ) , SIGNAL(triggered()) , this , SLOT(loadDocument()) );
     connect( file->addAction( "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
+    connect( file->addAction( "Close" ) , SIGNAL(triggered()) , this , SLOT(closeCurrentDocument()) );
+    connect( file->addAction( "Close All" ) , SIGNAL(triggered()) , this , SLOT(closeAllDocument()) );
 
     setMenuBar( &m_mainMenu );
 
@@ -57,16 +59,31 @@ void CMagnumWin::saveCurrentDocument(){
 
 }
 
-void CMagnumWin::closeEvent(QCloseEvent *eve){
+void CMagnumWin::closeDocument( CDocument* target ){
 
-    CDocument* doc;
-    foreach( doc , m_documents ){
-	if( doc->editor()->document()->isModified() ){
-
-	    if( QMessageBox::question( this , doc->fileInfo().fileName() , doc->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
-		doc->saveToFile();
-	    }
+    if( target->editor()->document()->isModified() ){
+	if( QMessageBox::question( this , target->fileInfo().fileName() , target->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
+	    target->saveToFile();
 	}
     }
+
+    m_documents.removeOne( target );
+    m_documentTabs.removeTab();
+}
+
+void CMagnumWin::closeCurrentDocument(){
+    closeDocument( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() );
+}
+
+void CMagnumWin::closeAllDocument(){
+    CDocument* doc;
+    foreach( doc , m_documents ){
+	closeDocument( doc );
+    }
+}
+
+void CMagnumWin::closeEvent(QCloseEvent *eve){
+
+    closeAllDocument();
 
 }

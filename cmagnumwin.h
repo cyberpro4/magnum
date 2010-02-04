@@ -28,6 +28,10 @@ public slots:
     void    loadDocument();
     void    saveCurrentDocument();
 
+    void    closeCurrentDocument();
+    void    closeAllDocument();
+    void    closeDocument( CDocument* );
+
     void    testEvent();
 
 };
