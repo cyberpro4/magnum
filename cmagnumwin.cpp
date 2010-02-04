@@ -4,6 +4,7 @@ CMagnumWin::CMagnumWin(){
 
     m_documentTabs.setTabsClosable( true );
     connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
+    connect( &m_documentTabs , SIGNAL(currentChanged(int)) , this , SLOT(currentDocumentChanged(int)) );
     setCentralWidget( &m_documentTabs );
 
     QMenu* file = m_mainMenu.addMenu( "File" );
@@ -27,6 +28,12 @@ CMagnumWin::CMagnumWin(){
 
 void CMagnumWin::tabClose(int index){
     closeDocument( ((CCodeEditor*)m_documentTabs.widget( index ))->documentOwner() );
+}
+
+void CMagnumWin::currentDocumentChanged(int tabIndex){
+
+    m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
+
 }
 
 void CMagnumWin::testEvent(){
