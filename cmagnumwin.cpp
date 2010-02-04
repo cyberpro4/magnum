@@ -18,6 +18,9 @@ CMagnumWin::CMagnumWin(){
     addToolBar( &m_mainToolbar );
 
     newDocument();
+
+    m_findWidget = new CFindWindow( this );
+    m_findWidget->show();
 }
 
 
@@ -78,7 +81,9 @@ void CMagnumWin::closeCurrentDocument(){
 void CMagnumWin::closeAllDocument(){
     CDocument* doc;
     foreach( doc , m_documents ){
+
 	closeDocument( doc );
+
     }
 }
 
@@ -86,4 +91,9 @@ void CMagnumWin::closeEvent(QCloseEvent *eve){
 
     closeAllDocument();
 
+}
+
+CMagnumWin::~CMagnumWin(){
+
+    delete m_findWidget;
 }
