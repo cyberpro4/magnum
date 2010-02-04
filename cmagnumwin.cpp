@@ -2,6 +2,8 @@
 
 CMagnumWin::CMagnumWin(){
 
+    m_documentTabs.setTabsClosable( true );
+    connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
     setCentralWidget( &m_documentTabs );
 
     QMenu* file = m_mainMenu.addMenu( "File" );
@@ -23,6 +25,9 @@ CMagnumWin::CMagnumWin(){
     addDockWidget( Qt::LeftDockWidgetArea , m_findWidget );
 }
 
+void CMagnumWin::tabClose(int index){
+    closeDocument( ((CCodeEditor*)m_documentTabs.widget( index ))->documentOwner() );
+}
 
 void CMagnumWin::testEvent(){
     ((CCodeEditor*)m_documentTabs.currentWidget())->foldBlocks( 2 , 5 );
@@ -70,7 +75,10 @@ void CMagnumWin::closeDocument( CDocument* target ){
 	}
     }
 
+    m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
     m_documents.removeOne( target );
+
+    delete target;
 }
 
 void CMagnumWin::closeCurrentDocument(){

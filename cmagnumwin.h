@@ -36,6 +36,7 @@ public slots:
     void    closeAllDocument();
     void    closeDocument( CDocument* );
 
+    void    tabClose( int );
     void    testEvent();
 
 };
