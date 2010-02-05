@@ -34,7 +34,7 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
 
     // < 0 nel caso non ci sono piu documenti
     if( tabIndex < 0 )
-        return;
+	return;
 
     m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
 
@@ -58,10 +58,10 @@ void CMagnumWin::loadDocument(){
     QString filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
     if( !filename.isNull() ){
-        CDocument* doc = new CDocument( filename );
+	CDocument* doc = new CDocument( filename );
 
-        m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
-        m_documents.append( doc );
+	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
+	m_documents.append( doc );
     }
 }
 
@@ -70,10 +70,10 @@ void CMagnumWin::saveCurrentDocument(){
     CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
 
     if( ed != NULL){
-        if( ed->documentOwner() != NULL ){
+	if( ed->documentOwner() != NULL ){
 
-            ed->documentOwner()->saveToFile();
-        }
+	    ed->documentOwner()->saveToFile();
+	}
     }
 
 }
@@ -81,9 +81,9 @@ void CMagnumWin::saveCurrentDocument(){
 void CMagnumWin::closeDocument( CDocument* target ){
 
     if( target->editor()->document()->isModified() ){
-        if( QMessageBox::question( this , target->fileInfo().fileName() , target->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
-            target->saveToFile();
-        }
+	if( QMessageBox::question( this , target->fileInfo().fileName() , target->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
+	    target->saveToFile();
+	}
     }
 
     m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
@@ -93,14 +93,16 @@ void CMagnumWin::closeDocument( CDocument* target ){
 }
 
 void CMagnumWin::closeCurrentDocument(){
-    closeDocument( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() );
+
+    if((CCodeEditor*)m_documentTabs.currentWidget() != 0 )
+	closeDocument( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() );
 }
 
 void CMagnumWin::closeAllDocument(){
     CDocument* doc;
     foreach( doc , m_documents ){
 
-        closeDocument( doc );
+	closeDocument( doc );
 
     }
 }
@@ -113,5 +115,4 @@ void CMagnumWin::closeEvent(QCloseEvent *eve){
 
 CMagnumWin::~CMagnumWin(){
 
-    delete m_findWidget;
 }

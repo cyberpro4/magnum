@@ -18,6 +18,9 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
     m_target = 0;
 }
 
+CFindWindow::~CFindWindow(){
+}
+
 CDocument* CFindWindow::targetDocument(){
     return m_target;
 }

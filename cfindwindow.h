@@ -18,6 +18,7 @@ private:
 public:
 
     CFindWindow(QWidget* );
+    ~CFindWindow();
 
     void setTargetDocument( CDocument* );
     CDocument* targetDocument();
