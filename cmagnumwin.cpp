@@ -20,10 +20,10 @@ CMagnumWin::CMagnumWin(){
     connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
     addToolBar( &m_mainToolbar );
 
-    newDocument();
-
     m_findWidget = new CFindWindow( this );
     addDockWidget( Qt::LeftDockWidgetArea , m_findWidget );
+
+    newDocument();
 }
 
 void CMagnumWin::tabClose(int index){
