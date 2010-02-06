@@ -32,6 +32,8 @@ public:
 
 public slots:
 
+    void resultItemDClicked( QListWidgetItem* );
+
     void whatChanged( const QString& );
 
 };

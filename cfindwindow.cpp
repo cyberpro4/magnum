@@ -7,6 +7,7 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
     vbox->addWidget( &m_whatLine );
     vbox->addWidget( &m_resultsView );
     connect( &m_whatLine , SIGNAL(textChanged(QString)) , (QDockWidget*)this , SLOT(whatChanged(QString)));
+    connect( &m_resultsView , SIGNAL(itemDoubleClicked(QListWidgetItem*)) , this , SLOT(resultItemDClicked(QListWidgetItem*)));
 
     QWidget* temp = new QWidget( );
     temp->setLayout(vbox);
@@ -22,6 +23,10 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
 CFindWindow::~CFindWindow(){
     delete m_searchThread;
+}
+
+void CFindWindow::resultItemDClicked(QListWidgetItem *item ){
+    qDebug() << item->text();
 }
 
 CDocument* CFindWindow::targetDocument(){
@@ -67,7 +72,12 @@ void CFindWindow_Thread::run(){
     while( block.isValid() && !m_forceStopSearch ){
 
 	if( block.text().indexOf( regexp ) != -1 ){
-	    m_findWindow->m_resultsView.insertItem( 0 , target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber()) + QString(" )") );
+	    QListWidgetItem* ite = new QListWidgetItem( &m_findWindow->m_resultsView );
+
+	    ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber()) + QString(" )") );
+
+	    m_findWindow->m_resultsView.insertItem( 0 , ite );
+
 	}
 
 	block = block.next();
