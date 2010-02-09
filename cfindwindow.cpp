@@ -7,7 +7,9 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
     vbox->addWidget( &m_whatLine );
     vbox->addWidget( &m_resultsView );
     connect( &m_whatLine , SIGNAL(textChanged(QString)) , (QDockWidget*)this , SLOT(whatChanged(QString)));
+
     connect( &m_resultsView , SIGNAL(itemDoubleClicked(QListWidgetItem*)) , this , SLOT(resultItemDClicked(QListWidgetItem*)));
+    connect( this , SIGNAL(clearList()) , &m_resultsView , SLOT(clear()) );
 
     QWidget* temp = new QWidget( );
     temp->setLayout(vbox);
@@ -26,7 +28,10 @@ CFindWindow::~CFindWindow(){
 }
 
 void CFindWindow::resultItemDClicked(QListWidgetItem *item ){
-    qDebug() << item->text();
+    CFindWindow_ListItem* ite = dynamic_cast<CFindWindow_ListItem*>(item);
+    if( ite != 0 ){
+        emit goTo(ite->m_document,ite->m_lineNumber);
+    }
 }
 
 CDocument* CFindWindow::targetDocument(){
@@ -50,8 +55,8 @@ CFindWindow_Thread::CFindWindow_Thread(CFindWindow *wnd) : QThread( 0 ){
 
 void CFindWindow_Thread::waitForSearchStop(){
     if( isRunning() ){
-	m_forceStopSearch = true;
-	wait();
+        m_forceStopSearch = true;
+        wait();
     }
 
     m_forceStopSearch = false;
@@ -60,28 +65,34 @@ void CFindWindow_Thread::waitForSearchStop(){
 void CFindWindow_Thread::run(){
 
     CDocument* target = m_findWindow->m_target;
-    QString	regexp = m_findWindow->m_whatLine.text();
+    QRegExp	regexp( m_findWindow->m_whatLine.text() );
 
-    if( target == 0 || regexp.length() < 1 )
-	return;
+    if( target == 0 || !regexp.isValid() || m_findWindow->m_whatLine.text().length() < 1 )
+        return;
 
-    while( m_findWindow->m_resultsView.takeItem( 0 ) != 0 );
+    //while( m_findWindow->m_resultsView.takeItem( 0 ) != 0 );
+    emit m_findWindow->clearList();
 
     QTextBlock block = target->editor()->document()->firstBlock();
 
     while( block.isValid() && !m_forceStopSearch ){
 
-	if( block.text().indexOf( regexp ) != -1 ){
-	    QListWidgetItem* ite = new QListWidgetItem( &m_findWindow->m_resultsView );
+        if( block.text().indexOf( regexp ) != -1 ){
+            CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
 
-	    ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber()) + QString(" )") );
+            ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber() + 1) + QString(" )") );
+            ite->m_document = target;
+            ite->m_lineNumber = block.firstLineNumber();
 
-	    m_findWindow->m_resultsView.insertItem( 0 , ite );
+            m_findWindow->m_resultsView.insertItem( 0 , ite );
 
-	}
+        }
 
-	block = block.next();
+        block = block.next();
     }
 
     m_findWindow->m_resultsView.update();
+}
+
+CFindWindow_ListItem::CFindWindow_ListItem(QListWidget *parent, int type) : QListWidgetItem( parent , type ){
 }

@@ -40,6 +40,8 @@ public slots:
     void    tabClose( int );
     void    testEvent();
 
+    void    findWin_goTo(CDocument* target , int nline );
+
 };
 
 #endif // CMAGNUMWIN_H

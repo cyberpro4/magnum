@@ -5,6 +5,7 @@
 #include "cdocument.h"
 
 class CFindWindow_Thread;
+class CFindWindow_ListItem;
 
 class CFindWindow : public QDockWidget {
 
@@ -30,12 +31,27 @@ public:
     void setTargetDocument( CDocument* );
     CDocument* targetDocument();
 
+signals:
+
+    void clearList();
+    void goTo(CDocument* target , int nline );
+
 public slots:
 
     void resultItemDClicked( QListWidgetItem* );
 
     void whatChanged( const QString& );
 
+};
+
+class CFindWindow_ListItem : public QListWidgetItem {
+
+public:
+
+    CDocument*      m_document;
+    int             m_lineNumber;
+
+    CFindWindow_ListItem(QListWidget * parent = 0, int type = Type);
 };
 
 class CFindWindow_Thread : public QThread {
