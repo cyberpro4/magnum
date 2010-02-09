@@ -5,6 +5,8 @@
 #include "cdocument.h"
 #include "cfindwindow.h"
 
+#define		SETTINGS_INI_FILENAME	"./config.conf"
+
 class CMagnumWin : public QMainWindow {
 
     Q_OBJECT
@@ -41,6 +43,9 @@ public slots:
     void    testEvent();
 
     void    findWin_goTo(CDocument* target , int nline );
+
+    void    loadSettings();
+    void    saveSettings();
 
 };
 
