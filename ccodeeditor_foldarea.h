@@ -3,9 +3,15 @@
 
 #include <QtGui>
 
+class CCodeEditor;
+
 class CCodeEditor_FoldArea : public QWidget {
 
     Q_OBJECT
+
+private:
+
+    CCodeEditor*    editor;
 
 public:
     CCodeEditor_FoldArea(QWidget *parent = 0);
@@ -13,6 +19,8 @@ public:
     void paintEvent(QPaintEvent * eve );
 
     int	foldAreaWidth();
+
+    void mouseReleaseEvent(QMouseEvent *);
 
 signals:
 

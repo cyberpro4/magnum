@@ -25,6 +25,8 @@ public:
 	void setDocumentOwner(CDocument* );
 	CDocument* documentOwner();
 
+	void	foldBlocks( int line_start , int line_end );
+
 protected:
 	void resizeEvent(QResizeEvent *event);
 

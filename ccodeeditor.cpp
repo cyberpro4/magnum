@@ -44,6 +44,22 @@ int CCodeEditor::lineNumberAreaWidth() {
 	return space + 10;
 }
 
+void CCodeEditor::foldBlocks( int line_start , int line_end ){
+    QTextBlock bstart = document()->findBlockByLineNumber( line_start );
+
+    if( !bstart.isValid())
+	return;
+
+    for(int i=line_start; i<line_end && bstart.isValid() ;i++){
+	bstart.setVisible( false );
+	bstart = bstart.next();
+    }
+
+    viewport()->update();
+    lineNumberArea->update();
+    m_foldArea->update();
+}
+
 void CCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */){
 	setViewportMargins(lineNumberAreaWidth()+m_foldArea->foldAreaWidth(), 0, 0, 0);
 }

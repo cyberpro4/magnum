@@ -3,6 +3,8 @@
 
 CCodeEditor_FoldArea::CCodeEditor_FoldArea(QWidget *parent) :
     QWidget(parent){
+
+    editor = (CCodeEditor*)parent;
 }
 
 void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
@@ -27,6 +29,20 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
 	    bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
 	    ++blockNumber;
     }
+}
+
+void CCodeEditor_FoldArea::mouseReleaseEvent(QMouseEvent * eve){
+    QTextBlock thblock = editor->cursorForPosition( eve->pos() ).block().next();
+
+    while( thblock.isValid() && !thblock.isVisible() ){
+	qDebug() << "unfolded!";
+	thblock.setVisible( true );
+	thblock = thblock.next();
+    }
+
+    editor->viewport()->update();
+    editor->lineNumberArea->update();
+    editor->m_foldArea->update();
 }
 
 int CCodeEditor_FoldArea::foldAreaWidth(){
