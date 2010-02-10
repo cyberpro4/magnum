@@ -59,8 +59,10 @@ void CMagnumWin::tabClose(int index){
 void CMagnumWin::currentDocumentChanged(int tabIndex){
 
     // < 0 nel caso non ci sono piu documenti
-    if( tabIndex < 0 )
+    if( tabIndex < 0 ){
+	m_findWidget->setTargetDocument( 0 );
 	return;
+    }
 
     m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
 
@@ -86,7 +88,7 @@ CProject prj;
     if( !filename.isNull() ){
 	CDocument* doc = new CDocument( filename );
 
-        prj.documentPush(doc);
+	prj.documentPush(doc);
 
 	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
 	m_documents.append( doc );
