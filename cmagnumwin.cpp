@@ -1,5 +1,5 @@
 #include "cmagnumwin.h"
-
+#include "cproject.h"
 CMagnumWin::CMagnumWin(){
 
     setCentralWidget( &m_documentTabs );
@@ -32,11 +32,13 @@ void CMagnumWin::newDocument(){
 }
 
 void CMagnumWin::loadDocument(){
-
+CProject prj;
     QString filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
     if( !filename.isNull() ){
 	CDocument* doc = new CDocument( filename );
+
+        prj.documentPush(doc);
 
 	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
 	m_documents.append( doc );
@@ -57,9 +59,9 @@ void CMagnumWin::saveCurrentDocument(){
 }
 
 void CMagnumWin::closeEvent(QCloseEvent *eve){
-
     CDocument* doc;
     foreach( doc , m_documents ){
+
 	if( doc->editor()->document()->isModified() ){
 
 	    if( QMessageBox::question( this , doc->fileInfo().fileName() , doc->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){

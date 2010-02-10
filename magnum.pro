@@ -16,7 +16,11 @@ SOURCES += main.cpp \
     cdocument.cpp \
     cprojecttype.cpp \
     ccodeeditor_linenumberarea.cpp \
-    ccodeeditor_foldarea.cpp
+    ccodeeditor_foldarea.cpp \
+    cprojectitemfactory.cpp \
+    cprojectfile.cpp \
+    cprojectprocedure.cpp \
+    cprojecttypebag.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -28,4 +32,8 @@ HEADERS += ccodeeditor.h \
     cmagnumwin.h \
     cdocument.h \
     ccodeeditor_linenumberarea.h \
-    ccodeeditor_foldarea.h
+    ccodeeditor_foldarea.h \
+    cprojectitemfactory.h \
+    cprojectfile.h \
+    cprojectprocedure.h \
+    cprojecttypebag.h

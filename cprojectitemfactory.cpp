@@ -9,6 +9,8 @@ CProjectItem* CProjectItemFactory::buildItem( CDocument* document, QTextBlock* b
         return new CProjectFunction( document, b, parent );
     }else if( CProjectProcedure::isIt( b ) ){
         return new CProjectProcedure( document, b, parent );
+    }else if( CProjectVariable::isIt( b ) ){
+        return new CProjectVariable(document, b, parent );
     }
     return NULL;
 }
