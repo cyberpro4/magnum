@@ -30,7 +30,7 @@ CFindWindow::~CFindWindow(){
 void CFindWindow::resultItemDClicked(QListWidgetItem *item ){
     CFindWindow_ListItem* ite = dynamic_cast<CFindWindow_ListItem*>(item);
     if( ite != 0 ){
-        emit goTo(ite->m_document,ite->m_lineNumber);
+	emit goTo(ite->m_document,ite->m_lineNumber);
     }
 }
 
@@ -55,8 +55,8 @@ CFindWindow_Thread::CFindWindow_Thread(CFindWindow *wnd) : QThread( 0 ){
 
 void CFindWindow_Thread::waitForSearchStop(){
     if( isRunning() ){
-        m_forceStopSearch = true;
-        wait();
+	m_forceStopSearch = true;
+	wait();
     }
 
     m_forceStopSearch = false;
@@ -68,27 +68,35 @@ void CFindWindow_Thread::run(){
     QRegExp	regexp( m_findWindow->m_whatLine.text() );
 
     if( target == 0 || !regexp.isValid() || m_findWindow->m_whatLine.text().length() < 1 )
-        return;
+	return;
 
     //while( m_findWindow->m_resultsView.takeItem( 0 ) != 0 );
     emit m_findWindow->clearList();
 
     QTextBlock block = target->editor()->document()->firstBlock();
+    QString textToInsert;
 
     while( block.isValid() && !m_forceStopSearch ){
 
-        if( block.text().indexOf( regexp ) != -1 ){
-            CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
+	if( block.text().indexOf( regexp ) != -1 ){
 
-            ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber() + 1) + QString(" )") );
-            ite->m_document = target;
-            ite->m_lineNumber = block.firstLineNumber();
+	    textToInsert = "";
 
-            m_findWindow->m_resultsView.insertItem( 0 , ite );
+	    CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
 
-        }
+	    textToInsert += target->fileInfo().fileName() + QString( ",( ");
+	    textToInsert += QString::number(block.firstLineNumber() + 1) + QString(" )");
+	    textToInsert += " -> " + block.text();
 
-        block = block.next();
+	    ite->setText( textToInsert );
+	    ite->m_document = target;
+	    ite->m_lineNumber = block.firstLineNumber();
+
+	    m_findWindow->m_resultsView.insertItem( 0 , ite );
+
+	}
+
+	block = block.next();
     }
 
     m_findWindow->m_resultsView.update();
