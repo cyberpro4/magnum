@@ -52,6 +52,7 @@ public:
     int             m_lineNumber;
 
     CFindWindow_ListItem(QListWidget * parent = 0, int type = Type);
+    ~CFindWindow_ListItem();
 };
 
 class CFindWindow_Thread : public QThread {

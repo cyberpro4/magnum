@@ -6,7 +6,7 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
     vbox->addWidget( &m_whatLine );
     vbox->addWidget( &m_resultsView );
-    connect( &m_whatLine , SIGNAL(textChanged(QString)) , (QDockWidget*)this , SLOT(whatChanged(QString)));
+    connect( &m_whatLine , SIGNAL(textChanged(const QString&)) , (QDockWidget*)this , SLOT(whatChanged(const QString& )));
 
     connect( &m_resultsView , SIGNAL(itemDoubleClicked(QListWidgetItem*)) , this , SLOT(resultItemDClicked(QListWidgetItem*)));
     connect( this , SIGNAL(clearList()) , &m_resultsView , SLOT(clear()) );
@@ -82,7 +82,7 @@ void CFindWindow_Thread::run(){
 
             ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.blockNumber() + 1) + QString(" )") );
             ite->m_document = target;
-            ite->m_lineNumber = block.firstLineNumber();
+            ite->m_lineNumber = block.blockNumber();
 
             m_findWindow->m_resultsView.insertItem( 0 , ite );
 
@@ -95,4 +95,8 @@ void CFindWindow_Thread::run(){
 }
 
 CFindWindow_ListItem::CFindWindow_ListItem(QListWidget *parent, int type) : QListWidgetItem( parent , type ){
+}
+
+CFindWindow_ListItem::~CFindWindow_ListItem(){
+
 }

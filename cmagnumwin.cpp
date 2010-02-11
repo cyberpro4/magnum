@@ -229,7 +229,7 @@ void CMagnumWin::findWin_goTo(CDocument *target, int nline){
     QTextCursor cur = target->editor()->textCursor();
 
     cur.movePosition( QTextCursor::Start ,QTextCursor::KeepAnchor);
-    cur.movePosition( QTextCursor::Down , QTextCursor::MoveAnchor , nline  );
+    cur.movePosition( QTextCursor::NextBlock , QTextCursor::MoveAnchor , nline  );
     //cur.setPosition( 0 , QTextCursor::MoveAnchor );
 
     target->editor()->setTextCursor( cur );
