@@ -80,7 +80,7 @@ void CFindWindow_Thread::run(){
         if( block.text().indexOf( regexp ) != -1 ){
             CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
 
-            ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.firstLineNumber() + 1) + QString(" )") );
+            ite->setText( target->fileInfo().fileName() + QString( ",( ") + QString::number(block.blockNumber() + 1) + QString(" )") );
             ite->m_document = target;
             ite->m_lineNumber = block.firstLineNumber();
 
