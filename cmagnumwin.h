@@ -25,6 +25,7 @@ private:
     QMenu                   m_menuLastOpened;
     QList<QString>          m_lastOpenedFile;
 
+
     void lastOpenedFile_Push( const QString& file );
 
 public:
@@ -40,7 +41,10 @@ public slots:
     // carica un documento, nel caso la stringa sia vuota ( come da
     // predefinito ) aprirà un dialogo
     void    loadDocument( const QString& file = QString("") );
+
     void    saveCurrentDocument();
+    void    saveCurrentDocumentAs();
+    void    saveAllDocument();
 
     void    closeCurrentDocument();
     void    closeAllDocument();

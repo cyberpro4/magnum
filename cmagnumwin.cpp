@@ -17,6 +17,8 @@ CMagnumWin::CMagnumWin(){
     file->addSeparator();
 
     connect( file->addAction( "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
+    connect( file->addAction( "Save As..." ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocumentAs()) );
+    connect( file->addAction( "Save All" ) , SIGNAL(triggered()) , this , SLOT(saveAllDocument()) );
 
     file->addSeparator();
     connect( file->addAction( "Close" ) , SIGNAL(triggered()) , this , SLOT(closeCurrentDocument()) );
@@ -146,6 +148,31 @@ void CMagnumWin::loadDocument(const QString& str ){
     }
 }
 
+void CMagnumWin::saveAllDocument(){
+    CDocument* doc;
+
+    foreach( doc , m_documents ){
+        doc->saveToFile();
+    }
+}
+
+void CMagnumWin::saveCurrentDocumentAs(){
+    CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+
+    if( ed != NULL){
+        if( ed->documentOwner() != NULL ){
+
+            QString path;
+            path = QFileDialog::getSaveFileName( this , "Save as..." );
+
+            if( path.isNull() || path.isEmpty() )
+                return;
+
+            ed->documentOwner()->saveToFile( path );
+        }
+    }
+}
+
 void CMagnumWin::saveCurrentDocument(){
 
     CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
@@ -153,7 +180,7 @@ void CMagnumWin::saveCurrentDocument(){
     if( ed != NULL){
         if( ed->documentOwner() != NULL ){
 
-            ed->documentOwner()->saveToFile();
+            ed->documentOwner()->saveToFile( );
         }
     }
 
