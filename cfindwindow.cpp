@@ -70,8 +70,13 @@ void CFindWindow_Thread::run(){
     if( target == 0 || !regexp.isValid() || m_findWindow->m_whatLine.text().length() < 1 )
         return;
 
-    //while( m_findWindow->m_resultsView.takeItem( 0 ) != 0 );
-    emit m_findWindow->clearList();
+
+    QListWidgetItem* item_to_del = 0;
+    while( (item_to_del = m_findWindow->m_resultsView.takeItem( 0 )) != 0 ){
+        delete item_to_del;
+    }
+
+    //emit m_findWindow->clearList();
 
     QTextBlock block = target->editor()->document()->firstBlock();
 
