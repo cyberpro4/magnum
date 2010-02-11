@@ -18,16 +18,23 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
     int bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
 
     while (block.isValid() && top <= event->rect().bottom()) {
-	    if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
+            if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
 
-		    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(),
-				     Qt::AlignRight, "+" );
-	    }
+                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(),
+                                     Qt::AlignRight, "+" );
+            }
 
-	    block = block.next();
-	    top = bottom;
-	    bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
-	    ++blockNumber;
+            CMagnum_TextBlock* ublock = dynamic_cast<CMagnum_TextBlock*>(block.next().userData());
+            if( block.isVisible() && ublock != 0 ){
+                if( ublock->foldable() != -1 ){
+                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
+                }
+            }
+
+            block = block.next();
+            top = bottom;
+            bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
+            ++blockNumber;
     }
 }
 
@@ -35,9 +42,17 @@ void CCodeEditor_FoldArea::mouseReleaseEvent(QMouseEvent * eve){
     QTextBlock thblock = editor->cursorForPosition( eve->pos() ).block().next();
 
     while( thblock.isValid() && !thblock.isVisible() ){
-	qDebug() << "unfolded!";
-	thblock.setVisible( true );
-	thblock = thblock.next();
+        thblock.setVisible( true );
+        thblock = thblock.next();
+    }
+
+    if( dynamic_cast<CMagnum_TextBlock*>(thblock.userData()) != 0 ){
+        CMagnum_TextBlock* mudata = dynamic_cast<CMagnum_TextBlock*>(thblock.userData());
+
+        while( thblock.blockNumber() < mudata->foldable() && mudata->foldable() != -1 ){
+            thblock.setVisible( false );
+            thblock = thblock.next();
+        }
     }
 
     editor->viewport()->update();
