@@ -20,9 +20,10 @@ SOURCES += main.cpp \
     cprojectitemfactory.cpp \
     cprojectfile.cpp \
     cprojectprocedure.cpp \
-    cprojecttypebag.cpp
+    cprojecttypebag.cpp \
     cmagnum_textblock.cpp \
     cfindwindow.cpp
+
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -38,6 +39,6 @@ HEADERS += ccodeeditor.h \
     cprojectitemfactory.h \
     cprojectfile.h \
     cprojectprocedure.h \
-    cprojecttypebag.h
+    cprojecttypebag.h \
     cmagnum_textblock.h \
     cfindwindow.h

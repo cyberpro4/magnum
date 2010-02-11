@@ -10,7 +10,15 @@ CMagnumWin::CMagnumWin(){
     QMenu* file = m_mainMenu.addMenu( "File" );
     connect( file->addAction( "New" ) , SIGNAL(triggered()) , this , SLOT(newDocument()) );
     connect( file->addAction( "Open" ) , SIGNAL(triggered()) , this , SLOT(loadDocument()) );
+
+    m_menuLastOpened.setTitle("Open recent");
+    connect( &m_menuLastOpened , SIGNAL(triggered(QAction*)) , this , SLOT(lastOpened_Action(QAction*)) );
+    file->addMenu( &m_menuLastOpened );
+    file->addSeparator();
+
     connect( file->addAction( "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
+
+    file->addSeparator();
     connect( file->addAction( "Close" ) , SIGNAL(triggered()) , this , SLOT(closeCurrentDocument()) );
     connect( file->addAction( "Close All" ) , SIGNAL(triggered()) , this , SLOT(closeAllDocument()) );
 
@@ -34,9 +42,22 @@ void CMagnumWin::loadSettings(){
 
     sett.beginGroup("Window");
 
-	setGeometry( sett.value( "position" , QRect( 0,0 ,640,480) ).toRect() );
+        setGeometry( sett.value( "position" , QRect( 0,0 ,640,480) ).toRect() );
 
-	if( sett.value( "maximized" , true ).toBool() )	    showMaximized();
+        if( sett.value( "maximized" , true ).toBool() )	    showMaximized();
+
+    sett.endGroup();
+
+    sett.beginGroup("LastOpenedFile");
+
+        QString item;
+        QStringList list;
+
+        list.append( sett.value( "List" ).toStringList() );
+
+        foreach( item , list ){
+            lastOpenedFile_Push( item );
+        }
 
     sett.endGroup();
 }
@@ -46,10 +67,36 @@ void CMagnumWin::saveSettings(){
 
     sett.beginGroup("Window");
 
-	sett.setValue( "position" , geometry() );
-	sett.setValue( "maximized" , isMaximized() );
+        sett.setValue( "position" , geometry() );
+        sett.setValue( "maximized" , isMaximized() );
 
     sett.endGroup();
+
+    sett.beginGroup("LastOpenedFile");
+            sett.setValue( "List" , QStringList( m_lastOpenedFile ) );
+
+    sett.endGroup();
+}
+
+void CMagnumWin::lastOpened_Action(QAction *act){
+    loadDocument(act->text());
+}
+
+void CMagnumWin::lastOpenedFile_Push(const QString &file){
+
+    if( file.length() < 1 || m_lastOpenedFile.indexOf( file ) != -1 )
+        return;
+
+    // controllo che non contenga piu di 5 elementi
+    m_lastOpenedFile.push_front( file );
+    if( m_lastOpenedFile.size() > 5 ) m_lastOpenedFile.removeLast();
+    m_menuLastOpened.clear();
+
+
+    QString str;
+    foreach( str , m_lastOpenedFile ){
+        m_menuLastOpened.addAction( str );
+    }
 }
 
 void CMagnumWin::tabClose(int index){
@@ -60,7 +107,7 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
 
     // < 0 nel caso non ci sono piu documenti
     if( tabIndex < 0 )
-	return;
+        return;
 
     m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
 
@@ -79,17 +126,23 @@ void CMagnumWin::newDocument(){
     doc->editor()->focusWidget();
 }
 
-void CMagnumWin::loadDocument(){
-CProject prj;
-    QString filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
+void CMagnumWin::loadDocument(const QString& str ){
+
+    QString filename;
+
+    if( str.length() > 0 )
+        filename = str;
+    else
+        filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
     if( !filename.isNull() ){
-	CDocument* doc = new CDocument( filename );
+        CDocument* doc = new CDocument( filename );
 
-        prj.documentPush(doc);
+        lastOpenedFile_Push( filename );
 
-	m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() );
-	m_documents.append( doc );
+        m_documentTabs.setCurrentIndex( m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() ) );
+        m_documents.append( doc );
+
     }
 }
 
@@ -98,10 +151,10 @@ void CMagnumWin::saveCurrentDocument(){
     CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
 
     if( ed != NULL){
-	if( ed->documentOwner() != NULL ){
+        if( ed->documentOwner() != NULL ){
 
-	    ed->documentOwner()->saveToFile();
-	}
+            ed->documentOwner()->saveToFile();
+        }
     }
 
 }
@@ -110,9 +163,9 @@ void CMagnumWin::saveCurrentDocument(){
 void CMagnumWin::closeDocument( CDocument* target ){
 
     if( target->editor()->document()->isModified() ){
-	if( QMessageBox::question( this , target->fileInfo().fileName() , target->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
-	    target->saveToFile();
-	}
+        if( QMessageBox::question( this , target->fileInfo().fileName() , target->fileInfo().fileName() + " has been modified: Save it?" , QMessageBox::Yes , QMessageBox::No ) == QMessageBox::Yes ){
+            target->saveToFile();
+        }
     }
 
     m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
@@ -124,14 +177,14 @@ void CMagnumWin::closeDocument( CDocument* target ){
 void CMagnumWin::closeCurrentDocument(){
 
     if((CCodeEditor*)m_documentTabs.currentWidget() != 0 )
-	closeDocument( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() );
+        closeDocument( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() );
 }
 
 void CMagnumWin::closeAllDocument(){
     CDocument* doc;
     foreach( doc , m_documents ){
 
-	closeDocument( doc );
+        closeDocument( doc );
 
     }
 }
