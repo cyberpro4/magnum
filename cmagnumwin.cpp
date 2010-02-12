@@ -132,6 +132,8 @@ void CMagnumWin::loadDocument(const QString& str ){
 
     QString filename;
 
+    CProject p;
+
     if( str.length() > 0 )
         filename = str;
     else
@@ -139,7 +141,7 @@ void CMagnumWin::loadDocument(const QString& str ){
 
     if( !filename.isNull() ){
         CDocument* doc = new CDocument( filename );
-
+        p.documentPush( doc );
         lastOpenedFile_Push( filename );
 
         m_documentTabs.setCurrentIndex( m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() ) );

@@ -37,6 +37,10 @@ QTextBlock* CProjectFunction::scan( QTextBlock* b ){
 
         if( !block->isValid() )break;
     }
+
+    CMagnum_TextBlock* userData = m_document->blockDataAt( m_blockPointer->blockNumber()+1 );
+    userData->setFoldable( block->blockNumber()+1 );
+
     return block;
 }
 
