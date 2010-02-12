@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "cdocument.h"
+#include "cmagnum_textblock.h"
 
 #define CPROJECTITEM_REMOVE_STR_COMMENT(s)  if( s.contains(';') )s = s.mid( 0, s.indexOf(';') );
 

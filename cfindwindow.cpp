@@ -6,7 +6,7 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
     vbox->addWidget( &m_whatLine );
     vbox->addWidget( &m_resultsView );
-    connect( &m_whatLine , SIGNAL(textChanged(QString)) , (QDockWidget*)this , SLOT(whatChanged(QString)));
+    connect( &m_whatLine , SIGNAL(textChanged(const QString&)) , (QDockWidget*)this , SLOT(whatChanged(const QString& )));
 
     connect( &m_resultsView , SIGNAL(itemDoubleClicked(QListWidgetItem*)) , this , SLOT(resultItemDClicked(QListWidgetItem*)));
     connect( this , SIGNAL(clearList()) , &m_resultsView , SLOT(clear()) );
@@ -70,8 +70,13 @@ void CFindWindow_Thread::run(){
     if( target == 0 || !regexp.isValid() || m_findWindow->m_whatLine.text().length() < 1 )
 	return;
 
-    //while( m_findWindow->m_resultsView.takeItem( 0 ) != 0 );
-    emit m_findWindow->clearList();
+
+    QListWidgetItem* item_to_del = 0;
+    while( (item_to_del = m_findWindow->m_resultsView.takeItem( 0 )) != 0 ){
+	delete item_to_del;
+    }
+
+    //emit m_findWindow->clearList();
 
     QTextBlock block = target->editor()->document()->firstBlock();
     QString textToInsert;
@@ -103,4 +108,8 @@ void CFindWindow_Thread::run(){
 }
 
 CFindWindow_ListItem::CFindWindow_ListItem(QListWidget *parent, int type) : QListWidgetItem( parent , type ){
+}
+
+CFindWindow_ListItem::~CFindWindow_ListItem(){
+
 }

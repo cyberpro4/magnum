@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "ccodeeditor.h"
+#include "cmagnum_textblock.h"
 
 class CDocument : public QObject {
 
@@ -22,6 +23,8 @@ public:
 
     bool    loadFromFile(const QString& );
     bool    saveToFile(const QString& file = "" );
+
+    CMagnum_TextBlock*  blockDataAt(int linenumber);
 
     const QFileInfo& fileInfo();
 

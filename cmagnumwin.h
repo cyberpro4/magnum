@@ -20,7 +20,13 @@ private:
     QTabWidget		    m_documentTabs;
     QList<CDocument*>	    m_documents;
 
-    CFindWindow*             m_findWidget;
+    CFindWindow*            m_findWidget;
+
+    QMenu                   m_menuLastOpened;
+    QList<QString>          m_lastOpenedFile;
+
+
+    void lastOpenedFile_Push( const QString& file );
 
 public:
     CMagnumWin();
@@ -31,8 +37,14 @@ public:
 public slots:
 
     void    newDocument();
-    void    loadDocument();
+
+    // carica un documento, nel caso la stringa sia vuota ( come da
+    // predefinito ) aprirà un dialogo
+    void    loadDocument( const QString& file = QString("") );
+
     void    saveCurrentDocument();
+    void    saveCurrentDocumentAs();
+    void    saveAllDocument();
 
     void    closeCurrentDocument();
     void    closeAllDocument();
@@ -46,6 +58,8 @@ public slots:
 
     void    loadSettings();
     void    saveSettings();
+
+    void    lastOpened_Action(QAction* );
 
 };
 

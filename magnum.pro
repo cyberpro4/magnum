@@ -23,6 +23,7 @@ SOURCES += main.cpp \
     cprojecttypebag.cpp \
     cmagnum_textblock.cpp \
     cfindwindow.cpp
+
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
