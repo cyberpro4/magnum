@@ -18,25 +18,7 @@ CDocument::~CDocument(){
 CMagnum_TextBlock* CDocument::blockDataAt(int linenumber){
     QTextBlock b = editor()->document()->findBlockByLineNumber(linenumber);
 
-    QTextBlockUserData* udata = b.userData();
-
-    if( udata != 0 ){
-        CMagnum_TextBlock* mudata = dynamic_cast<CMagnum_TextBlock*>(udata);
-
-        if( mudata != 0 )
-            return mudata;
-
-        qDebug() << "OHHHH O_O CHECK HERE!!!";
-
-    } else {
-
-        CMagnum_TextBlock* mudata = new CMagnum_TextBlock();
-        b.setUserData( mudata );
-
-        return mudata;
-    }
-
-    return 0;
+    return CMagnum_TextBlock::getDataByBlock( &b );
 }
 
 CCodeEditor* CDocument::editor(){
