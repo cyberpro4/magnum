@@ -35,17 +35,19 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
                 passed_foldable = ublock->foldable();
             }
 
-            /*if( passed_foldable != -1 && ublock == 0 ){
-                if( block.blockNumber() < passed_foldable ){
-                    painter.drawLine( width() / 2 , top , width() / 2 , bottom );
-
-                } else
-                    passed_foldable = -1;
-            }*/
-
             if( ublock != 0 ){
-                if( ublock->parentFold() != -1 )
-                    painter.drawLine( width() / 2 , top , width() / 2 , bottom );
+                if( ublock->parentFold() != -1 ){
+
+                    CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &block.next() );
+
+                    if( nublock->parentFold() == -1 ){
+                        qDebug() << "here";
+                        painter.drawLine( width() / 2 , top , width() / 2 , bottom / 2 );
+                        painter.drawLine( width() / 2 , bottom / 2 , width() , bottom / 2 );
+                    } else {
+                        painter.drawLine( width() / 2 , top , width() / 2 , bottom );
+                    }
+                }
             }
 
 
