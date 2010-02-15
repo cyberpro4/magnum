@@ -16,9 +16,9 @@ int CMagnum_TextBlock::parentFold(){
 void CMagnum_TextBlock::setFoldable(int last_line){
     m_foldable = last_line;
 
-    QTextBlock blockf = m_blockPointer.next();
+    QTextBlock blockf = m_blockPointer;
 
-    while( blockf.isValid() && blockf.blockNumber() <= last_line ){
+    while( blockf.isValid() && blockf.blockNumber() < last_line ){
         getDataByBlock( &blockf )->m_parentFold = m_blockPointer.blockNumber();
         blockf = blockf.next();
     }

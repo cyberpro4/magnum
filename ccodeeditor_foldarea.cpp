@@ -17,8 +17,6 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
     int top = (int) ((CCodeEditor*)parent())->blockBoundingGeometry(block).translated(((CCodeEditor*)parent())->contentOffset()).top();
     int bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
 
-    int    passed_foldable = -1;
-
     while (block.isValid() && top <= event->rect().bottom()) {
             if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
 
@@ -32,18 +30,18 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
                     painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
                 }
 
-                passed_foldable = ublock->foldable();
             }
 
-            if( ublock != 0 ){
+            ublock = dynamic_cast<CMagnum_TextBlock*>(block.userData());
+            if( ublock != 0 && block.isVisible() && block.next().isVisible() ){
                 if( ublock->parentFold() != -1 ){
 
-                    CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &block.next() );
+                    QTextBlock bn(block.next());
+                    CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &bn );
 
                     if( nublock->parentFold() == -1 ){
-                        qDebug() << "here";
-                        painter.drawLine( width() / 2 , top , width() / 2 , bottom / 2 );
-                        painter.drawLine( width() / 2 , bottom / 2 , width() , bottom / 2 );
+                        painter.drawLine( width() / 2 , top , width() / 2 , top+((bottom - top) / 2) );
+                        painter.drawLine( width() / 2 , top+((bottom - top) / 2) , width() , top + ((bottom - top) / 2) );
                     } else {
                         painter.drawLine( width() / 2 , top , width() / 2 , bottom );
                     }
