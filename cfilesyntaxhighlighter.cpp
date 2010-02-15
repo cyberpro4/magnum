@@ -33,8 +33,6 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
     for(int curind = 0;curind < cur.size();curind++){
 
-	qDebug() << "loading" << cur.at(curind).toElement().attribute("NAME","INVALID");
-
 	CFileSyntaxHighlighter_Format* toSave = new CFileSyntaxHighlighter_Format;
 
 	QDomNodeList list = cur.at(curind).toElement().elementsByTagName( "REGEXP" );
