@@ -19,15 +19,15 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
 
     while (block.isValid() && top <= event->rect().bottom()) {
             if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
-
-                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(),
-                                     Qt::AlignRight, "+" );
+                painter.drawText(0, top, width() - 4, ((CCodeEditor*)parent())->fontMetrics().height(),
+                                                        Qt::AlignRight, "+" );
             }
 
             CMagnum_TextBlock* ublock = dynamic_cast<CMagnum_TextBlock*>(block.next().userData());
             if( block.isVisible() && ublock != 0 ){
                 if( ublock->foldable() != -1 ){
-                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
+                    painter.drawRect( QRect( 5 , top+3 , 11 , 11 ) );
+                    painter.drawText(0, top, width() - 4, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
                 }
 
             }
