@@ -10,6 +10,12 @@
 #define CPROJECTITEM_PARAMS CDocument* document, QTextBlock * block, CProjectItem* parent
 #define CPROJECTITEM_VARS document,block,parent
 
+#define CPROJECTITEM_TYPE_FILE          0
+#define CPROJECTITEM_TYPE_PROC          1
+#define CPROJECTITEM_TYPE_FUNC          2
+#define CPROJECTITEM_TYPE_VAR           3
+#define CPROJECTITEM_TYPE_TYPE          4
+
 class CProjectItem{
 
 public:
@@ -29,6 +35,7 @@ public:
     int                     blockNumber(){      return m_blockNumber;}
     QTextBlock*             fistTextBlock(){    return m_blockPointer;}
     QTextBlock*             lastTextBlock(){    return m_blockList.last();}
+    int                     itemType(){         return m_type;}
 
 protected:
     CProjectItem*               m_parent;
@@ -40,6 +47,8 @@ protected:
     int                         m_blockNumber;//numero di blocchi che compongono questo item
     QTextBlock*                 m_blockPointer;//puntatore al blocco di testo iniziale di questo item
     QList<QTextBlock*>          m_blockList;//lista dei blocchi appartenenti all'item
+
+    int                         m_type;//tipo di blocco
 };
 
 #endif // CPROJECTITEM_H

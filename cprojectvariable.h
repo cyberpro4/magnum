@@ -16,11 +16,11 @@ class CProjectVariable:public CProjectItem{
 public:
     CProjectVariable( CPROJECTITEM_PARAMS );
 
-    CProjectType*       type(){     return m_type;}
+    CProjectType*       dataType(){     return m_dataType;}
     static bool         isIt( QTextBlock* block );
 
 private:
-    CProjectType*       m_type;
+    CProjectType*       m_dataType;
 
 };
 

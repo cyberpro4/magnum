@@ -5,6 +5,7 @@ CProjectProcedure::CProjectProcedure( CPROJECTITEM_PARAMS ):CProjectItem( CPROJE
     CPROJECTITEM_REMOVE_STR_COMMENT(s)
     s.remove(QRegExp( "([ \t]*[dD]{1,1}[eE]{1,1}[fF]{1,1}[ \t]*)" ));
     m_label = s;
+    m_type = CPROJECTITEM_TYPE_PROC;
     qDebug() << "new item procedure: " << m_label;
     scan( block );
 }
@@ -29,7 +30,7 @@ QTextBlock* CProjectProcedure::scan( QTextBlock* b ){
         CProjectItem* pjitem = CProjectItemFactory::buildItem( m_document, block, m_parent );
         if( pjitem!=NULL ){
             m_childList.append( pjitem );
-            for( int __i = 0; __i < pjitem->blockNumber(); __i++ ){
+            for( int __i = 0; __i < pjitem->blockNumber()-1; __i++ ){
                 m_blockNumber++;
                 block = &block->next();
                 m_blockList.append( block );

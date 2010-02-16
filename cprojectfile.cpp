@@ -2,6 +2,7 @@
 
 CProjectFile::CProjectFile( QString label, CPROJECTITEM_PARAMS ):CProjectItem( CPROJECTITEM_VARS ){
     m_label = label;
+    m_type = CPROJECTITEM_TYPE_FILE;
     qDebug() << "new item file: " << m_label;
     scan( block );
 }

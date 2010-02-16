@@ -9,3 +9,12 @@ CProjectTypeBag::CProjectTypeBag(){
     addType( "e6axis" );
     m_staticInstance = this;
 }
+
+void CProjectTypeBag::addType( QString s ){
+    if( !m_typeList.contains( s.toUpper() ) )
+        m_typeList.append( s.toUpper() );
+}
+
+QList<QString>* CProjectTypeBag::getTypeList( ){
+    return &m_typeList;
+}
