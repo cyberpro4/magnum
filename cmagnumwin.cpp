@@ -39,6 +39,7 @@ CMagnumWin::CMagnumWin(){
     loadSettings();
 
     m_projectManager = new CProject( this );
+    connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
 }
 

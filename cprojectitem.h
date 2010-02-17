@@ -15,6 +15,11 @@
 #define CPROJECTITEM_TYPE_FUNC          2
 #define CPROJECTITEM_TYPE_VAR           3
 #define CPROJECTITEM_TYPE_TYPE          4
+#define CPROJECTITEM_TYPE_WSEC          5
+
+
+#define CPROJECTITEM_REGEXPR_LAST_ONE_SPACE_TAB     QString("[ \\t]+")
+#define CPROJECTITEM_REGEXPR_DIGITS                 QString("[ |^|\t]{1}[0-9]+(\.([0-9])+){0,1}[ |$|\t]{1}")
 
 class CProjectItem{
 
@@ -33,9 +38,10 @@ public:
     QString                 label(){            return m_label;}
     CDocument*              document(){         return m_document;}
     int                     blockNumber(){      return m_blockNumber;}
-    QTextBlock*             fistTextBlock(){    return m_blockPointer;}
+    QTextBlock*             fistTextBlock(){    return m_blockList.first();}
     QTextBlock*             lastTextBlock(){    return m_blockList.last();}
     int                     itemType(){         return m_type;}
+    int                     firstLineIndex(){   return m_lineIndex;}
 
 protected:
     CProjectItem*               m_parent;
@@ -49,6 +55,8 @@ protected:
     QList<QTextBlock*>          m_blockList;//lista dei blocchi appartenenti all'item
 
     int                         m_type;//tipo di blocco
+
+    int                         m_lineIndex;
 };
 
 #endif // CPROJECTITEM_H

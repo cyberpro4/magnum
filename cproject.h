@@ -16,6 +16,7 @@ public:
     CProject( QWidget* parent );
 
     void documentPush( CDocument* document );
+    void documentPurge( CDocument* document );
 
     //scanna il cproject e inserisce gli elementi nella lista
     void refreshTreeView();
@@ -35,6 +36,11 @@ private:
 
 public slots:
     void documentChanged( CDocument* document );
+
+    void treeViewItemClicked( QTreeWidgetItem * item, int column );
+
+signals:
+    void gotoDocumentLine( CDocument*, int );
 
 };
 

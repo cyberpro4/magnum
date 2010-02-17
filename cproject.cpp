@@ -12,6 +12,8 @@ CProject::CProject( QWidget* parent ):QDockWidget( "Project", parent ){
     mainLayout->addWidget( &m_treeView );
 
     m_typeBag = new CProjectTypeBag();
+
+    connect( &m_treeView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this, SLOT(treeViewItemClicked(QTreeWidgetItem*,int)));
 }
 
 void CProject::documentPush( CDocument* document ){
@@ -22,6 +24,15 @@ void CProject::documentPush( CDocument* document ){
                                     &document->editor()->document()->firstBlock(),
                                     NULL )
                         );
+    refreshTreeView();
+}
+
+void CProject::documentPurge( CDocument* document ){
+    CProjectFile* projectFile = m_documentMap.value( document, NULL );
+    if( projectFile != NULL ){
+        delete projectFile;
+        m_documentMap.remove( document );
+    }
     refreshTreeView();
 }
 
@@ -60,4 +71,10 @@ void CProject::addRecursiveChild( CProjectTreeViewItem* treeParentItem, CProject
                 newTreeItem,
                 subItem );
     }
+}
+
+void CProject::treeViewItemClicked( QTreeWidgetItem * item, int column ){
+    qDebug() << "goto document line: " << ((CProjectTreeViewItem*)item)->projectItem()->firstLineIndex();
+    emit gotoDocumentLine(((CProjectTreeViewItem*)item)->projectItem()->document(),
+                          ((CProjectTreeViewItem*)item)->projectItem()->firstLineIndex());
 }

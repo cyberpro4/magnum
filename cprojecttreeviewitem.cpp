@@ -20,6 +20,9 @@ CProjectTreeViewItem::CProjectTreeViewItem( CProjectItem* projectItem, QTreeWidg
     case CPROJECTITEM_TYPE_TYPE:
         this->setIcon( 0, QIcon( CPROJECTTREEVIEWITEM_ICON_PATH + CPROJECTTREEVIEWITEM_ICON_TYPE_NAME ));
         break;
+    case CPROJECTITEM_TYPE_WSEC:
+        this->setIcon( 0, QIcon( CPROJECTTREEVIEWITEM_ICON_PATH + CPROJECTTREEVIEWITEM_ICON_WSEC_NAME  ));
+        break;
     }
 }
 

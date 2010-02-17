@@ -10,6 +10,7 @@
 #define CPROJECTTREEVIEWITEM_ICON_FUNC_NAME     "func.png"
 #define CPROJECTTREEVIEWITEM_ICON_VAR_NAME      "var.png"
 #define CPROJECTTREEVIEWITEM_ICON_TYPE_NAME     "type.png"
+#define CPROJECTTREEVIEWITEM_ICON_WSEC_NAME     "wait.png"
 
 class CProjectTreeViewItem:public QTreeWidgetItem{
 public:

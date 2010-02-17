@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     cmagnum_textblock.cpp \
     cfindwindow.cpp \
     cprojecttreeview.cpp \
-    cprojecttreeviewitem.cpp
+    cprojecttreeviewitem.cpp \
+    cprojectwaitsec.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -44,4 +45,5 @@ HEADERS += ccodeeditor.h \
     cmagnum_textblock.h \
     cfindwindow.h \
     cprojecttreeview.h \
-    cprojecttreeviewitem.h
+    cprojecttreeviewitem.h \
+    cprojectwaitsec.h
