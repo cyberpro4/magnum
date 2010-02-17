@@ -22,6 +22,7 @@ protected:
 
     CFindWindow_Thread*	    m_searchThread;
     QLabel		    m_searchInProgress;
+    QMovie                  m_searchInProgressMovie;
 
 public:
 
@@ -36,9 +37,11 @@ signals:
     void clearList();
     void goTo(CDocument* target , int nline );
 
+
 public slots:
 
     void resultItemDClicked( QListWidgetItem* );
+    void loadMovie(bool on);
 
     void whatChanged( const QString& );
 
@@ -71,6 +74,10 @@ public:
 
     void waitForSearchStop();
     void run();
+
+signals:
+
+    void loadMovie(bool on);
 };
 
 #endif // CFINDWINDOW_H

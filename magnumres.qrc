@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="find_load.gif">res/find_load.gif</file>
+    </qresource>
+</RCC>
