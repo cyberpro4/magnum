@@ -9,6 +9,7 @@ CProjectVariable::CProjectVariable( CPROJECTITEM_PARAMS ):CProjectItem( CPROJECT
     s.remove(QRegExp( CPROJECTITEM_REGEXPR_TYPE ));
     s.remove(QRegExp( CPROJECTITEM_REGEXPR_LAST_ONE_SPACE_TAB ));
     m_label = s;
+    m_type = CPROJECTITEM_TYPE_VAR;
     qDebug() << "new item variabile: " << m_label;
     //scan( block );
 

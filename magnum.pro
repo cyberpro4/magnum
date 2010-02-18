@@ -22,7 +22,13 @@ SOURCES += main.cpp \
     cprojectprocedure.cpp \
     cprojecttypebag.cpp \
     cmagnum_textblock.cpp \
-    cfindwindow.cpp
+    cfindwindow.cpp \
+    cprojecttreeview.cpp \
+    cprojecttreeviewitem.cpp \
+    cprojectwaitsec.cpp \
+    cprojectwaitfor.cpp \
+    cprojectinterruptdecl.cpp
+
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -40,5 +46,10 @@ HEADERS += ccodeeditor.h \
     cprojectprocedure.h \
     cprojecttypebag.h \
     cmagnum_textblock.h \
-    cfindwindow.h
+    cfindwindow.h \
+    cprojecttreeview.h \
+    cprojecttreeviewitem.h \
+    cprojectwaitsec.h \
+    cprojectwaitfor.h \
+    cprojectinterruptdecl.h
 RESOURCES += magnumres.qrc

@@ -9,6 +9,9 @@
 #include "cprojecttype.h"
 #include "cprojectvariable.h"
 #include "cprojectprocedure.h"
+#include "cprojectwaitsec.h"
+#include "cprojectwaitfor.h"
+#include "cprojectinterruptdecl.h"
 
 class CProjectItemFactory{
 public:

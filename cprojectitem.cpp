@@ -4,6 +4,7 @@ CProjectItem::CProjectItem( CPROJECTITEM_PARAMS ){
     m_label = block->text();
     m_document = document;
     m_blockPointer = block;
+    m_lineIndex = block->blockNumber();
     m_parent = parent;
     m_blockNumber = 1;
     m_blockList.append( block );

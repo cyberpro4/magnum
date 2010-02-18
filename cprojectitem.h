@@ -10,6 +10,19 @@
 #define CPROJECTITEM_PARAMS CDocument* document, QTextBlock * block, CProjectItem* parent
 #define CPROJECTITEM_VARS document,block,parent
 
+#define CPROJECTITEM_TYPE_FILE          0
+#define CPROJECTITEM_TYPE_PROC          1
+#define CPROJECTITEM_TYPE_FUNC          2
+#define CPROJECTITEM_TYPE_VAR           3
+#define CPROJECTITEM_TYPE_TYPE          4   //TYPE STRUC
+#define CPROJECTITEM_TYPE_WSEC          5   //WAIT SEC
+#define CPROJECTITEM_TYPE_WFOR          6   //WAIT FOR
+#define CPROJECTITEM_TYPE_INTE          7   //INTERRUPT
+
+
+#define CPROJECTITEM_REGEXPR_LAST_ONE_SPACE_TAB     QString("[ \\t]+")
+#define CPROJECTITEM_REGEXPR_DIGITS                 QString("[ |^|\t]{1}[0-9]+(\.([0-9])+){0,1}[ |$|\t]{1}")
+
 class CProjectItem{
 
 public:
@@ -27,8 +40,10 @@ public:
     QString                 label(){            return m_label;}
     CDocument*              document(){         return m_document;}
     int                     blockNumber(){      return m_blockNumber;}
-    QTextBlock*             fistTextBlock(){    return m_blockPointer;}
+    QTextBlock*             fistTextBlock(){    return m_blockList.first();}
     QTextBlock*             lastTextBlock(){    return m_blockList.last();}
+    int                     itemType(){         return m_type;}
+    int                     firstLineIndex(){   return m_lineIndex;}
 
 protected:
     CProjectItem*               m_parent;
@@ -40,6 +55,10 @@ protected:
     int                         m_blockNumber;//numero di blocchi che compongono questo item
     QTextBlock*                 m_blockPointer;//puntatore al blocco di testo iniziale di questo item
     QList<QTextBlock*>          m_blockList;//lista dei blocchi appartenenti all'item
+
+    int                         m_type;//tipo di blocco
+
+    int                         m_lineIndex;
 };
 
 #endif // CPROJECTITEM_H

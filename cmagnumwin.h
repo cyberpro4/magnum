@@ -5,6 +5,8 @@
 #include "cdocument.h"
 #include "cfindwindow.h"
 
+#include "cproject.h"
+
 #define		SETTINGS_INI_FILENAME	"./config.conf"
 
 class CMagnumWin : public QMainWindow {
@@ -25,6 +27,8 @@ private:
     QMenu                   m_menuLastOpened;
     QList<QString>          m_lastOpenedFile;
 
+
+    CProject*               m_projectManager;
 
     void lastOpenedFile_Push( const QString& file );
 

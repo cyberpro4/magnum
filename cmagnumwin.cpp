@@ -1,5 +1,5 @@
 #include "cmagnumwin.h"
-#include "cproject.h"
+
 CMagnumWin::CMagnumWin(){
 
     m_documentTabs.setTabsClosable( true );
@@ -42,6 +42,10 @@ CMagnumWin::CMagnumWin(){
     newDocument();
 
     loadSettings();
+
+    m_projectManager = new CProject( this );
+    connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
+    addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
 }
 
 void CMagnumWin::loadSettings(){
@@ -139,16 +143,17 @@ void CMagnumWin::loadDocument(const QString& str ){
 
     QString filename;
 
-    CProject p;
-
     if( str.length() > 0 )
         filename = str;
     else
         filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
 
     if( !filename.isNull() ){
+
         CDocument* doc = new CDocument( filename );
-        p.documentPush( doc );
+
+        m_projectManager->documentPush( doc );
+
         lastOpenedFile_Push( filename );
 
         m_documentTabs.setCurrentIndex( m_documentTabs.addTab( doc->editor() , doc->fileInfo().fileName() ) );
