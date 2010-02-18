@@ -11,6 +11,8 @@
 #define CPROJECTTREEVIEWITEM_ICON_VAR_NAME      "var.png"
 #define CPROJECTTREEVIEWITEM_ICON_TYPE_NAME     "type.png"
 #define CPROJECTTREEVIEWITEM_ICON_WSEC_NAME     "wait.png"
+#define CPROJECTTREEVIEWITEM_ICON_WFOR_NAME     "waitfor.png"
+#define CPROJECTTREEVIEWITEM_ICON_INTE_NAME     "interrupt.png"
 
 class CProjectTreeViewItem:public QTreeWidgetItem{
 public:

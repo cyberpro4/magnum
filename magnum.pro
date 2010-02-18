@@ -25,7 +25,9 @@ SOURCES += main.cpp \
     cfindwindow.cpp \
     cprojecttreeview.cpp \
     cprojecttreeviewitem.cpp \
-    cprojectwaitsec.cpp
+    cprojectwaitsec.cpp \
+    cprojectwaitfor.cpp \
+    cprojectinterruptdecl.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -46,4 +48,6 @@ HEADERS += ccodeeditor.h \
     cfindwindow.h \
     cprojecttreeview.h \
     cprojecttreeviewitem.h \
-    cprojectwaitsec.h
+    cprojectwaitsec.h \
+    cprojectwaitfor.h \
+    cprojectinterruptdecl.h

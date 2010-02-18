@@ -14,8 +14,10 @@
 #define CPROJECTITEM_TYPE_PROC          1
 #define CPROJECTITEM_TYPE_FUNC          2
 #define CPROJECTITEM_TYPE_VAR           3
-#define CPROJECTITEM_TYPE_TYPE          4
-#define CPROJECTITEM_TYPE_WSEC          5
+#define CPROJECTITEM_TYPE_TYPE          4   //TYPE STRUC
+#define CPROJECTITEM_TYPE_WSEC          5   //WAIT SEC
+#define CPROJECTITEM_TYPE_WFOR          6   //WAIT FOR
+#define CPROJECTITEM_TYPE_INTE          7   //INTERRUPT
 
 
 #define CPROJECTITEM_REGEXPR_LAST_ONE_SPACE_TAB     QString("[ \\t]+")

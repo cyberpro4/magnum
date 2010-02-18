@@ -23,6 +23,12 @@ CProjectTreeViewItem::CProjectTreeViewItem( CProjectItem* projectItem, QTreeWidg
     case CPROJECTITEM_TYPE_WSEC:
         this->setIcon( 0, QIcon( CPROJECTTREEVIEWITEM_ICON_PATH + CPROJECTTREEVIEWITEM_ICON_WSEC_NAME  ));
         break;
+    case CPROJECTITEM_TYPE_WFOR:
+        this->setIcon( 0, QIcon( CPROJECTTREEVIEWITEM_ICON_PATH + CPROJECTTREEVIEWITEM_ICON_WFOR_NAME ));
+        break;
+    case CPROJECTITEM_TYPE_INTE:
+        this->setIcon( 0, QIcon( CPROJECTTREEVIEWITEM_ICON_PATH + CPROJECTTREEVIEWITEM_ICON_INTE_NAME ));
+        break;
     }
 }
 

@@ -58,7 +58,7 @@ void CProject::refreshTreeView(){
 }
 
 void CProject::addRecursiveChild( CProjectTreeViewItem* treeParentItem, CProjectTreeViewItem* treeSubItem, CProjectItem* projectItem ){
-    if( treeSubItem != NULL )//NULL se è un nodo principale
+    if( treeSubItem != NULL )   //NULL se è un nodo principale
         treeParentItem->addChild( treeSubItem );
 
     QList<CProjectItem*>* itemList = projectItem->childList();
