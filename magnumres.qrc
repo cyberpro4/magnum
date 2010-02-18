@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="find_load.gif">res/find_load.gif</file>
+        <file alias="find_load">res/find_load.gif</file>
+        <file alias="doc_filesave">res/doc_filesave.png</file>
+        <file alias="doc_filesaveall">res/doc_filesaveall.png</file>
+        <file alias="doc_filesaveas">res/doc_filesaveas.png</file>
+        <file alias="doc_new">res/doc_new.png</file>
+        <file alias="doc_open">res/doc_open.png</file>
     </qresource>
 </RCC>

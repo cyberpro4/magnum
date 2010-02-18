@@ -8,7 +8,7 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
     whatlay->addWidget( &m_whatLine );
 
-    m_searchInProgressMovie.setFileName( ":find_load.gif" );
+    m_searchInProgressMovie.setFileName( ":find_load" );
     m_searchInProgressMovie.jumpToFrame(0);
     m_searchInProgress.setMovie( &m_searchInProgressMovie );
     whatlay->addWidget( &m_searchInProgress );
