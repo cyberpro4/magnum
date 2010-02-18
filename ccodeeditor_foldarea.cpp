@@ -19,17 +19,35 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
 
     while (block.isValid() && top <= event->rect().bottom()) {
             if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
-
-                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(),
-                                     Qt::AlignRight, "+" );
+                painter.drawText(0, top, width() - 4, ((CCodeEditor*)parent())->fontMetrics().height(),
+                                                        Qt::AlignRight, "+" );
             }
 
             CMagnum_TextBlock* ublock = dynamic_cast<CMagnum_TextBlock*>(block.next().userData());
             if( block.isVisible() && ublock != 0 ){
                 if( ublock->foldable() != -1 ){
-                    painter.drawText(0, top, width() - 2, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
+                    painter.drawRect( QRect( 5 , top+3 , 11 , 11 ) );
+                    painter.drawText(0, top, width() - 4, ((CCodeEditor*)parent())->fontMetrics().height(), Qt::AlignRight, "-" );
+                }
+
+            }
+
+            ublock = dynamic_cast<CMagnum_TextBlock*>(block.userData());
+            if( ublock != 0 && block.isVisible() && block.next().isVisible() ){
+                if( ublock->parentFold() != -1 ){
+
+                    QTextBlock bn(block.next());
+                    CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &bn );
+
+                    if( nublock->parentFold() == -1 ){
+                        painter.drawLine( width() / 2 , top , width() / 2 , top+((bottom - top) / 2) );
+                        painter.drawLine( width() / 2 , top+((bottom - top) / 2) , width() , top + ((bottom - top) / 2) );
+                    } else {
+                        painter.drawLine( width() / 2 , top , width() / 2 , bottom );
+                    }
                 }
             }
+
 
             block = block.next();
             top = bottom;
@@ -49,7 +67,7 @@ void CCodeEditor_FoldArea::mouseReleaseEvent(QMouseEvent * eve){
     if( dynamic_cast<CMagnum_TextBlock*>(thblock.userData()) != 0 ){
         CMagnum_TextBlock* mudata = dynamic_cast<CMagnum_TextBlock*>(thblock.userData());
 
-        while( thblock.blockNumber() < mudata->foldable() && mudata->foldable() != -1 ){
+        while( thblock.isValid() && thblock.blockNumber() < mudata->foldable() && mudata->foldable() != -1 ){
             thblock.setVisible( false );
             thblock = thblock.next();
         }
