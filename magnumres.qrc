@@ -6,5 +6,6 @@
         <file alias="doc_filesaveas">res/doc_filesaveas.png</file>
         <file alias="doc_new">res/doc_new.png</file>
         <file alias="doc_open">res/doc_open.png</file>
+        <file alias="PROGICO">res/PROGICO.PNG</file>
     </qresource>
 </RCC>

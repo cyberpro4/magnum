@@ -53,3 +53,7 @@ HEADERS += ccodeeditor.h \
     cprojectwaitfor.h \
     cprojectinterruptdecl.h
 RESOURCES += magnumres.qrc
+
+win32 {
+    RC_FILE = win_res.rc
+}
