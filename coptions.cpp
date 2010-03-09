@@ -105,6 +105,7 @@ void COptions::addPage(COptionPage *page){
 void COptions::pageClicked(COptionPage *pg){
     if( pg == 0 )return;
 
+    qDebug() << "asd";
     QSettings   cfg( OPTIONS_FILENAME , QSettings::IniFormat );
     cfg.beginGroup( pg->getUniqueKey() );
 

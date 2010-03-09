@@ -5,6 +5,11 @@
 
 class COptEditor : public COptionPage {
 
+protected:
+
+    QComboBox       m_fontFamily;
+    QLineEdit       m_fontSize;
+
 public:
     COptEditor();
 
