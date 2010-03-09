@@ -5,6 +5,7 @@ CCodeEditor_FoldArea::CCodeEditor_FoldArea(QWidget *parent) :
     QWidget(parent){
 
     editor = (CCodeEditor*)parent;
+    setMouseTracking( true );
 }
 
 void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
@@ -21,42 +22,73 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
         QStyleOption opt;
         opt.initFrom( this );
         opt.rect = QRect( 0 , top , width() , bottom - top );
+        opt.state = QStyle::State_None;
 
-            if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
-                opt.state = QStyle::State_Item | QStyle::State_Children;
+        if( m_hoverLine == block.firstLineNumber() ){
+            opt.state |= QStyle::State_MouseOver;
+            qDebug() << "HOVER";
+        }
+
+        if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
+            opt.state |= QStyle::State_Item | QStyle::State_Children;
+        }
+
+        CMagnum_TextBlock* ublock = dynamic_cast<CMagnum_TextBlock*>(block.next().userData());
+        if( block.isVisible() && ublock != 0 && block.next().isVisible() ){
+            if( ublock->foldable() != -1 ){
+                opt.state |= QStyle::State_Item | QStyle::State_Children | QStyle::State_Open | QStyle::State_Sibling;
             }
 
-            CMagnum_TextBlock* ublock = dynamic_cast<CMagnum_TextBlock*>(block.next().userData());
-            if( block.isVisible() && ublock != 0 && block.next().isVisible() ){
-                if( ublock->foldable() != -1 ){
-                    opt.state = QStyle::State_Item | QStyle::State_Children | QStyle::State_Open | QStyle::State_Sibling;
+        }
+
+        ublock = dynamic_cast<CMagnum_TextBlock*>(block.userData());
+        if( ublock != 0 && block.isVisible() && block.next().isVisible() ){
+            if( ublock->parentFold() != -1 ){
+
+                QTextBlock bn(block.next());
+                CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &bn );
+
+                if( nublock->parentFold() == -1 ){
+                    opt.state = QStyle::State_Item ;
+                } else {
+                    opt.state = QStyle::State_Sibling;
                 }
-
             }
+        }
 
-            ublock = dynamic_cast<CMagnum_TextBlock*>(block.userData());
-            if( ublock != 0 && block.isVisible() && block.next().isVisible() ){
-                if( ublock->parentFold() != -1 ){
-
-                    QTextBlock bn(block.next());
-                    CMagnum_TextBlock* nublock = CMagnum_TextBlock::getDataByBlock( &bn );
-
-                    if( nublock->parentFold() == -1 ){
-                        opt.state = QStyle::State_Item ;
-                    } else {
-                        opt.state = QStyle::State_Sibling;
-                    }
-                }
-            }
-
-            style()->drawPrimitive( QStyle::PE_IndicatorBranch , &opt , &painter , this );
+        style()->drawPrimitive( QStyle::PE_IndicatorBranch , &opt , &painter , this );
 
 
-            block = block.next();
-            top = bottom;
-            bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
-            ++blockNumber;
+        block = block.next();
+        top = bottom;
+        bottom = top + (int) ((CCodeEditor*)parent())->blockBoundingRect(block).height();
+        ++blockNumber;
     }
+}
+
+void CCodeEditor_FoldArea::mouseMoveEvent(QMouseEvent *eve){
+    if( editor == 0 ) return;
+
+    QTextBlock thblock = editor->cursorForPosition( eve->pos() ).block();
+
+
+
+    if( dynamic_cast<CMagnum_TextBlock*>(thblock.next().userData()) != 0 ){
+        if( dynamic_cast<CMagnum_TextBlock*>(thblock.next().userData())->parentFold() == thblock.firstLineNumber() ){
+            m_hoverLine = thblock.firstLineNumber();
+            update();
+            return;
+        }
+    }
+
+    m_hoverLine = -1;
+    return;
+
+    /*
+    editor->viewport()->update();
+    editor->lineNumberArea->update();
+    editor->m_foldArea->update();
+    */
 }
 
 void CCodeEditor_FoldArea::mouseReleaseEvent(QMouseEvent * eve){
