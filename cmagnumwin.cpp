@@ -49,6 +49,8 @@ CMagnumWin::CMagnumWin(){
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
 
     COptions* opt = new COptions();
+    opt->addPage( new COptGeneral() );
+    opt->addPage( new COptEditor() );
     opt->show();
 }
 

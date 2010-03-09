@@ -7,6 +7,10 @@
 
 #include "cproject.h"
 
+#include "coptions.h"
+#include "copteditor.h"
+#include "coptgeneral.h"
+
 #define		SETTINGS_INI_FILENAME	"./config.conf"
 
 class CMagnumWin : public QMainWindow {
