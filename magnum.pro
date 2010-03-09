@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     cprojectwaitsec.cpp \
     cprojectwaitfor.cpp \
     cprojectinterruptdecl.cpp \
-    coptions.cpp
+    coptions.cpp \
+    coptionpage.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -52,6 +53,7 @@ HEADERS += ccodeeditor.h \
     cprojectwaitsec.h \
     cprojectwaitfor.h \
     cprojectinterruptdecl.h \
-    coptions.h
+    coptions.h \
+    coptionpage.h
 RESOURCES += magnumres.qrc
 win32:RC_FILE = win_res.rc

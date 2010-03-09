@@ -7,13 +7,20 @@ class COptions_LeftBar : public QAbstractScrollArea {
 
 private:
 
-    QMap<QLabel,QVariant>   m_items;
+    QMap<QLabel*,QVariant>   m_items;
+    QWidget                  m_mainWidget;
+    QVBoxLayout              m_mainWidgetLay;
+
+    int                      m_itemDimension;
 
 public:
 
     COptions_LeftBar();
 
-    void    addItem( QPixmap* , const QVariant& );
+    void    addItem(const QPixmap& , const QVariant& );
+
+    int     itemDimension(){return m_itemDimension;}
+    void    setItemDimension(int dim);
 };
 
 class COptions : public QDialog {
