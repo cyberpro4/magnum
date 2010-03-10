@@ -114,12 +114,12 @@ void CFindWindow_Thread::run(){
             CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
 
             textToInsert += target->fileInfo().fileName() + QString( ",( ");
-            textToInsert += QString::number(block.firstLineNumber() + 1) + QString(" )");
+            textToInsert += QString::number(block.blockNumber() + 1) + QString(" )");
             textToInsert += " -> " + block.text();
 
             ite->setText( textToInsert );
             ite->m_document = target;
-            ite->m_lineNumber = block.firstLineNumber();
+            ite->m_lineNumber = block.blockNumber();
 
             m_findWindow->m_resultsView.insertItem( 0 , ite );
 
