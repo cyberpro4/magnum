@@ -31,6 +31,7 @@ private:
     QMenu                   m_menuLastOpened;
     QList<QString>          m_lastOpenedFile;
 
+    COptions                m_optionsWin;
 
     CProject*               m_projectManager;
 
