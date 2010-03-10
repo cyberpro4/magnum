@@ -30,6 +30,7 @@ private:
 
     QMenu                   m_menuLastOpened;
     QList<QString>          m_lastOpenedFile;
+    QString                 m_lastOpenDirectory;
 
 
     CProject*               m_projectManager;

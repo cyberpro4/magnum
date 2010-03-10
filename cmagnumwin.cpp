@@ -72,6 +72,8 @@ void CMagnumWin::loadSettings(){
             lastOpenedFile_Push( item );
         }
 
+        m_lastOpenDirectory = sett.value( "lastOpenDirectory" ).toString();
+
     sett.endGroup();
 }
 
@@ -87,6 +89,7 @@ void CMagnumWin::saveSettings(){
 
     sett.beginGroup("LastOpenedFile");
             sett.setValue( "List" , QStringList( m_lastOpenedFile ) );
+            sett.setValue( "lastOpenDirectory" , m_lastOpenDirectory );
 
     sett.endGroup();
 }
@@ -147,8 +150,10 @@ void CMagnumWin::loadDocument(const QString& str ){
 
     if( str.length() > 0 )
         filename = str;
-    else
-        filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
+    else {
+        filename = QFileDialog::getOpenFileName( this , "Load from file" , m_lastOpenDirectory , "*.*" );
+        m_lastOpenDirectory = QFileInfo( filename ).absoluteDir().absolutePath();
+    }
 
     if( !filename.isNull() ){
 
