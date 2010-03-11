@@ -100,8 +100,10 @@ void CMagnumWin::lastOpened_Action(QAction *act){
 
 void CMagnumWin::lastOpenedFile_Push(const QString &file){
 
-    if( file.length() < 1 || m_lastOpenedFile.indexOf( file ) != -1 )
+    if( file.length() < 1 )
         return;
+
+    m_lastOpenedFile.removeOne( file );
 
     // controllo che non contenga piu di 5 elementi
     m_lastOpenedFile.push_front( file );
