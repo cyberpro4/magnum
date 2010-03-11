@@ -4,15 +4,15 @@
 #include <QtGui>
 #include "cprojectitem.h"
 
-#define CPROJECTTREEVIEWITEM_ICON_PATH          QString("./res/icons/")
-#define CPROJECTTREEVIEWITEM_ICON_FILE_NAME     "file.png"
-#define CPROJECTTREEVIEWITEM_ICON_PROC_NAME     "proc.png"
-#define CPROJECTTREEVIEWITEM_ICON_FUNC_NAME     "func.png"
-#define CPROJECTTREEVIEWITEM_ICON_VAR_NAME      "var.png"
-#define CPROJECTTREEVIEWITEM_ICON_TYPE_NAME     "type.png"
-#define CPROJECTTREEVIEWITEM_ICON_WSEC_NAME     "wait.png"
-#define CPROJECTTREEVIEWITEM_ICON_WFOR_NAME     "waitfor.png"
-#define CPROJECTTREEVIEWITEM_ICON_INTE_NAME     "interrupt.png"
+#define CPROJECTTREEVIEWITEM_ICON_PATH          QString(":prj")
+#define CPROJECTTREEVIEWITEM_ICON_FILE_NAME     "file"
+#define CPROJECTTREEVIEWITEM_ICON_PROC_NAME     "proc"
+#define CPROJECTTREEVIEWITEM_ICON_FUNC_NAME     "func"
+#define CPROJECTTREEVIEWITEM_ICON_VAR_NAME      "var"
+#define CPROJECTTREEVIEWITEM_ICON_TYPE_NAME     "type"
+#define CPROJECTTREEVIEWITEM_ICON_WSEC_NAME     "wait"
+#define CPROJECTTREEVIEWITEM_ICON_WFOR_NAME     "waitfor"
+#define CPROJECTTREEVIEWITEM_ICON_INTE_NAME     "interrupt"
 
 class CProjectTreeViewItem:public QTreeWidgetItem{
 public:

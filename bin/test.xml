@@ -1,8 +1,8 @@
 <FORMATS>
 
-      <FORMAT NAME="digit">
-	  <REGEXP PATTERN="[ |^|\t]{1}[0-9]+(\.([0-9])+){0,1}[ |$|\t]{1}" ></REGEXP>
-	  <COLOR FOREGROUND="#ff0000" ></COLOR>
+      <FORMAT NAME="asyncexecution">
+	<REGEXP PATTERN="(^|[ \n]+)[iI][nN][tT][eE][rR][rR][uU][pP][tT][ \t]+[ \[\]\$\t\d\D\w\W]+($|[ \n]+)" ></REGEXP>
+	<COLOR FOREGROUND="#ff50ff" ></COLOR>
       </FORMAT>
      
       <FORMAT NAME="tipo1">
@@ -16,6 +16,11 @@
 	<REGEXP PATTERN="[\$]{1}([0-9_]*[a-zA-Z]+[0-9_]*)+([\[]{1}[ ]*[0-9]+[ ]*[\]]{1})*" ></REGEXP>
 	<COLOR FOREGROUND="#ff8010" ></COLOR>
      </FORMAT>
+     
+     <FORMAT NAME="digit">
+	  <REGEXP PATTERN="[ |^|\t]+[\d]+(\.([\d])+){0,1}[ |$|\t]{1}" ></REGEXP>
+	  <COLOR FOREGROUND="#ff0000" ></COLOR>
+      </FORMAT>
 
      <FORMAT NAME="statement">
 		<REGEXP PATTERN="(^|[ \n]+)[pP][tT][pP]($|[ \n]+)" ></REGEXP>

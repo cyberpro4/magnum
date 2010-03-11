@@ -19,7 +19,7 @@ QTextBlock* CProjectFile::scan( QTextBlock* b ){
         CProjectItem* pjitem = CProjectItemFactory::buildItem( m_document, block, m_parent );
         if( pjitem!=NULL ){
             m_childList.append( pjitem );
-            for( int __i = 0; __i < pjitem->blockNumber(); __i++ ){
+            for( int __i = 0; __i < pjitem->blockNumber()-1; __i++ ){
                 m_blockNumber++;
                 block = &block->next();
                 m_blockList.append( block );
