@@ -1,4 +1,5 @@
 #include "cmagnumwin.h"
+#include "coptions.h"
 
 CMagnumWin::CMagnumWin(){
 
@@ -46,6 +47,7 @@ CMagnumWin::CMagnumWin(){
     m_projectManager = new CProject( this );
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
+
 }
 
 void CMagnumWin::loadSettings(){
@@ -70,6 +72,8 @@ void CMagnumWin::loadSettings(){
             lastOpenedFile_Push( item );
         }
 
+        m_lastOpenDirectory = sett.value( "lastOpenDirectory" ).toString();
+
     sett.endGroup();
 }
 
@@ -85,6 +89,7 @@ void CMagnumWin::saveSettings(){
 
     sett.beginGroup("LastOpenedFile");
             sett.setValue( "List" , QStringList( m_lastOpenedFile ) );
+            sett.setValue( "lastOpenDirectory" , m_lastOpenDirectory );
 
     sett.endGroup();
 }
@@ -145,8 +150,10 @@ void CMagnumWin::loadDocument(const QString& str ){
 
     if( str.length() > 0 )
         filename = str;
-    else
-        filename = QFileDialog::getOpenFileName( this , "Load from file" , "" , "*.*" );
+    else {
+        filename = QFileDialog::getOpenFileName( this , "Load from file" , m_lastOpenDirectory , "*.*" );
+        m_lastOpenDirectory = QFileInfo( filename ).absoluteDir().absolutePath();
+    }
 
     if( !filename.isNull() ){
 
@@ -160,6 +167,8 @@ void CMagnumWin::loadDocument(const QString& str ){
         m_documents.append( doc );
 
     }
+
+    saveSettings();
 }
 
 void CMagnumWin::saveAllDocument(){

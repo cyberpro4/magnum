@@ -73,12 +73,6 @@ void CCodeEditor_FoldArea::mouseReleaseEvent(QMouseEvent * eve){
         }
     }
 
-    qDebug() << "here";
-    editor->resize( editor->size() );
-    editor->viewport()->resize( editor->viewport()->size() );
-    editor->viewport()->updateGeometry();
-    emit editor->blockCountChanged( editor->blockCount() );
-
     editor->viewport()->update();
     editor->lineNumberArea->update();
     editor->m_foldArea->update();

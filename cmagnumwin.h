@@ -7,6 +7,10 @@
 
 #include "cproject.h"
 
+#include "coptions.h"
+#include "copteditor.h"
+#include "coptgeneral.h"
+
 #define		SETTINGS_INI_FILENAME	"./config.conf"
 
 class CMagnumWin : public QMainWindow {
@@ -26,6 +30,7 @@ private:
 
     QMenu                   m_menuLastOpened;
     QList<QString>          m_lastOpenedFile;
+    QString                 m_lastOpenDirectory;
 
 
     CProject*               m_projectManager;

@@ -14,5 +14,7 @@
         <file alias="prjvar">res/var.png</file>
         <file alias="prjwaitfor">res/waitfor.png</file>
         <file alias="prjwait">res/wait.png</file>
+        <file alias="PROGICO">res/PROGICO.PNG</file>
+        <file alias="opt_editor">res/opt_editor.png</file>
     </qresource>
 </RCC>
