@@ -167,6 +167,8 @@ void CMagnumWin::loadDocument(const QString& str ){
         m_documents.append( doc );
 
     }
+
+    saveSettings();
 }
 
 void CMagnumWin::saveAllDocument(){
