@@ -73,6 +73,8 @@ public:
     CFindWindow_Thread( CFindWindow* wnd );
 
     void waitForSearchStop();
+
+    void nth_run();
     void run();
 
 signals:

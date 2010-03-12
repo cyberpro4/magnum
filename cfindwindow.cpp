@@ -66,7 +66,7 @@ void CFindWindow::setTargetDocument( CDocument* t ){
 
 void CFindWindow::whatChanged(const QString & text){
     m_searchThread->waitForSearchStop();
-    m_searchThread->start();
+    m_searchThread->nth_run();
 }
 
 CFindWindow_Thread::CFindWindow_Thread(CFindWindow *wnd) : QThread( 0 ){
@@ -85,6 +85,10 @@ void CFindWindow_Thread::waitForSearchStop(){
 }
 
 void CFindWindow_Thread::run(){
+    nth_run();
+}
+
+void CFindWindow_Thread::nth_run(){
 
     CDocument* target = m_findWindow->m_target;
     QRegExp	regexp( m_findWindow->m_whatLine.text() );
