@@ -29,6 +29,8 @@ signals:
 
 class COptions_LeftBar : public QAbstractScrollArea {
 
+    Q_OBJECT
+
 private:
 
     QList<COptions_Label*>   m_items;
@@ -45,6 +47,14 @@ public:
 
     int     itemDimension(){return m_itemDimension;}
     void    setItemDimension(int dim);
+
+signals:
+
+    void    itemClicked( COptionPage* );
+
+public slots:
+
+    void    label_clicked( COptionPage* );
 };
 
 
@@ -56,20 +66,36 @@ class COptions : public QDialog {
 
 private:
 
+    static  COptions*       stc_Instance;
+
     COptions_LeftBar        m_leftArea;
     QList<COptionPage*>     m_pages;
     QAbstractScrollArea     m_optArea;
+    QMap<QString,QVariant>  m_lastValuesMap;
 
 public:
 
     COptions();
+
+    static COptions*   getInstance();
     void    addPage( COptionPage* );
+
+    QVariant    getValue(const QString& );
+
+    void    showEvent(QShowEvent *);
 
 public slots:
 
     void    pageClicked( COptionPage* );
     void    applyClicked();
 
+signals:
+
+    void    optionsChanged();
+
 };
+
+#define OPTIONS     COptions::getInstance()
+#define GETOPT(a)      OPTIONS->getValue( a )
 
 #endif // COPTIONS_H

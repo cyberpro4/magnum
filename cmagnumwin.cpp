@@ -3,6 +3,8 @@
 
 CMagnumWin::CMagnumWin(){
 
+    m_optionsWin.addPage( new COptEditor() );
+
     m_documentTabs.setTabsClosable( true );
     connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
     connect( &m_documentTabs , SIGNAL(currentChanged(int)) , this , SLOT(currentDocumentChanged(int)) );

@@ -35,6 +35,10 @@ private slots:
 	void highlightCurrentLine();
 	void updateLineNumberArea(const QRect &, int);
 
+public slots:
+
+        void optionsChanged();
+
 private:
 
 	QWidget *lineNumberArea;

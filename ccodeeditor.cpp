@@ -1,4 +1,5 @@
 #include "ccodeeditor.h"
+#include "coptions.h"
 
 CCodeEditor::CCodeEditor(QWidget *parent)
 	: QPlainTextEdit(parent) {
@@ -14,12 +15,18 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	updateLineNumberAreaWidth(0);
 	highlightCurrentLine();
 
-	setFont( QFont( "Courier New" , 11 ) );
+        setFont( QFont( GETOPT("edi_fontFamily").toString() , GETOPT("edi_fontSize").toInt() ) );
 
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
 	s->loadFromFile( "test.xml" );
 
 	m_ownerDocument = NULL;
+
+        connect( OPTIONS , SIGNAL(optionsChanged()) , this , SLOT(optionsChanged()) );
+}
+
+void CCodeEditor::optionsChanged(){
+    setFont( QFont( GETOPT("edi_fontFamily").toString() , GETOPT("edi_fontSize").toInt() ) );
 }
 
 CDocument* CCodeEditor::documentOwner(){

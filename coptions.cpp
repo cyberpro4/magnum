@@ -35,6 +35,7 @@ void COptions_LeftBar::addItem( COptionPage* link ){
     COptions_Label* lbl = new COptions_Label( &m_mainWidget );
 
     lbl->setLink( link );
+    connect( lbl , SIGNAL(clicked(COptionPage*)) , this , SLOT(label_clicked(COptionPage* )));
 
     m_items.append(lbl);
 
@@ -51,7 +52,19 @@ void COptions_LeftBar::addItem( COptionPage* link ){
 
 }
 
+void COptions_LeftBar::label_clicked(COptionPage* page){
+    emit itemClicked( page );
+}
+
+COptions*   COptions::stc_Instance = 0;
+
+COptions*   COptions::getInstance(){
+    return stc_Instance;
+}
+
 COptions::COptions(){
+
+    stc_Instance = this;
 
     QVBoxLayout* vbox = new QVBoxLayout();
 
@@ -68,6 +81,7 @@ COptions::COptions(){
 
     setLayout( vbox );
 
+    connect( &m_leftArea , SIGNAL( itemClicked(COptionPage*)) , this , SLOT(pageClicked(COptionPage*)) );
     show();
 }
 
@@ -75,14 +89,13 @@ void COptions::applyClicked(){
 
     QSettings   cfg( OPTIONS_FILENAME , QSettings::IniFormat );
     COptionPage* page;
-    QMap<QString,QVariant> map;
 
     foreach( page , m_pages ){
-        page->saveSettings( map );
+        page->saveSettings( m_lastValuesMap );
 
         cfg.beginGroup( page->getUniqueKey() );
 
-        QMapIterator<QString,QVariant> i(map);
+        QMapIterator<QString,QVariant> i(m_lastValuesMap);
         while (i.hasNext()) {
             i.next();
             cfg.setValue( i.key() , i.value() );
@@ -91,15 +104,31 @@ void COptions::applyClicked(){
         cfg.endGroup();
     }
 
+    emit optionsChanged();
+
     hide();
+}
+
+void COptions::showEvent(QShowEvent *eve){
+    COptionPage* page;
+
+    foreach( page , m_pages ){
+        page->loadSettings( m_lastValuesMap );
+    }
 }
 
 void COptions::addPage(COptionPage *page){
     if( page == 0 ) return;
 
     m_pages.append( page );
-
     m_leftArea.addItem( page );
+
+    page->loadSettings( m_lastValuesMap );
+    emit optionsChanged();
+}
+
+QVariant COptions::getValue(const QString &s){
+    return m_lastValuesMap[s];
 }
 
 void COptions::pageClicked(COptionPage *pg){
@@ -109,14 +138,13 @@ void COptions::pageClicked(COptionPage *pg){
     QSettings   cfg( OPTIONS_FILENAME , QSettings::IniFormat );
     cfg.beginGroup( pg->getUniqueKey() );
 
-    QMap<QString,QVariant> map;
     QStringList list( cfg.allKeys() );
     QString slist;
 
     foreach( slist , list ){
-        map[slist] = cfg.value( slist );
+        m_lastValuesMap[slist] = cfg.value( slist );
     }
 
-    pg->loadSettings( map );
+    pg->loadSettings( m_lastValuesMap );
     m_optArea.setViewport( pg );
 }
