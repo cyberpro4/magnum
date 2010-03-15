@@ -112,9 +112,13 @@ void COptions::applyClicked(){
 void COptions::showEvent(QShowEvent *eve){
     COptionPage* page;
 
+    if( m_pages.size() == 0 ) return;
+
     foreach( page , m_pages ){
         page->loadSettings( m_lastValuesMap );
     }
+
+    pageClicked( m_pages[0] );
 }
 
 void COptions::addPage(COptionPage *page){
@@ -123,7 +127,7 @@ void COptions::addPage(COptionPage *page){
     m_pages.append( page );
     m_leftArea.addItem( page );
 
-    page->loadSettings( m_lastValuesMap );
+    pageClicked( page );
     emit optionsChanged();
 }
 
@@ -134,7 +138,6 @@ QVariant COptions::getValue(const QString &s){
 void COptions::pageClicked(COptionPage *pg){
     if( pg == 0 )return;
 
-    qDebug() << "asd";
     QSettings   cfg( OPTIONS_FILENAME , QSettings::IniFormat );
     cfg.beginGroup( pg->getUniqueKey() );
 
