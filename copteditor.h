@@ -2,13 +2,11 @@
 #define COPTEDITOR_H
 
 #include "coptionpage.h"
+#include "ui_setup_editor.h"
 
-class COptEditor : public COptionPage {
+class COptEditor : public COptionPage , private Ui::setupEditor {
 
 protected:
-
-    QComboBox       m_fontFamily;
-    QLineEdit       m_fontSize;
 
 public:
     COptEditor();
