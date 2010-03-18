@@ -37,16 +37,11 @@ private:
     QWidget                  m_mainWidget;
     QVBoxLayout              m_mainWidgetLay;
 
-    int                      m_itemDimension;
-
 public:
 
     COptions_LeftBar();
 
     void    addItem( COptionPage* );
-
-    int     itemDimension(){return m_itemDimension;}
-    void    setItemDimension(int dim);
 
 signals:
 
@@ -70,8 +65,15 @@ private:
 
     COptions_LeftBar        m_leftArea;
     QList<COptionPage*>     m_pages;
+
     QAbstractScrollArea     m_optArea;
+    QVBoxLayout             m_viewportContainer;
+
     QMap<QString,QVariant>  m_lastValuesMap;
+
+private:
+
+    void    showPage( COptionPage* );
 
 public:
 

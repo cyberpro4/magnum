@@ -1,8 +1,13 @@
 #include "coptgeneral.h"
 
 COptGeneral::COptGeneral(){
+    setupUi( this );
 }
 
-QPixmap COptGeneral::getLeftBarPixmap(){
-    return QPixmap( "lol.png" );
+void COptGeneral::loadSettings(const QMap<QString, QVariant> &values){
+
+}
+
+void COptGeneral::saveSettings(QMap<QString, QVariant> &values){
+
 }

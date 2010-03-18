@@ -8,5 +8,6 @@
         <file alias="doc_open">res/doc_open.png</file>
         <file alias="PROGICO">res/PROGICO.PNG</file>
         <file alias="opt_editor">res/opt_editor.png</file>
+        <file alias="opt_general">res/opt_general.png</file>
     </qresource>
 </RCC>

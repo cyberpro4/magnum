@@ -4,6 +4,7 @@ COptions_Label::COptions_Label(QWidget *obj) : QWidget( obj ){
     QVBoxLayout* lay = new QVBoxLayout();
 
     lay->addWidget( &m_pixmap );
+    m_pixmap.setMinimumHeight( 70 );
     lay->addWidget( &m_description );
 
     setLayout( lay );
@@ -12,7 +13,7 @@ COptions_Label::COptions_Label(QWidget *obj) : QWidget( obj ){
 void COptions_Label::setLink(COptionPage *pg){
     m_link = pg;
 
-    m_pixmap.setPixmap( pg->getLeftBarPixmap() );
+    m_pixmap.setPixmap( pg->getLeftBarPixmap().scaledToHeight( 70 ) );
     m_description.setText( pg->getLeftBarDescription() );
 }
 
@@ -23,19 +24,13 @@ void COptions_Label::mouseReleaseEvent(QMouseEvent *ev){
 COptions_LeftBar::COptions_LeftBar(){
     m_mainWidget.setLayout( &m_mainWidgetLay );
     setViewport( &m_mainWidget );
-
-    m_itemDimension = 50;
-}
-
-void COptions_LeftBar::setItemDimension(int dim){
-    m_itemDimension = dim;
 }
 
 void COptions_LeftBar::addItem( COptionPage* link ){
     COptions_Label* lbl = new COptions_Label( &m_mainWidget );
 
     lbl->setLink( link );
-    connect( lbl , SIGNAL(clicked(COptionPage*)) , this , SLOT(label_clicked(COptionPage* )));
+    connect( lbl , SIGNAL(clicked(COptionPage*)) , this , SLOT(label_clicked(COptionPage* )) , Qt::DirectConnection );
 
     m_items.append(lbl);
 
@@ -77,12 +72,19 @@ COptions::COptions(){
 
     QPushButton*     apply = new QPushButton( "Apply" );
     connect( apply , SIGNAL(clicked()) , this , SLOT(applyClicked()) );
-    vbox->addWidget( apply );
+
+    hbox = new QHBoxLayout();
+    hbox->addStretch();
+    hbox->addWidget( apply );
+    vbox->addLayout( hbox );
 
     setLayout( vbox );
 
+    QWidget* wid = new QWidget();
+    wid->setLayout( &m_viewportContainer );
+    m_optArea.setViewport( wid );
+
     connect( &m_leftArea , SIGNAL( itemClicked(COptionPage*)) , this , SLOT(pageClicked(COptionPage*)) );
-    show();
 }
 
 void COptions::applyClicked(){
@@ -114,10 +116,6 @@ void COptions::showEvent(QShowEvent *eve){
 
     if( m_pages.size() == 0 ) return;
 
-    foreach( page , m_pages ){
-        page->loadSettings( m_lastValuesMap );
-    }
-
     pageClicked( m_pages[0] );
 }
 
@@ -126,6 +124,7 @@ void COptions::addPage(COptionPage *page){
 
     m_pages.append( page );
     m_leftArea.addItem( page );
+    m_viewportContainer.addWidget( page );
 
     pageClicked( page );
     emit optionsChanged();
@@ -133,6 +132,17 @@ void COptions::addPage(COptionPage *page){
 
 QVariant COptions::getValue(const QString &s){
     return m_lastValuesMap[s];
+}
+
+void COptions::showPage(COptionPage *pg){
+    COptionPage* val;
+
+    foreach( val , m_pages ){
+        if( val == pg )
+            val->show();
+        else
+            val->hide();
+    }
 }
 
 void COptions::pageClicked(COptionPage *pg){
@@ -149,5 +159,6 @@ void COptions::pageClicked(COptionPage *pg){
     }
 
     pg->loadSettings( m_lastValuesMap );
-    m_optArea.setViewport( pg );
+
+    showPage( pg );
 }
