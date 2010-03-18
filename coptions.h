@@ -66,6 +66,10 @@ private:
     COptions_LeftBar        m_leftArea;
     QList<COptionPage*>     m_pages;
 
+    // L abstract scrollarea contiene il m_viewportContainer
+    // che a sua volta contiene tutte le pagine aggiunte
+    // al dialogo. A seconda di quale si clicchi verranno
+    // fatte sparire le altre e showata l interessata.
     QAbstractScrollArea     m_optArea;
     QVBoxLayout             m_viewportContainer;
 
@@ -73,6 +77,8 @@ private:
 
 private:
 
+    // Metodo corretto per far apparire una pagina
+    // in particolare.
     void    showPage( COptionPage* );
 
 public:
