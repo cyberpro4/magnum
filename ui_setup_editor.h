@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'setup_editor.ui'
 **
-** Created: Mon 15. Mar 14:35:28 2010
+** Created: Thu 18. Mar 11:46:16 2010
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

@@ -27,7 +27,7 @@ signals:
 
 };
 
-class COptions_LeftBar : public QAbstractScrollArea {
+class COptions_LeftBar : public QScrollArea {
 
     Q_OBJECT
 
@@ -70,7 +70,7 @@ private:
     // che a sua volta contiene tutte le pagine aggiunte
     // al dialogo. A seconda di quale si clicchi verranno
     // fatte sparire le altre e showata l interessata.
-    QAbstractScrollArea     m_optArea;
+    QScrollArea             m_optArea;
     QVBoxLayout             m_viewportContainer;
 
     QMap<QString,QVariant>  m_lastValuesMap;

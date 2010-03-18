@@ -23,7 +23,9 @@ void COptions_Label::mouseReleaseEvent(QMouseEvent *ev){
 
 COptions_LeftBar::COptions_LeftBar(){
     m_mainWidget.setLayout( &m_mainWidgetLay );
-    setViewport( &m_mainWidget );
+    setWidget( &m_mainWidget );
+    setWidgetResizable( true );
+    setMaximumWidth( 110 );
 }
 
 void COptions_LeftBar::addItem( COptionPage* link ){
@@ -82,9 +84,12 @@ COptions::COptions(){
 
     QWidget* wid = new QWidget();
     wid->setLayout( &m_viewportContainer );
-    m_optArea.setViewport( wid );
+    m_optArea.setWidget( wid );
+    m_optArea.setWidgetResizable( true );
 
     connect( &m_leftArea , SIGNAL( itemClicked(COptionPage*)) , this , SLOT(pageClicked(COptionPage*)) );
+
+    resize( QSize( 800 , 600 ) );
 }
 
 void COptions::applyClicked(){
