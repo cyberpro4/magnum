@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'setup_editor.ui'
 **
-** Created: Thu 18. Mar 11:46:16 2010
+** Created: Thu 18. Mar 17:18:47 2010
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -52,6 +52,11 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         uiFontGroupBox = new QGroupBox(setupEditor);
         uiFontGroupBox->setObjectName(QString::fromUtf8("uiFontGroupBox"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(uiFontGroupBox->sizePolicy().hasHeightForWidth());
+        uiFontGroupBox->setSizePolicy(sizePolicy);
         verticalLayoutWidget_2 = new QWidget(uiFontGroupBox);
         verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
         verticalLayoutWidget_2->setGeometry(QRect(10, 20, 431, 61));
@@ -83,6 +88,8 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout_6);
 
+        verticalLayoutWidget_2->raise();
+        uiFontSize->raise();
 
         verticalLayout->addWidget(uiFontGroupBox);
 
