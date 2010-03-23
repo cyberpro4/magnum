@@ -24,11 +24,6 @@ void CCodeEditor_FoldArea::paintEvent(QPaintEvent* event){
         opt.rect = QRect( 0 , top , width() , bottom - top );
         opt.state = QStyle::State_None;
 
-        if( m_hoverLine == block.firstLineNumber() ){
-            opt.state |= QStyle::State_MouseOver;
-            qDebug() << "HOVER";
-        }
-
         if (block.isVisible() && bottom >= event->rect().top() && !block.next().isVisible() ) {
             opt.state |= QStyle::State_Item | QStyle::State_Children;
         }
