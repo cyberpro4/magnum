@@ -109,6 +109,8 @@ void CFindWindow_Thread::nth_run(){
     QTextBlock block = target->editor()->document()->firstBlock();
     QString textToInsert;
 
+    regexp.setCaseSensitivity( Qt::CaseInsensitive );
+
     while( block.isValid() && !m_forceStopSearch ){
 
         if( block.text().indexOf( regexp ) != -1 ){
