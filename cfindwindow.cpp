@@ -18,7 +18,7 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
     connect( &m_whatLine , SIGNAL(textChanged(const QString&)) , (QDockWidget*)this , SLOT(whatChanged(const QString& )));
 
-    connect( &m_resultsView , SIGNAL(itemDoubleClicked(QListWidgetItem*)) , this , SLOT(resultItemDClicked(QListWidgetItem*)));
+    connect( &m_resultsView , SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)) , this , SLOT(resultItemDClicked(QTreeWidgetItem*,int)));
     connect( this , SIGNAL(clearList()) , &m_resultsView , SLOT(clear()) );
 
     QWidget* temp = new QWidget( );
@@ -45,8 +45,8 @@ void CFindWindow::loadMovie(bool on){
         m_searchInProgressMovie.stop();
 }
 
-void CFindWindow::resultItemDClicked(QListWidgetItem *item ){
-    CFindWindow_ListItem* ite = dynamic_cast<CFindWindow_ListItem*>(item);
+void CFindWindow::resultItemDClicked(QTreeWidgetItem *item ,int c ){
+    CFindWindow_TreeItem* ite = dynamic_cast<CFindWindow_TreeItem*>(item);
     if( ite != 0 ){
         emit goTo(ite->m_document,ite->m_lineNumber);
     }
@@ -93,10 +93,7 @@ void CFindWindow_Thread::nth_run(){
     CDocument* target = m_findWindow->m_target;
     QRegExp	regexp( m_findWindow->m_whatLine.text() );
 
-    QListWidgetItem* item_to_del = 0;
-    while( (item_to_del = m_findWindow->m_resultsView.takeItem( 0 )) != 0 ){
-        delete item_to_del;
-    }
+    m_findWindow->m_resultsView.clear();
 
     if( target == 0 || !regexp.isValid() || m_findWindow->m_whatLine.text().length() < 1 ){
         return;
@@ -104,12 +101,15 @@ void CFindWindow_Thread::nth_run(){
 
     emit loadMovie(true);
 
-    //emit m_findWindow->clearList();
 
     QTextBlock block = target->editor()->document()->firstBlock();
     QString textToInsert;
 
     regexp.setCaseSensitivity( Qt::CaseInsensitive );
+
+    CFindWindow_TreeItem* main_ite = new CFindWindow_TreeItem( 0 );
+    main_ite->setText( 0 , target->editor()->documentOwner()->fileInfo().fileName() );
+    m_findWindow->m_resultsView.insertTopLevelItem( 0 , main_ite );
 
     while( block.isValid() && !m_forceStopSearch ){
 
@@ -117,17 +117,16 @@ void CFindWindow_Thread::nth_run(){
 
             textToInsert = "";
 
-            CFindWindow_ListItem* ite = new CFindWindow_ListItem( &m_findWindow->m_resultsView );
+            CFindWindow_TreeItem* ite = new CFindWindow_TreeItem();
 
-            textToInsert += target->fileInfo().fileName() + QString( ",( ");
-            textToInsert += QString::number(block.blockNumber() + 1) + QString(" )");
-            textToInsert += " -> " + block.text();
+            textToInsert += QString::number(block.blockNumber() + 1) + QString(", ");
+            textToInsert += block.text();
 
-            ite->setText( textToInsert );
+            ite->setText( 0 , textToInsert );
             ite->m_document = target;
             ite->m_lineNumber = block.blockNumber();
 
-            m_findWindow->m_resultsView.insertItem( 0 , ite );
+            main_ite->addChild( ite );
 
         }
 
@@ -139,9 +138,9 @@ void CFindWindow_Thread::nth_run(){
     m_findWindow->m_resultsView.update();
 }
 
-CFindWindow_ListItem::CFindWindow_ListItem(QListWidget *parent, int type) : QListWidgetItem( parent , type ){
+CFindWindow_TreeItem::CFindWindow_TreeItem(QTreeWidgetItem *parent, int type) : QTreeWidgetItem( parent , type ){
 }
 
-CFindWindow_ListItem::~CFindWindow_ListItem(){
+CFindWindow_TreeItem::~CFindWindow_TreeItem(){
 
 }

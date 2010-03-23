@@ -16,7 +16,7 @@ class CFindWindow : public QDockWidget {
 protected:
 
     QLineEdit       m_whatLine;
-    QListWidget     m_resultsView;
+    QTreeWidget     m_resultsView;
 
     CDocument*		    m_target;
 
@@ -40,22 +40,22 @@ signals:
 
 public slots:
 
-    void resultItemDClicked( QListWidgetItem* );
+    void resultItemDClicked( QTreeWidgetItem* ,int  );
     void loadMovie(bool on);
 
     void whatChanged( const QString& );
 
 };
 
-class CFindWindow_ListItem : public QListWidgetItem {
+class CFindWindow_TreeItem : public QTreeWidgetItem {
 
 public:
 
     CDocument*      m_document;
     int             m_lineNumber;
 
-    CFindWindow_ListItem(QListWidget * parent = 0, int type = Type);
-    ~CFindWindow_ListItem();
+    CFindWindow_TreeItem(QTreeWidgetItem * parent = 0, int type = Type);
+    ~CFindWindow_TreeItem();
 };
 
 class CFindWindow_Thread : public QThread {
