@@ -13,6 +13,8 @@ private:
 
     CCodeEditor*    editor;
 
+    long            m_hoverLine;
+
 public:
     CCodeEditor_FoldArea(QWidget *parent = 0);
 
@@ -21,6 +23,7 @@ public:
     int	foldAreaWidth();
 
     void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
 signals:
 
