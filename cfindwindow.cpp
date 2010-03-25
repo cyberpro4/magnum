@@ -20,6 +20,9 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
     connect( &m_resultsView , SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)) , this , SLOT(resultItemDClicked(QTreeWidgetItem*,int)));
     connect( this , SIGNAL(clearList()) , &m_resultsView , SLOT(clear()) );
+    m_resultsView.setColumnCount( 2 );
+    m_resultsView.setHeaderLabels( QStringList() << tr("Text") << tr("Line") );
+    m_resultsView.header()->setStretchLastSection( false );
 
     QWidget* temp = new QWidget( );
     temp->setLayout(vbox);
@@ -103,7 +106,8 @@ void CFindWindow_Thread::nth_run(){
 
 
     QTextBlock block = target->editor()->document()->firstBlock();
-    QString textToInsert;
+    QFontMetrics fmetric( m_findWindow->m_resultsView.font() );
+    int     final_columnWidth = 0;
 
     regexp.setCaseSensitivity( Qt::CaseInsensitive );
 
@@ -115,14 +119,15 @@ void CFindWindow_Thread::nth_run(){
 
         if( block.text().indexOf( regexp ) != -1 ){
 
-            textToInsert = "";
-
             CFindWindow_TreeItem* ite = new CFindWindow_TreeItem();
 
-            textToInsert += QString::number(block.blockNumber() + 1) + QString(", ");
-            textToInsert += block.text();
+            ite->setText( 0 , block.text() );
+            ite->setText( 1 , QString::number(block.blockNumber() + 1) );
 
-            ite->setText( 0 , textToInsert );
+            if( final_columnWidth <
+                fmetric.width( QString::number(block.blockNumber() + 1) ) )
+                final_columnWidth = fmetric.width( QString::number(block.blockNumber() + 1) );
+
             ite->m_document = target;
             ite->m_lineNumber = block.blockNumber();
 
@@ -133,9 +138,17 @@ void CFindWindow_Thread::nth_run(){
         block = block.next();
     }
 
+    /*int wcl = m_findWindow->m_resultsView.columnWidth( 0 ) +m_findWindow->m_resultsView.columnWidth( 1 );
+    m_findWindow->m_resultsView.setColumnWidth( 0 , wcl - final_columnWidth );*/
+    m_findWindow->m_resultsView.setColumnWidth( 1 , final_columnWidth );
+
      emit loadMovie(false);
 
     m_findWindow->m_resultsView.update();
+
+    if( 1 ){ // Se un solo documento
+        main_ite->setExpanded( true );
+    }
 }
 
 CFindWindow_TreeItem::CFindWindow_TreeItem(QTreeWidgetItem *parent, int type) : QTreeWidgetItem( parent , type ){
