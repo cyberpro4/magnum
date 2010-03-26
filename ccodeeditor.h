@@ -8,6 +8,8 @@
 class CCodeEditor_LineNumberArea;
 class CDocument;
 
+#define     SYNTAX_SYSTEMFILE       "system.xml"
+
 class CCodeEditor : public QPlainTextEdit {
 
 	Q_OBJECT
