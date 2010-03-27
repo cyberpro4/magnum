@@ -7,6 +7,11 @@ CProjectFunction::CProjectFunction( CPROJECTITEM_PARAMS ):CProjectItem(CPROJECTI
     m_label = s;
     m_type = CPROJECTITEM_TYPE_FUNC;
     qDebug() << "new item function: " << m_label;
+
+    m_functionName = m_label.left( m_label.indexOf("(") );
+    m_functionName = m_functionName.split( " ", QString::SkipEmptyParts ).at(1);
+    qDebug() << "----------new item function title: " << m_functionName;
+
     scan( block );
 }
 
@@ -50,4 +55,8 @@ bool CProjectFunction::isIt( QTextBlock* block ){
     QString s = block->text();
     CPROJECTITEM_REMOVE_STR_COMMENT(s)
     return s.contains( startExpr );
+}
+
+QString CProjectFunction::getFunctionName(){
+    return m_functionName;
 }

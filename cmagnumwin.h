@@ -6,6 +6,7 @@
 #include "cfindwindow.h"
 
 #include "cproject.h"
+#include "cflowpointer.h"
 
 #include "coptions.h"
 #include "copteditor.h"
@@ -34,6 +35,7 @@ private:
 
 
     CProject*               m_projectManager;
+    CFlowPointer*           m_flowPointer;
 
     void lastOpenedFile_Push( const QString& file );
 

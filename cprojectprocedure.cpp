@@ -7,6 +7,11 @@ CProjectProcedure::CProjectProcedure( CPROJECTITEM_PARAMS ):CProjectItem( CPROJE
     m_label = s;
     m_type = CPROJECTITEM_TYPE_PROC;
     qDebug() << "new item procedure: " << m_label;
+
+    m_procedureName = m_label.left( m_label.indexOf("(") );
+    m_procedureName = m_procedureName.split( " ", QString::SkipEmptyParts ).at(0);
+    qDebug() << "___________new item procedure title: " << m_procedureName;
+
     scan( block );
 }
 
@@ -51,4 +56,9 @@ bool CProjectProcedure::isIt( QTextBlock* block ){
     QString s = block->text();
     CPROJECTITEM_REMOVE_STR_COMMENT(s)
     return s.contains( startExpr );
+}
+
+
+QString CProjectProcedure::getProcedureName(){
+    return m_procedureName;
 }

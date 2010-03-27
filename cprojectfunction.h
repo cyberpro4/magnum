@@ -12,7 +12,11 @@ public:
     QTextBlock* scan( QTextBlock* b );
     static bool isIt( QTextBlock* block );
 
+    QString getFunctionName();
+
 private:
+    QString                 m_functionName; //solo nome della funzione
+
     CProjectType*           m_returnType;
     QList<CProjectType*>    m_paramsList;
 

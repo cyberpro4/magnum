@@ -78,3 +78,7 @@ void CProject::treeViewItemClicked( QTreeWidgetItem * item, int column ){
     emit gotoDocumentLine(((CProjectTreeViewItem*)item)->projectItem()->document(),
                           ((CProjectTreeViewItem*)item)->projectItem()->firstLineIndex());
 }
+
+QMap<CDocument*,CProjectFile*>* CProject::getProjectDocumentMap(){
+    return &m_documentMap;
+}

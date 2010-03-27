@@ -48,6 +48,9 @@ CMagnumWin::CMagnumWin(){
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
 
+    m_flowPointer = new CFlowPointer( m_projectManager, this );
+    addDockWidget( Qt::RightDockWidgetArea, m_flowPointer );
+    connect( m_flowPointer, SIGNAL(gotoDocumentLinePropagate(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
 }
 
 void CMagnumWin::loadSettings(){
@@ -162,6 +165,7 @@ void CMagnumWin::loadDocument(const QString& str ){
         CDocument* doc = new CDocument( filename );
 
         m_projectManager->documentPush( doc );
+        m_flowPointer->setCurrentDocument( doc );
 
         lastOpenedFile_Push( filename );
 

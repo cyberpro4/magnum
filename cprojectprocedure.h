@@ -12,7 +12,10 @@ public:
     QTextBlock* scan( QTextBlock* b );
     static bool isIt( QTextBlock* block );
 
+    QString getProcedureName();
 private:
+    QString                 m_procedureName;
+
     QList<CProjectType*>    m_paramsList;
 
 };

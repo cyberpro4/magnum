@@ -16,5 +16,6 @@
         <file alias="prjwait">res/wait.png</file>
         <file alias="PROGICO">res/PROGICO.PNG</file>
         <file alias="opt_editor">res/opt_editor.png</file>
+        <file alias="plus">res/list-add.png</file>
     </qresource>
 </RCC>
