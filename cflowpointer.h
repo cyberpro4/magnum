@@ -47,6 +47,11 @@ public slots:
     void updateVisibility();       //nasconde i fold non checked e imposta luminosi quelli in cui ci si trova con il puntatore
     void forceVisibility();         //reimposta visibility per tutti gli items del flow pointer
 
+    void documentLineChanged();   //segnale in arrivo dal document ad indicare che la linea corrente è cambiata
+
+    void setCheckable();
+    void setUnCheckable();
+
 signals:
     void gotoDocumentLinePropagate(CDocument*,int);
 

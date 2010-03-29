@@ -12,6 +12,15 @@ CFlowPointer::CFlowPointer( CProject* project, QWidget* parent ):QDockWidget( "F
     QAction* action = new QAction( QIcon(":plus"), "Force visibility", tools );
     connect( action, SIGNAL(triggered()), this, SLOT(forceVisibility()) );
     tools->addAction( action );
+
+    action = new QAction( QIcon(":flowCheckable"), "Set checkable", tools );
+    connect( action, SIGNAL(triggered()), this, SLOT(setCheckable()) );
+    tools->addAction( action );
+
+    action = new QAction( QIcon(":flowUnCheckable"), "Set uncheckable", tools );
+    connect( action, SIGNAL(triggered()), this, SLOT(setUnCheckable()) );
+    tools->addAction( action );
+
     mainLayout->addWidget( tools );
 
     m_rootItem = NULL;
@@ -41,7 +50,7 @@ void CFlowPointer::scanProjectFunctionsItems(){
 QString CFlowPointer::buildProjectItemRegExpr( CProjectItem* item ){
     QString funcName = getProjectItemLabel( item );
 
-    QString stringExpr = QString("[ \\t(,)\\[\\]=]{1}%1[ \\t]*[(]{1}").arg( funcName );
+    QString stringExpr = QString("[ \\W\\t(,)\\[\\]=]*%1[ \\t]*[(]{1}").arg( funcName );
     return stringExpr;
 }
 void CFlowPointer::recursiveScanFunctions( CProjectItem* item ){
@@ -173,4 +182,18 @@ void CFlowPointer::forceVisibility(){
     if( m_rootItem != NULL )
         m_rootItem->forceVisibility();
     //scrollArea->adjustSize();
+}
+
+void CFlowPointer::documentLineChanged(){
+    if( m_rootItem != NULL )
+        m_rootItem->checkIfContainsLineNumber( m_currentDocument->editor()->textCursor().blockNumber() );
+}
+
+void CFlowPointer::setCheckable(){
+    m_rootItem->setCheckability( true );
+    updateVisibility();
+}
+
+void CFlowPointer::setUnCheckable(){
+    m_rootItem->setCheckability( false );
 }

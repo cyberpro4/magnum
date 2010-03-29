@@ -166,6 +166,7 @@ void CMagnumWin::loadDocument(const QString& str ){
 
         m_projectManager->documentPush( doc );
         m_flowPointer->setCurrentDocument( doc );
+        connect( doc->editor(), SIGNAL(cursorPositionChanged()), m_flowPointer, SLOT(documentLineChanged()));
 
         lastOpenedFile_Push( filename );
 

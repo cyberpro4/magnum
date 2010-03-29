@@ -32,12 +32,48 @@ CFlowPointerItem::CFlowPointerItem( CProjectItem* projectItem, int callLine ){  
 
     this->setCheckable( true );
 
-    this->setMinimumHeight( QFontMetrics(this->font()).height() * 3 );
+    this->setMinimumHeight( QFontMetrics(this->font()).height() * 1 );
     this->setMinimumWidth( QFontMetrics(this->font()).averageCharWidth() * (m_label.length()+5) );
+
+    m_activePalette = QPalette(QColor(255,190,50));
+    m_callLinePalette = QPalette(QColor(255,40,10));
 }
+
+
+void CFlowPointerItem::checkIfContainsLineNumber( int line ){
+    m_active = ((line+1) >= m_startLine && (line+1)<= m_endLine);
+    if( m_active ){
+        this->setPalette( m_activePalette );
+    }else{
+        this->setPalette( m_basePalette );
+    }
+
+    if( line == m_callLine ){
+        this->setPalette( m_callLinePalette );
+    }
+
+    CFlowPointerItem* item;
+    foreach( item, m_childList ){
+        item->checkIfContainsLineNumber( line );
+    }
+}
+
+
+void CFlowPointerItem::setBasePalette( QPalette p ){
+    m_basePalette = p;
+}
+
 
 CProjectItem* CFlowPointerItem::projectItem(){
     return m_projectItem;
+}
+
+void CFlowPointerItem::setCheckability( bool checkable ){
+    this->setCheckable( checkable );
+    CFlowPointerItem* item;
+    foreach( item, m_childList ){
+        item->setCheckability( checkable );
+    }
 }
 
 void CFlowPointerItem::updateVisibility(){
@@ -69,6 +105,7 @@ void CFlowPointerItem::addChildItem( CFlowPointerItem* child ){
     blue=(blue+1)*scaleFactor;
 
     child->setPalette(QPalette(QColor(red,green,blue)));
+    child->setBasePalette(QPalette(QColor(red,green,blue)));
 
     m_childList.append( child );
     this->layout()->addWidget( child );

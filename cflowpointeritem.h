@@ -21,6 +21,12 @@ public:
     void updateVisibility();
     void forceVisibility();
 
+    void setBasePalette( QPalette p );
+
+    void setCheckability( bool checkable );
+
+    void checkIfContainsLineNumber( int line );
+
 protected:
     void mousePressEvent ( QMouseEvent * event );
     void mouseMoveEvent ( QMouseEvent * event );
@@ -38,6 +44,10 @@ private:
     bool                m_active;           //flag che indica se ci si trova nella relativa funzione
 
     QList<CFlowPointerItem*>    m_childList;//sotto items
+
+    QPalette            m_basePalette;      //colore di base
+    QPalette            m_activePalette;      //colore se ci si trova nella dichiarazione
+    QPalette            m_callLinePalette;      //colore se ci si trova sulla chiamata
 
 signals:
     void gotoDocumentLine( CDocument* document, int line );
