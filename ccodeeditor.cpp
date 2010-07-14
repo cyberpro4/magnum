@@ -19,6 +19,9 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
 	s->loadFromFile( "test.xml" );
 
+        s = new CFileSyntaxHighlighter( this->document() );
+        s->loadFromFile( SYNTAX_SYSTEMFILE );
+
 	m_ownerDocument = NULL;
 }
 
