@@ -40,21 +40,24 @@ CFlowPointerItem::CFlowPointerItem( CProjectItem* projectItem, int callLine ){  
 }
 
 
-void CFlowPointerItem::checkIfContainsLineNumber( int line ){
-    m_active = ((line+1) >= m_startLine && (line+1)<= m_endLine);
-    if( m_active ){
-        this->setPalette( m_activePalette );
-    }else{
-        this->setPalette( m_basePalette );
-    }
+void CFlowPointerItem::checkIfContainsLineNumber( int line, CDocument* doc ){
+    if( doc == m_projectItem->document() ){
 
-    if( line == m_callLine ){
-        this->setPalette( m_callLinePalette );
+	m_active = ((line+1) >= m_startLine && (line+1)<= m_endLine);
+	if( m_active ){
+	    this->setPalette( m_activePalette );
+	}else{
+	    this->setPalette( m_basePalette );
+	}
+
+	if( line == m_callLine ){
+	    this->setPalette( m_callLinePalette );
+	}
     }
 
     CFlowPointerItem* item;
     foreach( item, m_childList ){
-        item->checkIfContainsLineNumber( line );
+	item->checkIfContainsLineNumber( line, doc );
     }
 }
 

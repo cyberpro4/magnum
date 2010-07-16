@@ -50,7 +50,7 @@ void CFlowPointer::scanProjectFunctionsItems(){
 QString CFlowPointer::buildProjectItemRegExpr( CProjectItem* item ){
     QString funcName = getProjectItemLabel( item );
 
-    QString stringExpr = QString("[ \\W\\t(,)\\[\\]=]*%1[ \\t]*[(]{1}").arg( funcName );
+    QString stringExpr = QString("[ \\W\\t(,)\\[\\]=]{1}%1[ \\t]*[(]{1}").arg( funcName );
     return stringExpr;
 }
 void CFlowPointer::recursiveScanFunctions( CProjectItem* item ){
@@ -80,32 +80,37 @@ QString CFlowPointer::getProjectItemLabel( CProjectItem* item ){
     }
 }
 
-void CFlowPointer::setCurrentDocument( CDocument* document ){
-    scanProjectFunctionsItems();
 
+void CFlowPointer::updateTreeView( CDocument* document ){
     //scanna il documento in cerca dei simboli di funzioni e procedure conosciuti nel progetto
     m_currentDocument = document;
 
     CProjectFile* prjFile = m_project->getProjectDocumentMap()->value( m_currentDocument, NULL );
     if( prjFile != NULL ){
-        //CLEAR ALL EXISTING FLOW POINTER ITEMS
-        if( m_rootItem != NULL ){
-            m_rootItem->hide();
-            delete scrollArea->takeWidget();
-            m_rootItem = NULL;
-        }
+	//CLEAR ALL EXISTING FLOW POINTER ITEMS
+	if( m_rootItem != NULL ){
+	    m_rootItem->hide();
+	    delete scrollArea->takeWidget();
+	    m_rootItem = NULL;
+	}
 
-        m_rootItem = new CFlowPointerItem( getRootFunction( prjFile ) );
-        connect( m_rootItem, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(gotoDocumentLine(CDocument*,int)) );
-        connect( m_rootItem, SIGNAL(toggled(bool)), this, SLOT(updateVisibility()) );
-        //<<<<<<<<<<<<<<<COSTRUZIONE DEL FLOW POINTER>>>>>>>>>>>>>>>>>
-        recursiveBuildFlowPointerTree( m_rootItem );
+	m_rootItem = new CFlowPointerItem( getRootFunction( prjFile ) );
+	connect( m_rootItem, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(gotoDocumentLine(CDocument*,int)) );
+	connect( m_rootItem, SIGNAL(toggled(bool)), this, SLOT(updateVisibility()) );
+	//<<<<<<<<<<<<<<<COSTRUZIONE DEL FLOW POINTER>>>>>>>>>>>>>>>>>
+	recursiveBuildFlowPointerTree( m_rootItem );
 
-        scrollArea->setWidget( m_rootItem );
-        scrollArea->ensureWidgetVisible( m_rootItem );
+	scrollArea->setWidget( m_rootItem );
+	scrollArea->ensureWidgetVisible( m_rootItem );
 
-        m_rootItem->show();
+	m_rootItem->show();
     }
+}
+
+void CFlowPointer::setCurrentDocument( CDocument* document ){
+    scanProjectFunctionsItems();
+
+    updateTreeView( document );
 }
 
 CProjectItem* CFlowPointer::getRootFunction( CProjectFile* file ){
@@ -114,6 +119,7 @@ CProjectItem* CFlowPointer::getRootFunction( CProjectFile* file ){
     foreach( it, *file->childList() ){
 
         if(( it->itemType() == CPROJECTITEM_TYPE_PROC ) || ( it->itemType() == CPROJECTITEM_TYPE_FUNC )){
+	    //QMessageBox::information( this, "ROOT FLOW FUNCTION", it->label());
             return (CProjectProcedure*)it;
         }
     }
@@ -130,19 +136,27 @@ void CFlowPointer::recursiveBuildFlowPointerTree( CFlowPointerItem* momItem ){
     CProjectItem* prjItem;
     CFlowPointerItem* flowItem;
 
-    while( block.next().isValid() && block.firstLineNumber() < momItem->lastLineNumber() ){
+    while( block.next().isValid() &&
+	   block.next().firstLineNumber() < momItem->lastLineNumber()){
+
         block = block.next();
+	qDebug()<< "____block line:" << block.firstLineNumber() << "___mom line:" << momItem->firstLineNumber();
         //GET PROJECT ITEM FROM LINE -- CONTROLLA SE LA LINEA CORRENTE CONTIENE UNA CHIAMATA A FUNZIONE VALIDA
         /*if( block.text().contains( endExpr ) ){
             break;
         }*/
         prjItem = getLineContainedProjectItem( block.text() );
-        if( prjItem != NULL ){
-            flowItem = new CFlowPointerItem( prjItem, block.firstLineNumber() );
-            connect( flowItem, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(gotoDocumentLine(CDocument*,int)) );
-            connect( flowItem, SIGNAL(toggled(bool)), this, SLOT(updateVisibility()) );
-            momItem->addChildItem( flowItem );
-            recursiveBuildFlowPointerTree( flowItem );
+	if( prjItem != NULL ){
+	    if( prjItem->label() != momItem->projectItem()->label() ){
+		flowItem = new CFlowPointerItem( prjItem, block.firstLineNumber() );
+		connect( flowItem, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(gotoDocumentLine(CDocument*,int)) );
+		connect( flowItem, SIGNAL(toggled(bool)), this, SLOT(updateVisibility()) );
+
+		//if( (flowItem->firstLineNumber()<momItem->firstLineNumber()||flowItem->firstLineNumber()>momItem->lastLineNumber()) ){
+		    momItem->addChildItem( flowItem );
+		    recursiveBuildFlowPointerTree( flowItem );
+		//}
+	    }
         }
 
         if( !block.isValid() )break;
@@ -155,10 +169,11 @@ CProjectItem* CFlowPointer::getLineContainedProjectItem( QString lineText ){
     if( lineText.contains( '(') ){
         CPROJECTITEM_REMOVE_STR_COMMENT(lineText);
 
-        if( lineText.trimmed().length() > 2 );
+	//if( lineText.trimmed().length() > 2 )
         foreach( expression, expressions ){
             QRegExp reg( expression, Qt::CaseInsensitive );
             if( reg.indexIn( lineText ) != -1 ){
+		qDebug()<<expression<< "___matches___"<<lineText;
                 return m_projectFunctionItemsRegExpr.value( expression );
             }
         }
@@ -186,7 +201,7 @@ void CFlowPointer::forceVisibility(){
 
 void CFlowPointer::documentLineChanged(){
     if( m_rootItem != NULL )
-        m_rootItem->checkIfContainsLineNumber( m_currentDocument->editor()->textCursor().blockNumber() );
+	m_rootItem->checkIfContainsLineNumber( m_currentDocument->editor()->textCursor().blockNumber(), m_currentDocument );
 }
 
 void CFlowPointer::setCheckable(){

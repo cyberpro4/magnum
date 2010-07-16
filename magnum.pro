@@ -65,3 +65,6 @@ HEADERS += ccodeeditor.h \
     cflowpointeritem.h
 RESOURCES += magnumres.qrc
 win32:RC_FILE = win_res.rc
+
+QMAKE_LFLAGS_DEBUG += -Wl,--print-map
+QMAKE_LFLAGS_RELEASE += -Wl,--print-map

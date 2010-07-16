@@ -25,7 +25,7 @@ public:
 
     void setCheckability( bool checkable );
 
-    void checkIfContainsLineNumber( int line );
+    void checkIfContainsLineNumber( int line, CDocument* doc );
 
 protected:
     void mousePressEvent ( QMouseEvent * event );

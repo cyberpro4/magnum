@@ -17,6 +17,8 @@ CProject::CProject( QWidget* parent ):QDockWidget( "Project", parent ){
 }
 
 void CProject::documentPush( CDocument* document ){
+    if( document == NULL )return;
+
     m_documentMap.insert( document,
                           new CProjectFile(
                                     document->fileInfo().absoluteFilePath(),
@@ -50,6 +52,7 @@ void CProject::refreshTreeView(){
     m_treeView.clear();
 
     const QList<CProjectFile*> fileList = m_documentMap.values();
+
     CProjectItem* item;
     foreach( item, fileList ){
         CProjectTreeViewItem* newTreeItem = new CProjectTreeViewItem( item, &m_treeView );

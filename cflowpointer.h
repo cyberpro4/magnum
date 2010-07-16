@@ -11,6 +11,8 @@ class CFlowPointer:public QDockWidget{
 public:
     CFlowPointer( CProject* project, QWidget* parent );
 
+    void	updateTreeView( CDocument* document );
+
     void        setCurrentDocument( CDocument* document );
 
     void        scanProjectFunctionsItems();

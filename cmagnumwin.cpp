@@ -132,8 +132,14 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
         return;
     }
 
-    m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
+    CCodeEditor* edit = ((CCodeEditor*)m_documentTabs.widget( tabIndex ));
+    m_findWidget->setTargetDocument( edit->documentOwner() );
 
+    if( edit->document()->blockCount() > 1 ){
+	//m_projectManager->documentPush( edit->documentOwner() );
+	//m_flowPointer->updateTreeView( edit->documentOwner() );
+	m_flowPointer->setCurrentDocument( edit->documentOwner() );
+    }
 }
 
 void CMagnumWin::testEvent(){
