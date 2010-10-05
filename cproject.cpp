@@ -1,6 +1,9 @@
 #include "cproject.h"
 
 CProject::CProject( QWidget* parent ):QDockWidget( "Project", parent ){
+
+    setObjectName( "CProject" );
+
     this->setAllowedAreas( Qt::AllDockWidgetAreas );
 
     QWidget* mainContainer = new QWidget();

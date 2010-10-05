@@ -2,6 +2,8 @@
 
 CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
+    setObjectName( "CFindWindow" );
+
     QVBoxLayout*    vbox = new QVBoxLayout();
 
     QHBoxLayout* whatlay = new QHBoxLayout();

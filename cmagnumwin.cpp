@@ -27,6 +27,8 @@ CMagnumWin::CMagnumWin(){
 
     setMenuBar( &m_mainMenu );
 
+    m_mainToolbar.setObjectName( "mainWindowToolBar" );
+
     connect( m_mainToolbar.addAction( QIcon(":doc_new") , "New" ) , SIGNAL(triggered()) , this , SLOT(newDocument()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_open") , "Open" ) , SIGNAL(triggered()) , this , SLOT(loadDocument()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_filesave") , "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
@@ -42,11 +44,11 @@ CMagnumWin::CMagnumWin(){
 
     newDocument();
 
-    loadSettings();
-
     m_projectManager = new CProject( this );
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
+
+    loadSettings();
 }
 
 void CMagnumWin::loadSettings(){
@@ -57,6 +59,8 @@ void CMagnumWin::loadSettings(){
         setGeometry( sett.value( "position" , QRect( 0,0 ,640,480) ).toRect() );
 
         if( sett.value( "maximized" , true ).toBool() )	    showMaximized();
+
+        restoreState( sett.value( "wstate" , QByteArray() ).toByteArray() );
 
     sett.endGroup();
 
@@ -83,6 +87,7 @@ void CMagnumWin::saveSettings(){
 
         sett.setValue( "position" , geometry() );
         sett.setValue( "maximized" , isMaximized() );
+        sett.setValue( "wstate" , saveState() );
 
     sett.endGroup();
 
