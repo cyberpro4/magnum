@@ -40,6 +40,11 @@ CFindWindow::~CFindWindow(){
     delete m_searchThread;
 }
 
+void CFindWindow::focusFind( QString text ){
+    m_whatLine.setText( text );
+    m_whatLine.setFocus( Qt::ShortcutFocusReason );
+}
+
 void CFindWindow::loadMovie(bool on){
     if( on )
         m_searchInProgressMovie.start();

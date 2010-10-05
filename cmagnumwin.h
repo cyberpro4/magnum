@@ -19,6 +19,8 @@ class CMagnumWin : public QMainWindow {
 
 private:
 
+    QShortcut               m_shortcutFind;
+
     QToolBar		    m_mainToolbar;
 
     QMenuBar		    m_mainMenu;
@@ -69,6 +71,8 @@ public slots:
     void    saveSettings();
 
     void    lastOpened_Action(QAction* );
+
+    void    shortcutFind();
 
 };
 

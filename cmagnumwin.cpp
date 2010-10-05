@@ -1,7 +1,7 @@
 #include "cmagnumwin.h"
 #include "coptions.h"
 
-CMagnumWin::CMagnumWin(){
+CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
 
     m_documentTabs.setTabsClosable( true );
     connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
@@ -47,6 +47,9 @@ CMagnumWin::CMagnumWin(){
     m_projectManager = new CProject( this );
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
+
+    m_shortcutFind.setKey( Qt::CTRL + Qt::Key_F );
+    connect( &m_shortcutFind , SIGNAL(activated()) , this , SLOT( shortcutFind() ) );
 
     loadSettings();
 }
@@ -263,6 +266,10 @@ void CMagnumWin::findWin_goTo(CDocument *target, int nline){
     //cur.setPosition( 0 , QTextCursor::MoveAnchor );
 
     target->editor()->setTextCursor( cur );
+}
+
+void CMagnumWin::shortcutFind(){
+    m_findWidget->focusFind( );
 }
 
 CMagnumWin::~CMagnumWin(){
