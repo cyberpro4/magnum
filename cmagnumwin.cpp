@@ -77,9 +77,9 @@ void CMagnumWin::loadSettings(){
 
         list.append( sett.value( "List" ).toStringList() );
 
-        foreach( item , list ){
-            lastOpenedFile_Push( item );
-        }
+        //Push all item from last to first
+        for(int _inv = list.size() - 1;_inv >= 0;_inv--)
+            lastOpenedFile_Push( list.at( _inv ) );
 
         m_lastOpenDirectory = sett.value( "lastOpenDirectory" ).toString();
 
