@@ -52,6 +52,9 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
     connect( &m_shortcutFind , SIGNAL(activated()) , this , SLOT( shortcutFind() ) );
 
     loadSettings();
+
+    connect( &m_fileSystemNotification , SIGNAL(fileChanged(QString)) ,
+             this , SLOT(fsNotify(QString)) );
 }
 
 void CMagnumWin::loadSettings(){
@@ -138,6 +141,8 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
 
     m_findWidget->setTargetDocument( ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner() );
 
+    m_fileSystemNotification.addPath(
+      ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner()->fileInfo().absoluteFilePath() );
 }
 
 void CMagnumWin::testEvent(){
@@ -228,6 +233,8 @@ void CMagnumWin::closeDocument( CDocument* target ){
         }
     }
 
+    m_fileSystemNotification.removePath( target->fileInfo().absoluteFilePath() );
+
     m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
     m_documents.removeOne( target );
 
@@ -275,4 +282,17 @@ void CMagnumWin::shortcutFind(){
 
 CMagnumWin::~CMagnumWin(){
 
+}
+
+void CMagnumWin::fsNotify( QString fileName ){
+    int resp = QMessageBox::question( this , "File changed" ,
+          fileName + "\n has been modified from an external editor.\nDo you want reload it?" ,
+          QMessageBox::Yes | QMessageBox::No , QMessageBox::Yes );
+    if( resp == QMessageBox::Yes ){
+
+        CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+        ed->documentOwner()->loadFromFile( ed->documentOwner()->fileInfo().absoluteFilePath() );
+        //TODO CProjectManager need to be reloaded here
+
+    }
 }

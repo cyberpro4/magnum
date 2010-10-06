@@ -37,6 +37,8 @@ private:
 
     CProject*               m_projectManager;
 
+    QFileSystemWatcher      m_fileSystemNotification;
+
     void lastOpenedFile_Push( const QString& file );
 
 public:
@@ -73,6 +75,9 @@ public slots:
     void    lastOpened_Action(QAction* );
 
     void    shortcutFind();
+
+    // For QFileSystemWatcher
+    void    fsNotify(QString);
 
 };
 
