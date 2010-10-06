@@ -269,7 +269,8 @@ void CMagnumWin::findWin_goTo(CDocument *target, int nline){
 }
 
 void CMagnumWin::shortcutFind(){
-    m_findWidget->focusFind( );
+    CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+    m_findWidget->focusFind( ed->textCursor().selectedText() );
 }
 
 CMagnumWin::~CMagnumWin(){
