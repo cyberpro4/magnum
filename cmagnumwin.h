@@ -11,6 +11,8 @@
 #include "copteditor.h"
 #include "coptgeneral.h"
 
+#include "cwordcompleter.h"
+
 #define		SETTINGS_INI_FILENAME	"./config.conf"
 
 class CMagnumWin : public QMainWindow {
@@ -34,6 +36,7 @@ private:
     QList<QString>          m_lastOpenedFile;
     QString                 m_lastOpenDirectory;
 
+    CWordCompleter          m_wordCompleter;
 
     CProject*               m_projectManager;
 

@@ -146,7 +146,8 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
 }
 
 void CMagnumWin::testEvent(){
-    ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner()->blockDataAt(5)->setFoldable( 10 );
+    //((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner()->blockDataAt(5)->setFoldable( 10 );
+    m_wordCompleter.complete( ((CCodeEditor*)m_documentTabs.currentWidget()) );
 }
 
 void CMagnumWin::newDocument(){
