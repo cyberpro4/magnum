@@ -31,7 +31,8 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
     if( eve->type() == QEvent::KeyPress || eve->type() == QEvent::KeyRelease ){
         QKeyEvent *keyEve = static_cast<QKeyEvent *>(eve);
 
-        qDebug() << keyEve->key();
+        if( keyEve->key() == Qt::Key_Escape )
+            hide();
 
         if( keyEve->key() == Qt::Key_Return && obj == &m_wordList ){
             if( m_wordList.selectedItems().size() > 0 )
