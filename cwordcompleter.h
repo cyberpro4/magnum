@@ -25,6 +25,8 @@ public:
 
     bool eventFilter(QObject *, QEvent *);
 
+    void hideEvent( QHideEvent* );
+
 };
 
 #endif // CWORDCOMPLETER_H

@@ -19,6 +19,8 @@ CWordCompleter::CWordCompleter(){
 
 bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
 
+    if( m_currentEditor == 0 ) return false;
+
     if( obj == m_currentEditor ){
         QPoint curPos( m_currentEditor->cursorRect().right() ,
                         m_currentEditor->cursorRect().top() );
@@ -57,6 +59,11 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
     }
 
     return false;
+}
+
+void CWordCompleter::hideEvent( QHideEvent* ){
+    m_currentEditor->removeEventFilter( this );
+    m_currentEditor = 0;
 }
 
 void CWordCompleter::completeString(QListWidgetItem *selectedItem){
