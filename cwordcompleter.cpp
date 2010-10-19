@@ -33,13 +33,16 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
     if( eve->type() == QEvent::KeyPress || eve->type() == QEvent::KeyRelease ){
         QKeyEvent *keyEve = static_cast<QKeyEvent *>(eve);
 
-        if( keyEve->key() == Qt::Key_Escape )
+        if( keyEve->key() == Qt::Key_Escape ){
             hide();
+            return true;
+        }
 
         if( keyEve->key() == Qt::Key_Return && obj == &m_wordList ){
             if( m_wordList.selectedItems().size() > 0 )
                 completeString( m_wordList.selectedItems().at( 0 ) );
             hide();
+            return true;
         }
 
         if( keyEve->key() == Qt::Key_Up || keyEve->key() == Qt::Key_Down ){
@@ -92,7 +95,7 @@ void CWordCompleter::updateWordList(QString currentString){
     int index;
 
     for(int i = 0;i < m_wordList.count();i++){
-        index = m_wordList.item( i )->text().indexOf( currentString );
+        index = m_wordList.item( i )->text().indexOf( currentString , 0 , Qt::CaseInsensitive );
 
         if( index == 0 )
             m_wordList.item(i)->setHidden( false );
@@ -108,12 +111,6 @@ void CWordCompleter::complete( CCodeEditor* editor ){
     m_currentEditor = editor;
 
     m_currentEditor->installEventFilter( this );
-
-    m_wordList.addItem( new QListWidgetItem( "ola" ) );
-    m_wordList.addItem( new QListWidgetItem( "ciola" ) );
-    m_wordList.addItem( new QListWidgetItem( "olaole" ) );
-
-    m_wordList.setCurrentItem( m_wordList.item(0) );
 
     show();
 }

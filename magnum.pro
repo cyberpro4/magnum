@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     coptionpage.cpp \
     coptgeneral.cpp \
     copteditor.cpp \
-    cwordcompleter.cpp
+    cwordcompleter.cpp \
+    ccodecompleter.cpp
 HEADERS += ccodeeditor.h \
     cfilesyntaxhighlighter.h \
     cproject.h \
@@ -60,6 +61,7 @@ HEADERS += ccodeeditor.h \
     coptionpage.h \
     coptgeneral.h \
     copteditor.h \
-    cwordcompleter.h
+    cwordcompleter.h \
+    ccodecompleter.h
 RESOURCES += magnumres.qrc
 win32:RC_FILE = win_res.rc

@@ -22,6 +22,8 @@ public:
     void refreshTreeView();
     void addRecursiveChild( CProjectTreeViewItem* treeParentItem, CProjectTreeViewItem* treeSubItem, CProjectItem* projectItem );
 
+    CProjectFile*   projectFile( CDocument* );
+
 private:
     QMap<CDocument*,CProjectFile*>  m_documentMap;
     //QList<CDocument*>       m_documentList;

@@ -39,6 +39,14 @@ void CProject::documentPurge( CDocument* document ){
     refreshTreeView();
 }
 
+CProjectFile*   CProject::projectFile(CDocument *doc){
+    if( m_documentMap.keys().indexOf( doc ) != -1 ){
+        return m_documentMap[ doc ];
+    }
+
+    return NULL;
+}
+
 void CProject::documentChanged(  CDocument* document ){
 #warning SVILUPPARE SCAN FILE CProject::documentChanged()
     CProjectFile* projectFile = m_documentMap.value( document, NULL );
