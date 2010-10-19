@@ -64,6 +64,7 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
 void CWordCompleter::hideEvent( QHideEvent* ){
     m_currentEditor->removeEventFilter( this );
     m_currentEditor = 0;
+    setParent( 0 );
 }
 
 void CWordCompleter::completeString(QListWidgetItem *selectedItem){
