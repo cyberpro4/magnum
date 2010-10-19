@@ -1,7 +1,7 @@
 #include "cmagnumwin.h"
 #include "coptions.h"
 
-CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
+CMagnumWin::CMagnumWin() : m_shortcutFind( this ) , m_shortcutCompleteWord( this ){
 
     m_documentTabs.setTabsClosable( true );
     connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
@@ -50,6 +50,8 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
 
     m_shortcutFind.setKey( Qt::CTRL + Qt::Key_F );
     connect( &m_shortcutFind , SIGNAL(activated()) , this , SLOT( shortcutFind() ) );
+    m_shortcutCompleteWord.setKey( Qt::CTRL + Qt::Key_Space );
+    connect( &m_shortcutCompleteWord , SIGNAL(activated()) , this , SLOT( shortcutCompleteWord() ) );
 
     loadSettings();
 
@@ -146,8 +148,7 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
 }
 
 void CMagnumWin::testEvent(){
-    //((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner()->blockDataAt(5)->setFoldable( 10 );
-    m_wordCompleter.complete( ((CCodeEditor*)m_documentTabs.currentWidget()) );
+
 }
 
 void CMagnumWin::newDocument(){
@@ -279,6 +280,10 @@ void CMagnumWin::findWin_goTo(CDocument *target, int nline){
 void CMagnumWin::shortcutFind(){
     CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
     m_findWidget->focusFind( ed->textCursor().selectedText() );
+}
+
+void CMagnumWin::shortcutCompleteWord(){
+    m_wordCompleter.complete( ((CCodeEditor*)m_documentTabs.currentWidget()) );
 }
 
 CMagnumWin::~CMagnumWin(){

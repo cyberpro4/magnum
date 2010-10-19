@@ -22,6 +22,7 @@ class CMagnumWin : public QMainWindow {
 private:
 
     QShortcut               m_shortcutFind;
+    QShortcut               m_shortcutCompleteWord;
 
     QToolBar		    m_mainToolbar;
 
@@ -78,6 +79,7 @@ public slots:
     void    lastOpened_Action(QAction* );
 
     void    shortcutFind();
+    void    shortcutCompleteWord();
 
     // For QFileSystemWatcher
     void    fsNotify(QString);
