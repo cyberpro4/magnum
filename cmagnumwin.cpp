@@ -1,7 +1,7 @@
 #include "cmagnumwin.h"
 #include "coptions.h"
 
-CMagnumWin::CMagnumWin(){
+CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
 
     m_documentTabs.setTabsClosable( true );
     connect( &m_documentTabs , SIGNAL(tabCloseRequested(int)) , this , SLOT(tabClose(int)) );
@@ -27,6 +27,8 @@ CMagnumWin::CMagnumWin(){
 
     setMenuBar( &m_mainMenu );
 
+    m_mainToolbar.setObjectName( "mainWindowToolBar" );
+
     connect( m_mainToolbar.addAction( QIcon(":doc_new") , "New" ) , SIGNAL(triggered()) , this , SLOT(newDocument()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_open") , "Open" ) , SIGNAL(triggered()) , this , SLOT(loadDocument()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_filesave") , "Save" ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocument()) );
@@ -42,15 +44,23 @@ CMagnumWin::CMagnumWin(){
 
     newDocument();
 
-    loadSettings();
-
     m_projectManager = new CProject( this );
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
     addDockWidget( Qt::LeftDockWidgetArea, m_projectManager );
 
+
     m_flowPointer = new CFlowPointer( m_projectManager, this );
     addDockWidget( Qt::RightDockWidgetArea, m_flowPointer );
     connect( m_flowPointer, SIGNAL(gotoDocumentLinePropagate(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
+
+    m_shortcutFind.setKey( Qt::CTRL + Qt::Key_F );
+    connect( &m_shortcutFind , SIGNAL(activated()) , this , SLOT( shortcutFind() ) );
+
+    loadSettings();
+
+    connect( &m_fileSystemNotification , SIGNAL(fileChanged(QString)) ,
+             this , SLOT(fsNotify(QString)) );
+
 }
 
 void CMagnumWin::loadSettings(){
@@ -62,6 +72,8 @@ void CMagnumWin::loadSettings(){
 
         if( sett.value( "maximized" , true ).toBool() )	    showMaximized();
 
+        restoreState( sett.value( "wstate" , QByteArray() ).toByteArray() );
+
     sett.endGroup();
 
     sett.beginGroup("LastOpenedFile");
@@ -71,9 +83,9 @@ void CMagnumWin::loadSettings(){
 
         list.append( sett.value( "List" ).toStringList() );
 
-        foreach( item , list ){
-            lastOpenedFile_Push( item );
-        }
+        //Push all item from last to first
+        for(int _inv = list.size() - 1;_inv >= 0;_inv--)
+            lastOpenedFile_Push( list.at( _inv ) );
 
         m_lastOpenDirectory = sett.value( "lastOpenDirectory" ).toString();
 
@@ -87,6 +99,7 @@ void CMagnumWin::saveSettings(){
 
         sett.setValue( "position" , geometry() );
         sett.setValue( "maximized" , isMaximized() );
+        sett.setValue( "wstate" , saveState() );
 
     sett.endGroup();
 
@@ -135,11 +148,16 @@ void CMagnumWin::currentDocumentChanged(int tabIndex){
     CCodeEditor* edit = ((CCodeEditor*)m_documentTabs.widget( tabIndex ));
     m_findWidget->setTargetDocument( edit->documentOwner() );
 
+
     if( edit->document()->blockCount() > 1 ){
 	//m_projectManager->documentPush( edit->documentOwner() );
 	//m_flowPointer->updateTreeView( edit->documentOwner() );
 	m_flowPointer->setCurrentDocument( edit->documentOwner() );
     }
+
+    m_fileSystemNotification.addPath(
+      ((CCodeEditor*)m_documentTabs.widget( tabIndex ))->documentOwner()->fileInfo().absoluteFilePath() );
+
 }
 
 void CMagnumWin::testEvent(){
@@ -232,6 +250,8 @@ void CMagnumWin::closeDocument( CDocument* target ){
         }
     }
 
+    m_fileSystemNotification.removePath( target->fileInfo().absoluteFilePath() );
+
     m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
     m_documents.removeOne( target );
 
@@ -272,6 +292,24 @@ void CMagnumWin::findWin_goTo(CDocument *target, int nline){
     target->editor()->setTextCursor( cur );
 }
 
+void CMagnumWin::shortcutFind(){
+    CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+    m_findWidget->focusFind( ed->textCursor().selectedText() );
+}
+
 CMagnumWin::~CMagnumWin(){
 
+}
+
+void CMagnumWin::fsNotify( QString fileName ){
+    int resp = QMessageBox::question( this , "File changed" ,
+          fileName + "\n has been modified from an external editor.\nDo you want reload it?" ,
+          QMessageBox::Yes | QMessageBox::No , QMessageBox::Yes );
+    if( resp == QMessageBox::Yes ){
+
+        CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
+        ed->documentOwner()->loadFromFile( ed->documentOwner()->fileInfo().absoluteFilePath() );
+        //TODO CProjectManager need to be reloaded here
+
+    }
 }

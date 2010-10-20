@@ -2,6 +2,8 @@
 
 CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 
+    setObjectName( "CFindWindow" );
+
     QVBoxLayout*    vbox = new QVBoxLayout();
 
     QHBoxLayout* whatlay = new QHBoxLayout();
@@ -36,6 +38,11 @@ CFindWindow::CFindWindow( QWidget* parent ) : QDockWidget( parent ){
 CFindWindow::~CFindWindow(){
     m_searchThread->waitForSearchStop();
     delete m_searchThread;
+}
+
+void CFindWindow::focusFind( QString text ){
+    m_whatLine.setText( text );
+    m_whatLine.setFocus( Qt::ShortcutFocusReason );
 }
 
 void CFindWindow::loadMovie(bool on){

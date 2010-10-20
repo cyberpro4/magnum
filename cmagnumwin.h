@@ -20,6 +20,8 @@ class CMagnumWin : public QMainWindow {
 
 private:
 
+    QShortcut               m_shortcutFind;
+
     QToolBar		    m_mainToolbar;
 
     QMenuBar		    m_mainMenu;
@@ -36,6 +38,8 @@ private:
 
     CProject*               m_projectManager;
     CFlowPointer*           m_flowPointer;
+
+    QFileSystemWatcher      m_fileSystemNotification;
 
     void lastOpenedFile_Push( const QString& file );
 
@@ -71,6 +75,11 @@ public slots:
     void    saveSettings();
 
     void    lastOpened_Action(QAction* );
+
+    void    shortcutFind();
+
+    // For QFileSystemWatcher
+    void    fsNotify(QString);
 
 };
 

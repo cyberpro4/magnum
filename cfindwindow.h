@@ -32,6 +32,8 @@ public:
     void setTargetDocument( CDocument* );
     CDocument* targetDocument();
 
+    void    focusFind( QString text = QString() );
+
 signals:
 
     void clearList();
