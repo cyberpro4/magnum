@@ -98,17 +98,20 @@ void CFlowPointerItem::forceVisibility(){
 }
 
 void CFlowPointerItem::addChildItem( CFlowPointerItem* child ){
-    int red=this->palette().brush(this->backgroundRole()).color().red();
-    int green=this->palette().brush(this->backgroundRole()).color().green();
-    int blue=this->palette().brush(this->backgroundRole()).color().blue();
+    int red=this->palette().color( QPalette::Window ).red();
+    int green=this->palette().color( QPalette::Window ).green();
+    int blue=this->palette().color( QPalette::Window ).blue();
 
-    float scaleFactor=(float)4.0f / 3.0f;
+    float scaleFactor=(float)8.0f / 9.0f;
     red=(red+1)*scaleFactor;
     green=(green+1)*scaleFactor;
     blue=(blue+1)*scaleFactor;
 
+    ((QPalette)child->palette()).setColor( QPalette::Window, QColor(red,green,blue) );
     child->setPalette(QPalette(QColor(red,green,blue)));
     child->setBasePalette(QPalette(QColor(red,green,blue)));
+    child->setForegroundRole( QPalette::Window );
+    child->setBackgroundRole( QPalette::Window );
 
     m_childList.append( child );
     this->layout()->addWidget( child );
