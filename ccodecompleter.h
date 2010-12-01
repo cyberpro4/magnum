@@ -6,6 +6,10 @@
 
 class CCodeCompleter : public CWordCompleter {
 
+protected:
+
+    void recursiveFillWordList( CProjectItem* , int );
+
 public:
     CCodeCompleter();
 
