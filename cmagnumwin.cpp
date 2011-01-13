@@ -288,11 +288,25 @@ void CMagnumWin::fsNotify( QString fileName ){
     int resp = QMessageBox::question( this , "File changed" ,
           fileName + "\n has been modified from an external editor.\nDo you want reload it?" ,
           QMessageBox::Yes | QMessageBox::No , QMessageBox::Yes );
+
     if( resp == QMessageBox::Yes ){
 
-        CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
-        ed->documentOwner()->loadFromFile( ed->documentOwner()->fileInfo().absoluteFilePath() );
-        //TODO CProjectManager need to be reloaded here
+        // We _literally_ search for the correct document
+        // to update
+        for( int i = 0;i < m_documentTabs.count(); i++ ){
+
+            // By filename
+            if( ((CCodeEditor*)m_documentTabs.widget( i ))->
+                documentOwner()->fileInfo().absoluteFilePath() == fileName ){
+
+                ((CCodeEditor*)m_documentTabs.widget( i ))->documentOwner()->loadFromFile( fileName );
+                //TODO CProjectManager need to be reloaded here
+
+                break;
+            }
+        }
+
+
 
     }
 }
