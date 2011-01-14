@@ -104,9 +104,8 @@ void CMagnumWin::lastOpenedFile_Push(const QString &file){
     if( file.length() < 1 || m_lastOpenedFile.indexOf( file ) != -1 )
         return;
 
-    // controllo che non contenga piu di 5 elementi
     m_lastOpenedFile.push_front( file );
-    if( m_lastOpenedFile.size() > 5 ) m_lastOpenedFile.removeLast();
+    if( m_lastOpenedFile.size() > GETOPT( "global/MaxNumberRecentFiles" ).toInt() ) m_lastOpenedFile.removeLast();
     m_menuLastOpened.clear();
 
 

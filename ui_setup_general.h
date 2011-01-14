@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'setup_general.ui'
 **
-** Created: Fri 14. Jan 13:03:34 2011
+** Created: Fri 14. Jan 15:02:36 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,8 +15,11 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -28,6 +31,10 @@ public:
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
     QCheckBox *genNewDocumentStartup;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label;
+    QSpacerItem *horizontalSpacer;
+    QSpinBox *genNumberRecentFiles;
     QSpacerItem *verticalSpacer;
 
     void setupUi(QWidget *setupGeneral)
@@ -46,6 +53,25 @@ public:
 
         verticalLayout->addWidget(genNewDocumentStartup);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        label = new QLabel(verticalLayoutWidget);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        horizontalLayout->addWidget(label);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
+        genNumberRecentFiles = new QSpinBox(verticalLayoutWidget);
+        genNumberRecentFiles->setObjectName(QString::fromUtf8("genNumberRecentFiles"));
+
+        horizontalLayout->addWidget(genNumberRecentFiles);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -60,6 +86,7 @@ public:
     {
         setupGeneral->setWindowTitle(QApplication::translate("setupGeneral", "Form", 0, QApplication::UnicodeUTF8));
         genNewDocumentStartup->setText(QApplication::translate("setupGeneral", "Open a fresh document at startup", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("setupGeneral", "Maximum number of recent files:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
