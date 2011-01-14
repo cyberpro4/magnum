@@ -38,9 +38,15 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
             return true;
         }
 
+        if( keyEve->key() == Qt::Key_Return && obj == m_currentEditor && isVisible() ){
+            hide();
+            return false;
+        }
+
         if( keyEve->key() == Qt::Key_Return && obj == &m_wordList ){
             if( m_wordList.selectedItems().size() > 0 )
                 completeString( m_wordList.selectedItems().at( 0 ) );
+
             hide();
             return true;
         }
@@ -66,7 +72,9 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
 
 void CWordCompleter::hideEvent( QHideEvent* ){
     m_currentEditor->removeEventFilter( this );
+    m_currentEditor->setFocus( Qt::OtherFocusReason );
     m_currentEditor = 0;
+
     setParent( 0 );
 }
 
@@ -82,6 +90,9 @@ QString CWordCompleter::pickStringToComplete(){
     int pos = m_currentEditor->textCursor().anchor() - 1;
 
     QString tblock;
+
+    //if( pos < 0 ) return tblock;
+
     while( str.at( pos ) != ' ' && pos >= 0
            && str.at( pos ) != '\n' ){
         tblock = str.at( pos ) + tblock;

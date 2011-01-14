@@ -11,6 +11,8 @@ void CCodeCompleter::recursiveFillWordList( CProjectItem* project , int bn ){
     qDebug() << "cc" << items->count();
     CProjectItem* item = NULL;
 
+    m_wordList.clear();
+
     for( int i = 0; i < items->count();i++ ){
         if( items->at( i ) == 0 ) continue;
 

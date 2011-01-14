@@ -284,7 +284,7 @@ void CMagnumWin::shortcutFind(){
 
 void CMagnumWin::shortcutCompleteWord(){
     m_codeCompleter.complete( ((CCodeEditor*)m_documentTabs.currentWidget()) ,
-        m_projectManager->projectFile( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() ));
+                m_projectManager->projectFile( ((CCodeEditor*)m_documentTabs.currentWidget())->documentOwner() ));
 }
 
 CMagnumWin::~CMagnumWin(){
