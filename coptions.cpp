@@ -3,29 +3,50 @@
 COptions_Label::COptions_Label(QWidget *obj) : QWidget( obj ){
     QVBoxLayout* lay = new QVBoxLayout();
 
-    lay->addWidget( &m_pixmap );
-    m_pixmap.setMinimumHeight( 70 );
-    lay->addWidget( &m_description );
+    m_normalHeight = 70;
+    m_overHeight = 90;
+
+    lay->addWidget( &m_pixmap , 0 , Qt::AlignCenter );
+    m_pixmap.setMinimumHeight( m_overHeight );
+    lay->addWidget( &m_description , 0 , Qt::AlignCenter );
 
     setLayout( lay );
+
 }
 
 void COptions_Label::setLink(COptionPage *pg){
     m_link = pg;
 
-    m_pixmap.setPixmap( pg->getLeftBarPixmap().scaledToHeight( 70 ) );
+    m_pixmap.setPixmap( pg->getLeftBarPixmap().scaledToHeight( m_normalHeight , Qt::SmoothTransformation ) );
+    m_pixmap.setMinimumWidth( ( m_pixmap.width() / m_pixmap.height() ) * m_overHeight );
     m_description.setText( pg->getLeftBarDescription() );
+
 }
 
 void COptions_Label::mouseReleaseEvent(QMouseEvent *ev){
     emit clicked( m_link );
 }
 
+void COptions_Label::enterEvent(QEvent*){
+    m_pixmap.setPixmap( m_link->getLeftBarPixmap().scaledToHeight( m_overHeight , Qt::SmoothTransformation ) );
+    repaint();
+}
+
+void COptions_Label::leaveEvent(QEvent* ){
+    m_pixmap.setPixmap( m_link->getLeftBarPixmap().scaledToHeight( m_normalHeight , Qt::SmoothTransformation ) );
+    repaint();
+}
+
 COptions_LeftBar::COptions_LeftBar(){
     m_mainWidget.setLayout( &m_mainWidgetLay );
     setWidget( &m_mainWidget );
     setWidgetResizable( true );
-    setMaximumWidth( 110 );
+
+    setSizePolicy( QSizePolicy::Preferred , QSizePolicy::Preferred );
+
+    QPalette    pal = palette();
+    pal.setColor( QPalette::Window , Qt::white );
+    setPalette( pal );
 }
 
 void COptions_LeftBar::addItem( COptionPage* link ){
@@ -83,7 +104,9 @@ COptions::COptions(){
     setLayout( vbox );
 
     QWidget* wid = new QWidget();
+    wid->setSizePolicy( QSizePolicy::Expanding , QSizePolicy::Expanding );
     wid->setLayout( &m_viewportContainer );
+
     m_optArea.setWidget( wid );
     m_optArea.setWidgetResizable( true );
 

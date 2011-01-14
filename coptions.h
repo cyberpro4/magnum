@@ -14,12 +14,18 @@ private:
     QLabel          m_description;
     QLabel          m_pixmap;
 
+    int             m_normalHeight;
+    int             m_overHeight;
+
 public:
 
     COptions_Label( QWidget* );
 
     void setLink(COptionPage* pg);
     void mouseReleaseEvent(QMouseEvent *ev);
+
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
 
 signals:
 
