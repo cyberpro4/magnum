@@ -91,7 +91,7 @@ QString CWordCompleter::pickStringToComplete(){
 
     QString tblock;
 
-    //if( pos < 0 ) return tblock;
+    if( pos < 0 ) return tblock;
 
     while( str.at( pos ) != ' ' && pos >= 0
            && str.at( pos ) != '\n' ){
