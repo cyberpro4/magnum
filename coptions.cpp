@@ -122,13 +122,12 @@ void COptions::applyClicked(){
 
     foreach( page , m_pages ){
         page->saveSettings( m_lastValuesMap );
+    }
 
-        QMapIterator<QString,QVariant> i(m_lastValuesMap);
-        while (i.hasNext()) {
-            i.next();
-            cfg.setValue( i.key() , i.value() );
-        }
-
+    QMapIterator<QString,QVariant> i(m_lastValuesMap);
+    while (i.hasNext()) {
+        i.next();
+        cfg.setValue( i.key() , i.value() );
     }
 
     emit optionsChanged();
@@ -156,6 +155,9 @@ void COptions::addPage(COptionPage *page){
 }
 
 QVariant COptions::getValue(const QString &s){
+    if( !m_lastValuesMap.contains( s ) )
+        return QVariant();
+
     return m_lastValuesMap[s];
 }
 

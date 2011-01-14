@@ -43,9 +43,10 @@ CMagnumWin::CMagnumWin(){
     connect( m_findWidget , SIGNAL(goTo(CDocument*,int)),this,SLOT(findWin_goTo(CDocument*,int)));
     addDockWidget( Qt::LeftDockWidgetArea , m_findWidget );
 
-    newDocument();
-
     loadSettings();
+
+    if( GETOPT( "global/freshDocumentStartup" ).toBool() )
+        newDocument();
 
     m_projectManager = new CProject( this );
     connect( m_projectManager, SIGNAL(gotoDocumentLine(CDocument*,int)), this, SLOT(findWin_goTo(CDocument*,int)) );
