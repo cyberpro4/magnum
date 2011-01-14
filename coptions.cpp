@@ -123,15 +123,12 @@ void COptions::applyClicked(){
     foreach( page , m_pages ){
         page->saveSettings( m_lastValuesMap );
 
-        cfg.beginGroup( page->getUniqueKey() );
-
         QMapIterator<QString,QVariant> i(m_lastValuesMap);
         while (i.hasNext()) {
             i.next();
             cfg.setValue( i.key() , i.value() );
         }
 
-        cfg.endGroup();
     }
 
     emit optionsChanged();
@@ -177,7 +174,6 @@ void COptions::pageClicked(COptionPage *pg){
     if( pg == 0 )return;
 
     QSettings   cfg( OPTIONS_FILENAME , QSettings::IniFormat );
-    cfg.beginGroup( pg->getUniqueKey() );
 
     QStringList list( cfg.allKeys() );
     QString slist;

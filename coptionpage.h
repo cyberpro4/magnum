@@ -12,7 +12,6 @@ public:
 
     virtual void        loadSettings(const QMap<QString,QVariant>& values ){}
     virtual void        saveSettings( QMap<QString,QVariant>& ){}
-    virtual QString     getUniqueKey(){ return "NULL"; }
 
     virtual QPixmap     getLeftBarPixmap(){return QPixmap();}
     virtual QString     getLeftBarDescription(){return "NULL";}

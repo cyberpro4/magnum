@@ -15,7 +15,7 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	updateLineNumberAreaWidth(0);
 	highlightCurrentLine();
 
-        setFont( QFont( GETOPT("edi_fontFamily").toString() , GETOPT("edi_fontSize").toInt() ) );
+        setFont( QFont( GETOPT("editor/fontFamily").toString() , GETOPT("editor/fontSize").toInt() ) );
 
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
 	s->loadFromFile( "test.xml" );
@@ -26,7 +26,7 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 }
 
 void CCodeEditor::optionsChanged(){
-    setFont( QFont( GETOPT("edi_fontFamily").toString() , GETOPT("edi_fontSize").toInt() ) );
+    setFont( QFont( GETOPT("editor/fontFamily").toString() , GETOPT("editor/fontSize").toInt() ) );
 }
 
 CDocument* CCodeEditor::documentOwner(){

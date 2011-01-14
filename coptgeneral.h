@@ -12,8 +12,6 @@ public:
     QPixmap     getLeftBarPixmap(){ return QPixmap( ":opt_general" ); }
     QString     getLeftBarDescription(){ return "General"; }
 
-    QString     getUniqueKey(){return "COPTGENERAL";}
-
     void        loadSettings(const QMap<QString, QVariant> &values);
     void        saveSettings(QMap<QString, QVariant> &);
 };
