@@ -7,7 +7,7 @@ CProjectItem::CProjectItem( CPROJECTITEM_PARAMS ){
     m_lineIndex = block->blockNumber();
     m_parent = parent;
     m_blockNumber = 1;
-    m_blockList.append( block );
+    m_blockList.append( *block );
 }
 
 CProjectItem::~CProjectItem(){

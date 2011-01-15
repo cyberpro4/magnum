@@ -40,8 +40,8 @@ public:
     QString                 label(){            return m_label;}
     CDocument*              document(){         return m_document;}
     int                     blockNumber(){      return m_blockNumber;}
-    QTextBlock*             fistTextBlock(){    return m_blockList.first();}
-    QTextBlock*             lastTextBlock(){    return m_blockList.last();}
+    QTextBlock              fistTextBlock(){    return m_blockList.first();}
+    QTextBlock              lastTextBlock(){    return m_blockList.last();}
     int                     itemType(){         return m_type;}
     int                     firstLineIndex(){   return m_lineIndex;}
 
@@ -54,7 +54,7 @@ protected:
 
     int                         m_blockNumber;//numero di blocchi che compongono questo item
     QTextBlock*                 m_blockPointer;//puntatore al blocco di testo iniziale di questo item
-    QList<QTextBlock*>          m_blockList;//lista dei blocchi appartenenti all'item
+    QList<QTextBlock>           m_blockList;//lista dei blocchi appartenenti all'item
 
     int                         m_type;//tipo di blocco
 

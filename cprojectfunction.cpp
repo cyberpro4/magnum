@@ -19,7 +19,7 @@ QTextBlock* CProjectFunction::scan( QTextBlock* b ){
         m_blockNumber++;
         block = &block->next();
 
-        m_blockList.append( block );
+        m_blockList.append( *block );
 
         if( block->text().contains( endExpr ) ){
             qDebug() << "end item: " << m_label;
@@ -32,7 +32,7 @@ QTextBlock* CProjectFunction::scan( QTextBlock* b ){
             for( int __i = 0; __i < pjitem->blockNumber()-1; __i++ ){
                 m_blockNumber++;
                 block = &block->next();
-                m_blockList.append( block );
+                m_blockList.append( *block );
             }
         }
 
