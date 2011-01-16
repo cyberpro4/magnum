@@ -15,7 +15,9 @@ void CCodeCompleter::recursiveFillWordList( CProjectItem* project , int bn ){
 
         item = items->at( i );
 
-        QListWidgetItem     *litem = new QListWidgetItem( item->fistTextBlock().text() );
+        QString ico;
+
+        QListWidgetItem     *litem = new QListWidgetItem( QIcon( ico ) , item->fistTextBlock().text() );
         m_wordList.addItem( litem );
 
         if( !item->fistTextBlock().isValid() ||
@@ -43,6 +45,4 @@ void CCodeCompleter::complete(CCodeEditor *editor , CProjectFile* project){
     recursiveFillWordList( (CProjectItem*)project , cursorBlock );
 
     CWordCompleter::complete( editor );
-
-    m_wordList.setCurrentItem( 0 );
 }

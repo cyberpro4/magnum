@@ -52,16 +52,9 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
         }
 
         if( keyEve->key() == Qt::Key_Up || keyEve->key() == Qt::Key_Down ){
-
-            if( obj != &m_wordList ){
-                setFocus( Qt::OtherFocusReason );
-                qApp->postEvent( &m_wordList , eve );
-                return true;
-            }
-
+            return false;
         } else if( obj == &m_wordList ) {
-            m_currentEditor->setFocus( Qt::OtherFocusReason );
-            qApp->postEvent( m_currentEditor , eve );
+            qApp->sendEvent( m_currentEditor , eve );
             return true;
         }
 
@@ -124,4 +117,9 @@ void CWordCompleter::complete( CCodeEditor* editor ){
     m_currentEditor->installEventFilter( this );
 
     show();
+
+    setFocus( Qt::OtherFocusReason );
+
+    if( m_wordList.count() > 0 )
+        m_wordList.setCurrentRow( 0 , QItemSelectionModel::SelectCurrent );
 }
