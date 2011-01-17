@@ -35,7 +35,8 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
     connect( m_mainToolbar.addAction( QIcon(":doc_filesaveas") , "Save as..." ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocumentAs()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_filesaveall") , "Save All" ) , SIGNAL(triggered()) , this , SLOT(saveAllDocument()) );
 
-    connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
+    //connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
+
     addToolBar( &m_mainToolbar );
 
     m_findWidget = new CFindWindow( this );
