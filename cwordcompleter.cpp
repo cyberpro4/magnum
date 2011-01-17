@@ -51,7 +51,8 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
             return true;
         }
 
-        if( keyEve->key() == Qt::Key_Up || keyEve->key() == Qt::Key_Down ){
+        if( keyEve->key() == Qt::Key_Up || keyEve->key() == Qt::Key_Down ||
+            keyEve->key() == Qt::Key_PageDown || keyEve->key() == Qt::Key_PageUp ){
             return false;
         } else if( obj == &m_wordList ) {
             qApp->sendEvent( m_currentEditor , eve );
