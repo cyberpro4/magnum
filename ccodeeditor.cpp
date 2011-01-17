@@ -17,7 +17,7 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	setFont( QFont( "Courier New" , 11 ) );
 
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
-	s->loadFromFile( "test.xml" );
+        s->loadFromFile( "kuka_syntax.xml" );
 
         s = new CFileSyntaxHighlighter( this->document() );
         s->loadFromFile( SYNTAX_SYSTEMFILE );
