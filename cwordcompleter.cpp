@@ -30,6 +30,11 @@ bool CWordCompleter::eventFilter(QObject *obj, QEvent * eve){
         updateWordList( pickStringToComplete() );
     }
 
+    if( eve->type() == QEvent::FocusOut && obj == &m_wordList ){
+        hide();
+        return false;
+    }
+
     if( eve->type() == QEvent::KeyPress || eve->type() == QEvent::KeyRelease ){
         QKeyEvent *keyEve = static_cast<QKeyEvent *>(eve);
 
