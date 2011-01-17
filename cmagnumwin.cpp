@@ -169,7 +169,18 @@ void CMagnumWin::loadDocument(const QString& str ){
         m_lastOpenDirectory = QFileInfo( filename ).absoluteDir().absolutePath();
     }
 
+    QString filenameAbsolute = QFileInfo( filename ).absoluteFilePath();
+
     if( !filename.isNull() ){
+
+        for( int t = 0;t < m_documentTabs.count();t++){
+            if( filenameAbsolute ==
+                ((CCodeEditor*)m_documentTabs.widget( t ))->documentOwner()->fileInfo().absoluteFilePath() ){
+
+                m_documentTabs.setCurrentIndex( t );
+                return;
+            }
+        }
 
         CDocument* doc = new CDocument( filename );
 
