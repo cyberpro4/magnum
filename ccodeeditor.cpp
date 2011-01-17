@@ -19,8 +19,10 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
         s->loadFromFile( "kuka_syntax.xml" );
 
-        s = new CFileSyntaxHighlighter( this->document() );
-        s->loadFromFile( SYNTAX_SYSTEMFILE );
+        // This second loading fail and cause to lost of first
+        // syntax file ( TODO )
+        /*s = new CFileSyntaxHighlighter( this->document() );
+        s->loadFromFile( SYNTAX_SYSTEMFILE );*/
 
 	m_ownerDocument = NULL;
 }
