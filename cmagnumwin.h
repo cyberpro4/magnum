@@ -7,6 +7,7 @@
 
 #include "cproject.h"
 
+#include "caboutwindow.h"
 #include "coptions.h"
 #include "copteditor.h"
 #include "coptgeneral.h"
@@ -34,6 +35,7 @@ private:
     QList<QString>          m_lastOpenedFile;
     QString                 m_lastOpenDirectory;
 
+    CAboutWindow*           m_aboutDialog;
 
     CProject*               m_projectManager;
 
@@ -68,6 +70,8 @@ public slots:
     void    testEvent();
 
     void    findWin_goTo(CDocument* target , int nline );
+
+    void    aboutDialog();
 
     void    loadSettings();
     void    saveSettings();

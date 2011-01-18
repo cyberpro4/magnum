@@ -25,6 +25,9 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
     connect( file->addAction( "Close" ) , SIGNAL(triggered()) , this , SLOT(closeCurrentDocument()) );
     connect( file->addAction( "Close All" ) , SIGNAL(triggered()) , this , SLOT(closeAllDocument()) );
 
+    file->addSeparator();
+    connect( file->addAction( tr( "About" ) ) , SIGNAL(triggered()) , this , SLOT(aboutDialog()) );
+
     setMenuBar( &m_mainMenu );
 
     m_mainToolbar.setObjectName( "mainWindowToolBar" );
@@ -56,6 +59,12 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
 
     connect( &m_fileSystemNotification , SIGNAL(fileChanged(QString)) ,
              this , SLOT(fsNotify(QString)) );
+
+    QString aboutString( "Magnum\n" );
+    aboutString += "Kuka software editor\nRelease: 0.1\n\n";
+    aboutString += "For information or suggestion contact cyberpro4@gmail.com";
+
+    m_aboutDialog = new CAboutWindow( ":PROGICO" , aboutString , this );
 }
 
 void CMagnumWin::loadSettings(){
@@ -241,6 +250,9 @@ void CMagnumWin::saveCurrentDocument(){
 
 }
 
+void CMagnumWin::aboutDialog(){
+    m_aboutDialog->show();
+}
 
 void CMagnumWin::closeDocument( CDocument* target ){
 
