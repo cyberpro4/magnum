@@ -9,6 +9,12 @@ CProjectFile::CProjectFile( QString label, CPROJECTITEM_PARAMS ):CProjectItem( C
 
 QTextBlock* CProjectFile::scan( QTextBlock* b ){
     QTextBlock* block = b;
+
+    QProgressDialog pdia( QWidget::tr( "Processing " ) + m_document->fileInfo().fileName() ,
+                          "" , 0 , m_document->editor()->blockCount() );
+    pdia.setCancelButton( 0 );
+    pdia.show();
+
     //while( &block->next() != (QTextBlock*)&block->end() ){
     while( block->next().isValid() ){
         m_blockNumber++;
@@ -25,6 +31,9 @@ QTextBlock* CProjectFile::scan( QTextBlock* b ){
                 m_blockList.append( block );
             }
         }
+
+        if( m_blockNumber % 20 == 0 )
+            pdia.setValue( m_blockNumber );
 
         //qDebug() << block->text() << block->isValid();
 
