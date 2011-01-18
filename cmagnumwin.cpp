@@ -166,7 +166,7 @@ void CMagnumWin::loadDocument(const QString& str ){
     if( str.length() > 0 )
         filename = str;
     else {
-        filename = QFileDialog::getOpenFileName( this , "Load from file" , m_lastOpenDirectory , "*.*" );
+        filename = QFileDialog::getOpenFileName( this , tr( "Load from file" ) , m_lastOpenDirectory , "*.*" );
         m_lastOpenDirectory = QFileInfo( filename ).absoluteDir().absolutePath();
     }
 
@@ -183,7 +183,12 @@ void CMagnumWin::loadDocument(const QString& str ){
             }
         }
 
-        CDocument* doc = new CDocument( filename );
+        CDocument* doc = new CDocument();
+
+        if( !doc->loadFromFile( filename ) ){
+            delete doc;
+            return;
+        }
 
         m_projectManager->documentPush( doc );
 
