@@ -25,6 +25,9 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ) , m_shortcutCompleteWord( this
     connect( file->addAction( "Close" ) , SIGNAL(triggered()) , this , SLOT(closeCurrentDocument()) );
     connect( file->addAction( "Close All" ) , SIGNAL(triggered()) , this , SLOT(closeAllDocument()) );
 
+    file->addSeparator();
+    connect( file->addAction( tr( "About" ) ) , SIGNAL(triggered()) , this , SLOT(aboutDialog()) );
+
     setMenuBar( &m_mainMenu );
 
     m_mainToolbar.setObjectName( "mainWindowToolBar" );
@@ -35,7 +38,8 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ) , m_shortcutCompleteWord( this
     connect( m_mainToolbar.addAction( QIcon(":doc_filesaveas") , "Save as..." ) , SIGNAL(triggered()) , this , SLOT(saveCurrentDocumentAs()) );
     connect( m_mainToolbar.addAction( QIcon(":doc_filesaveall") , "Save All" ) , SIGNAL(triggered()) , this , SLOT(saveAllDocument()) );
 
-    connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
+    //connect( m_mainToolbar.addAction("TEST") , SIGNAL(triggered()) , this , SLOT(testEvent()) );
+
     addToolBar( &m_mainToolbar );
 
     m_findWidget = new CFindWindow( this );
@@ -57,6 +61,12 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ) , m_shortcutCompleteWord( this
 
     connect( &m_fileSystemNotification , SIGNAL(fileChanged(QString)) ,
              this , SLOT(fsNotify(QString)) );
+
+    QString aboutString( "Magnum\n" );
+    aboutString += "Kuka software editor\nRelease: 0.1\n\n";
+    aboutString += "For information or suggestion contact cyberpro4@gmail.com";
+
+    m_aboutDialog = new CAboutWindow( ":PROGICO" , aboutString , this );
 }
 
 void CMagnumWin::loadSettings(){
@@ -167,13 +177,29 @@ void CMagnumWin::loadDocument(const QString& str ){
     if( str.length() > 0 )
         filename = str;
     else {
-        filename = QFileDialog::getOpenFileName( this , "Load from file" , m_lastOpenDirectory , "*.*" );
+        filename = QFileDialog::getOpenFileName( this , tr( "Load from file" ) , m_lastOpenDirectory , "*.*" );
         m_lastOpenDirectory = QFileInfo( filename ).absoluteDir().absolutePath();
     }
 
+    QString filenameAbsolute = QFileInfo( filename ).absoluteFilePath();
+
     if( !filename.isNull() ){
 
-        CDocument* doc = new CDocument( filename );
+        for( int t = 0;t < m_documentTabs.count();t++){
+            if( filenameAbsolute ==
+                ((CCodeEditor*)m_documentTabs.widget( t ))->documentOwner()->fileInfo().absoluteFilePath() ){
+
+                m_documentTabs.setCurrentIndex( t );
+                return;
+            }
+        }
+
+        CDocument* doc = new CDocument();
+
+        if( !doc->loadFromFile( filename ) ){
+            delete doc;
+            return;
+        }
 
         m_projectManager->documentPush( doc );
 
@@ -226,6 +252,9 @@ void CMagnumWin::saveCurrentDocument(){
 
 }
 
+void CMagnumWin::aboutDialog(){
+    m_aboutDialog->show();
+}
 
 void CMagnumWin::closeDocument( CDocument* target ){
 
@@ -295,11 +324,25 @@ void CMagnumWin::fsNotify( QString fileName ){
     int resp = QMessageBox::question( this , "File changed" ,
           fileName + "\n has been modified from an external editor.\nDo you want reload it?" ,
           QMessageBox::Yes | QMessageBox::No , QMessageBox::Yes );
+
     if( resp == QMessageBox::Yes ){
 
-        CCodeEditor* ed = ((CCodeEditor*)m_documentTabs.currentWidget());
-        ed->documentOwner()->loadFromFile( ed->documentOwner()->fileInfo().absoluteFilePath() );
-        //TODO CProjectManager need to be reloaded here
+        // We _literally_ search for the correct document
+        // to update
+        for( int i = 0;i < m_documentTabs.count(); i++ ){
+
+            // By filename
+            if( ((CCodeEditor*)m_documentTabs.widget( i ))->
+                documentOwner()->fileInfo().absoluteFilePath() == fileName ){
+
+                ((CCodeEditor*)m_documentTabs.widget( i ))->documentOwner()->loadFromFile( fileName );
+                //TODO CProjectManager need to be reloaded here
+
+                break;
+            }
+        }
+
+
 
     }
 }

@@ -20,6 +20,7 @@ public:
 	CCodeEditor(QWidget *parent = 0);
 	~CCodeEditor();
 
+        int     m_oldBlockCount;
 
 	void lineNumberAreaPaintEvent(QPaintEvent *event);
 	int lineNumberAreaWidth();

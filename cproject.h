@@ -40,6 +40,7 @@ public slots:
     void documentChanged( CDocument* document );
 
     void treeViewItemClicked( QTreeWidgetItem * item, int column );
+    void toolbarRefresh();
 
 signals:
     void gotoDocumentLine( CDocument*, int );

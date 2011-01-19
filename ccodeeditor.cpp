@@ -17,12 +17,15 @@ CCodeEditor::CCodeEditor(QWidget *parent)
 	setFont( QFont( "Courier New" , 11 ) );
 
 	CFileSyntaxHighlighter* s = new CFileSyntaxHighlighter( this->document() );
-	s->loadFromFile( "test.xml" );
+        s->loadFromFile( "kuka_syntax.xml" );
 
-        s = new CFileSyntaxHighlighter( this->document() );
-        s->loadFromFile( SYNTAX_SYSTEMFILE );
+        // This second loading fail and cause to lost of first
+        // syntax file ( TODO )
+        /*s = new CFileSyntaxHighlighter( this->document() );
+        s->loadFromFile( SYNTAX_SYSTEMFILE );*/
 
 	m_ownerDocument = NULL;
+        m_oldBlockCount = 0;
 }
 
 CDocument* CCodeEditor::documentOwner(){
@@ -63,8 +66,49 @@ void CCodeEditor::foldBlocks( int line_start , int line_end ){
     m_foldArea->update();
 }
 
-void CCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */){
+void CCodeEditor::updateLineNumberAreaWidth(int newBlockCount){
 	setViewportMargins(lineNumberAreaWidth()+m_foldArea->foldAreaWidth(), 0, 0, 0);
+
+        // CHECK FOR PREVIUOS BLOCK INDENT
+
+        if( newBlockCount == 0 ){
+            return;
+        }
+
+        // the block count has increased?
+        if( (newBlockCount-1) == m_oldBlockCount ){
+
+            if( !textCursor().block().isValid() ){
+                m_oldBlockCount = newBlockCount;
+                return;
+            }
+
+            if( textCursor().block().previous().isValid() ){
+
+                // Pick the previous block text and his
+                // indent manually
+                QString     prevText = textCursor().block().previous().text();
+                QString     oldIndent;
+                int         cc = 0;
+
+                while( cc < prevText.length() ){
+                    if( prevText[cc] == ' ' || prevText[cc] == '\t' )
+                        oldIndent += prevText[cc];
+                    else
+                        break;
+
+                    cc++;
+                }
+
+                // and apply on current cursor position
+                if( oldIndent.length() > 0 && textCursor().atBlockStart() ){
+                    textCursor().insertText( oldIndent );
+                }
+            }
+        }
+
+        m_oldBlockCount = newBlockCount;
+
 }
 
 

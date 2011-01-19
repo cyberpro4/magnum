@@ -12,6 +12,13 @@ CProject::CProject( QWidget* parent ):QDockWidget( "Project", parent ){
 
     this->setWidget( mainContainer );
 
+    QToolBar*   tool = new QToolBar( "Actions" );
+    tool->setFloatable( false );
+    tool->setIconSize( QSize( 16 , 16 ) );
+    connect( tool->addAction( QIcon( ":refresh" ) , "Refresh" ) , SIGNAL(triggered()) ,
+             this , SLOT(toolbarRefresh() ) );
+
+    mainLayout->addWidget( tool );
     mainLayout->addWidget( &m_treeView );
 
     m_typeBag = new CProjectTypeBag();
@@ -82,6 +89,26 @@ void CProject::addRecursiveChild( CProjectTreeViewItem* treeParentItem, CProject
                 newTreeItem,
                 subItem );
     }
+}
+
+void CProject::toolbarRefresh(){
+    QMutableMapIterator<CDocument*,CProjectFile*> di( m_documentMap );
+
+    while( di.hasNext() ){
+        di.next();
+
+        if( di.value() != 0 ){
+            delete di.value();
+        }
+
+        di.setValue( new CProjectFile(
+                        di.key()->fileInfo().absoluteFilePath(),
+                        di.key(),
+                        &di.key()->editor()->document()->firstBlock(),
+                        NULL ) );
+    }
+
+    refreshTreeView();
 }
 
 void CProject::treeViewItemClicked( QTreeWidgetItem * item, int column ){
