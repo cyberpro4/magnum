@@ -27,7 +27,7 @@ class CProjectItem{
 
 public:
     CProjectItem( CPROJECTITEM_PARAMS );
-    ~CProjectItem( );
+    virtual ~CProjectItem( );
 
     //ritorna il texblock del prossimo item
     QTextBlock* scan( QTextBlock* b );//scanna il documento a partire dalla linea identificata dal blocco identificato dal relativo parametro

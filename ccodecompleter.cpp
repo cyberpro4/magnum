@@ -17,7 +17,11 @@ void CCodeCompleter::recursiveFillWordList( CProjectItem* project , int bn ){
 
         QString ico;
 
-        QListWidgetItem     *litem = new QListWidgetItem( QIcon( ico ) , item->fistTextBlock().text() );
+        if( dynamic_cast<CProjectFunction*>(item) != 0 ) ico = ":prjfunc";
+        if( dynamic_cast<CProjectProcedure*>(item) != 0 ) ico = ":prjproc";
+        if( dynamic_cast<CProjectVariable*>(item) != 0 ) ico = ":prjvar";
+
+        QListWidgetItem     *litem = new QListWidgetItem( QIcon( ico ) , item->label() );
         m_wordList.addItem( litem );
 
         if( !item->fistTextBlock().isValid() ||
