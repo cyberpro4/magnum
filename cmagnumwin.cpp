@@ -288,6 +288,8 @@ void CMagnumWin::closeDocument( CDocument* target ){
     m_fileSystemNotification.removePath( target->fileInfo().absoluteFilePath() );
 
     m_documentTabs.removeTab( m_documentTabs.indexOf( target->editor() ) );
+
+    m_projectManager->documentPurge( target );
     m_documents.removeOne( target );
 
     delete target;
