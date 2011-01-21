@@ -86,6 +86,8 @@ CMagnumWin::CMagnumWin() : m_shortcutFind( this ){
     aboutString += "For information or suggestion contact cyberpro4@gmail.com";
 
     m_aboutDialog = new CAboutWindow( ":PROGICO" , aboutString , this );
+
+    setAcceptDrops( true );
 }
 
 void CMagnumWin::loadSettings(){
@@ -358,5 +360,26 @@ void CMagnumWin::fsNotify( QString fileName ){
 
 
 
+    }
+}
+
+void CMagnumWin::dropEvent(QDropEvent *event){
+    if( !event->mimeData()->hasUrls() )
+        return;
+
+    event->acceptProposedAction();
+
+    QList<QUrl> urls = event->mimeData()->urls();
+    QUrl    url;
+
+    foreach( url , urls ){
+        loadDocument( url.toLocalFile() );
+    }
+
+}
+
+void CMagnumWin::dragEnterEvent(QDragEnterEvent *event){
+    if( event->mimeData()->hasUrls() ){
+        event->acceptProposedAction();
     }
 }

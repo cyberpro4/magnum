@@ -70,6 +70,9 @@ public:
 
     void    closeEvent(QCloseEvent *eve);
 
+    void    dragEnterEvent(QDragEnterEvent *);
+    void    dropEvent(QDropEvent *);
+
 public slots:
 
     void    newDocument();
