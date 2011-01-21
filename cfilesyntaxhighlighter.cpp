@@ -58,7 +58,17 @@ bool CFileSyntaxHighlighter::loadFromFile(const QString & file ){
 
 	QDomNodeList list = cur.at(curind).toElement().elementsByTagName( "REGEXP" );
 	for(int node=0;node < list.size();node++){
-	    toSave->m_regsExp.append( new QRegExp( list.at(node).toElement().attribute("PATTERN","") ) );
+            QRegExp* reg = new QRegExp( list.at(node).toElement().attribute("PATTERN","") );
+
+            //Check for case insesitive
+            if( list.at(node).toElement().hasAttribute( "CASE" ) ){
+
+                if( list.at(node).toElement().attribute( "CASE" )
+                    .compare( "NO" , Qt::CaseInsensitive ) == 0 )
+                    reg->setCaseSensitivity( Qt::CaseInsensitive );
+            }
+
+            toSave->m_regsExp.append( reg );
 	}
 
 	if( cur.at(curind).toElement().elementsByTagName( "COLOR").size() > 0 ){
